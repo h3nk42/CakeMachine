@@ -20,12 +20,12 @@ public class VerkaufsobjektImpl implements Verkaufsobjekt {
 
     @Override
     public Date getInspektionsdatum() {
-        return null;
+        return inspektionsdatum;
     }
 
     @Override
     public int getFachnummer() {
-        return 0;
+        return fachnummer;
     }
 
     @Override
@@ -33,13 +33,19 @@ public class VerkaufsobjektImpl implements Verkaufsobjekt {
         this.fachnummer = fachnummer;
     }
 
+    @Override
+    public void setInspektionsdatum(Date inspektionsdatum) {
+        this.inspektionsdatum = inspektionsdatum;
+    }
+
+
 
     @Override
     public String toString() {
-        return "VerkaufsobjektImpl{" +
+        return "{"+
                 "preis=" + preis +
                 ", inspektionsdatum=" + inspektionsdatum +
                 ", fachnummer=" + fachnummer +
-                '}';
+                "} /// ";
     }
 }

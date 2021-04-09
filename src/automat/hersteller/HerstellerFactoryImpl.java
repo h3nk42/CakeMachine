@@ -25,4 +25,9 @@ public class HerstellerFactoryImpl implements HerstellerFactory {
         return herstellerListe;
     }
 
+    @Override
+    public void deleteHersteller(String herstellerName) {
+        this.herstellerListe.remove(herstellerName.toLowerCase());
+    }
+
 }

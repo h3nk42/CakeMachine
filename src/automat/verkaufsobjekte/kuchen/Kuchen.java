@@ -11,6 +11,5 @@ public interface Kuchen {
     Collection<Allergen> getAllergene();
     int getNaehrwert();
     Duration getHaltbarkeit();
-
     KuchenArt getKuchenArt();
 }

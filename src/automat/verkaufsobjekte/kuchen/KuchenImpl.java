@@ -6,6 +6,7 @@ import automat.verkaufsobjekte.VerkaufsobjektImpl;
 
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -19,6 +20,7 @@ public abstract class KuchenImpl extends VerkaufsobjektImpl implements Kuchen {
 
     public KuchenImpl(Hersteller hersteller, BigDecimal preis, Date inspektionsdatum, KuchenArt kuchenArt) {
         super(preis, inspektionsdatum);
+        this.allergene = new ArrayList<>();
         this.hersteller = hersteller;
         this.kuchenArt = kuchenArt;
     }
@@ -50,10 +52,10 @@ public abstract class KuchenImpl extends VerkaufsobjektImpl implements Kuchen {
 
     @Override
     public String toString() {
-        return "KuchenImpl{" +
+        return "{" +
                 "hersteller=" + hersteller +
-                ", naehrwert=" + naehrwert +
-                ", haltbarkeit=" + haltbarkeit +
+                //", naehrwert=" + naehrwert +
+                //", haltbarkeit=" + haltbarkeit +
                 ", allergene=" + allergene +
                 "} " + super.toString();
     }

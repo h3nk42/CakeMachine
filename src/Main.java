@@ -1,43 +1,45 @@
 import automat.Automat;
-import automat.hersteller.HerstellerFactory;
-import automat.hersteller.HerstellerFactoryImpl;
+import automat.hersteller.Hersteller;
 import automat.verkaufsobjekte.kuchen.KremkuchenImpl;
-import automat.verkaufsobjekte.kuchen.KuchenArt;
 import automat.verkaufsobjekte.kuchen.ObstkuchenImpl;
-import automat.verkaufsobjekte.kuchen.ObsttorteImpl;
 
 import java.util.Date;
+import java.util.Map;
 
 public class Main {
 
 
     public static void main(String[] args){
-        HerstellerFactory herstellerFactory = new HerstellerFactoryImpl();
+        Automat automat = new Automat(10);
         try {
-             herstellerFactory.produceHersteller("Krause");
-             herstellerFactory.produceHersteller("Martin");
+             automat.addHersteller("Krause");
+             automat.addHersteller("Martin");
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("Main.java:\n" + herstellerFactory.getHerstellerListe());
-
-        Automat automat = new Automat();
         try {
             Date now = new Date();
-            automat.addObject(new KremkuchenImpl( herstellerFactory.getHerstellerListe().get("krause"), now, "vanille"));
-            automat.addObject(new ObsttorteImpl(herstellerFactory.getHerstellerListe().get("martin"), now, "apfel", "schoko"));
-            automat.addObject(new ObsttorteImpl(herstellerFactory.getHerstellerListe().get("martin"), now, "apfel", "schoko"));
-            automat.addObject(new ObsttorteImpl(herstellerFactory.getHerstellerListe().get("martin"), now, "apfel", "schoko"));
-            automat.addObject(new ObstkuchenImpl( herstellerFactory.getHerstellerListe().get("krause"), now, "kirsche"));
-            automat.removeObject(0);
-            automat.removeObject(2);
-            automat.addObject(new ObstkuchenImpl( herstellerFactory.getHerstellerListe().get("krause"), now, "kirsche"));
-            automat.addObject(new ObstkuchenImpl( herstellerFactory.getHerstellerListe().get("krause"), now, "kirsche"));
+            automat.addKuchen(new KremkuchenImpl( automat.getHersteller("krause"), now, "vanille"));
+            automat.addKuchen(new ObstkuchenImpl( automat.getHersteller("krause"), now, "apfel"));
+            automat.addKuchen(new ObstkuchenImpl( automat.getHersteller("krause"), now, "apfel"));
+            automat.addKuchen(new ObstkuchenImpl( automat.getHersteller("krause"), now, "apfel"));
+            automat.addKuchen(new ObstkuchenImpl( automat.getHersteller("krause"), now, "apfel"));
+            automat.addKuchen(new ObstkuchenImpl( automat.getHersteller("krause"), now, "apfel"));
+            automat.removeKuchen(0);
+            automat.removeKuchen(2);
+            automat.removeKuchen(5);
+            automat.addKuchen(new ObstkuchenImpl( automat.getHersteller("martin"), now, "apfel"));
+
+            System.out.println("Main.java: lineNumber: 39: faecher: " + automat.getFaecher());
+            System.out.println("Main.java: lineNumber: 36: " + automat.getKuchen());
+            System.out.println("Main.java: lineNumber: 37 allergene: " + automat.getAllergeneVorhanden());
+            automat.removeHersteller("Krause");
+            System.out.println("Main.java: lineNumber: 41" + automat.getKuchen());
+            System.out.println("Main.java: lineNumber: 42 allergene: " + automat.getAllergeneVorhanden());
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("Main.java:\n krause anzahl kuchen: " + automat.kuchenCounter.get( herstellerFactory.getHerstellerListe().get("krause")));
-        System.out.println("Main.java:\n martin anzahl kuchen: " + automat.kuchenCounter.get( herstellerFactory.getHerstellerListe().get("martin")));
-        System.out.println("Main.java:\n martin anzahl kuchen: " + automat.getKuchen());
+
     }
 }

@@ -7,11 +7,11 @@ import java.util.Date;
 class HerstellerImpl implements Hersteller {
 
     private String name;
-    private int kuchenAnzahl;
+   /* private int kuchenAnzahl;*/
 
     protected HerstellerImpl(String _name) {
         this.name = _name;
-        this.kuchenAnzahl = 0;
+      /*  this.kuchenAnzahl = 0;*/
     }
 
     @Override
@@ -19,9 +19,9 @@ class HerstellerImpl implements Hersteller {
         return this.name;
     }
 
-    /*  public boolean equals(Hersteller a) {
+    public boolean equals(Hersteller a) {
         return (a.getName().equalsIgnoreCase(this.name));
-    }*/
+    }
 
     @Override
     public String toString() {
@@ -29,7 +29,7 @@ class HerstellerImpl implements Hersteller {
     }
 
 
-    public Kremkuchen createKremkuchen(String kremsorte) {
+   /* public Kremkuchen createKremkuchen(String kremsorte) {
         this.kuchenAnzahl++;
         return new KremkuchenImpl( this, new Date(), kremsorte);
     }
@@ -41,6 +41,6 @@ class HerstellerImpl implements Hersteller {
         this.kuchenAnzahl++;
         return new ObsttorteImpl( this, new Date(), obstsorte, kremsorte);
     }
-
+*/
 
 }
