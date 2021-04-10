@@ -21,13 +21,9 @@ public class Main {
             Date now = new Date();
             automat.addKuchen(new KremkuchenImpl( automat.getHersteller("krause"), now, "vanille"));
             automat.addKuchen(new ObstkuchenImpl( automat.getHersteller("krause"), now, "apfel"));
-            automat.addKuchen(new ObstkuchenImpl( automat.getHersteller("krause"), now, "apfel"));
-            automat.addKuchen(new ObstkuchenImpl( automat.getHersteller("krause"), now, "apfel"));
-            automat.addKuchen(new ObstkuchenImpl( automat.getHersteller("krause"), now, "apfel"));
-            automat.addKuchen(new ObstkuchenImpl( automat.getHersteller("krause"), now, "apfel"));
+
             automat.removeKuchen(0);
-            automat.removeKuchen(2);
-            automat.removeKuchen(5);
+
             automat.addKuchen(new ObstkuchenImpl( automat.getHersteller("martin"), now, "apfel"));
 
             System.out.println("Main.java: lineNumber: 39: faecher: " + automat.getFaecher());

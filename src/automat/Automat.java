@@ -7,18 +7,20 @@ import automat.verkaufsobjekte.Allergen;
 import automat.verkaufsobjekte.kuchen.KuchenArt;
 import automat.verkaufsobjekte.kuchen.VerkaufsKuchen;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 
 public class Automat {
-    private List<VerkaufsKuchen> fächer;
+
+    private List<VerkaufsKuchen> faecher;
     private Map<Hersteller, Integer> kuchenCounter;
     private Map<KuchenArt, ArrayList<VerkaufsKuchen>> kuchenMap;
     private Map<Allergen, Integer> allergeneVorhanden;
     private HerstellerFactory herstellerFactory;
 
     public Automat(Integer fachAnzahl) {
-        this.fächer = new ArrayList<>(fachAnzahl);
+        this.faecher = new ArrayList<>(fachAnzahl);
         this.kuchenCounter = new HashMap<>();
         this.kuchenMap = new HashMap<>();
         this.allergeneVorhanden = new HashMap<>();
@@ -28,13 +30,16 @@ public class Automat {
     public Hersteller getHersteller(String herstellerName) {
         return herstellerFactory.getHerstellerListe().get(herstellerName.toLowerCase());
     }
+    public HashMap<String, Hersteller> getHersteller() {
+        return herstellerFactory.getHerstellerListe();
+    }
 
     public Hersteller addHersteller(String herstellerName ) throws Exception {
         return herstellerFactory.produceHersteller(herstellerName);
     }
 
     public void removeHersteller(String herstellerName ) {
-        fächer.forEach(kuchen -> {
+        faecher.forEach(kuchen -> {
             if (kuchen != null) {
                     if ( kuchen.getHersteller().getName().equalsIgnoreCase(herstellerName)){
                         try {
@@ -50,11 +55,11 @@ public class Automat {
     }
 
     public List<VerkaufsKuchen> getFaecher() {
-        return fächer;
+        return faecher;
     }
 
-    public Map<Hersteller, Integer> getKuchenCounter() {
-        return kuchenCounter;
+    public Integer getKuchenCounter(Hersteller hersteller) {
+        return kuchenCounter.get(hersteller);
     }
 
     public Map<KuchenArt, ArrayList<VerkaufsKuchen>> getKuchenMap() {
@@ -78,19 +83,30 @@ public class Automat {
         return this.kuchenMap.get(kuchenArt);
     }
 
+    public void addKuchen(ArrayList<VerkaufsKuchen> kuchenArr ) throws Exception {
+        for (int i = 0; i < kuchenArr.size(); i++) {
+            addKuchen(kuchenArr.get(i));
+        }
+    }
+
     public  void  addKuchen(VerkaufsKuchen kuchen) throws Exception {
         if (kuchen.getHersteller() == null) {
             throw new Exception("Kuchen benoetigt Hersteller");
+        } else if (this.getHersteller(kuchen.getHersteller().getName()) == null) {
+            throw new Exception("Hersteller des Kuchens nicht existent");
         }
-            for (int i = 0; i < this.fächer.size(); i++) {
-                if (this.fächer.get(i) == null) {
-                    this.fächer.set(i, kuchen);
+        if (this.kuchenMap.get(kuchen.getKuchenArt()) != null && this.kuchenMap.get(kuchen.getKuchenArt()).contains(kuchen) ) {
+            throw new Exception("Kuchen bereits im Automaten");
+        }
+            for (int i = 0; i < this.faecher.size(); i++) {
+                if (this.faecher.get(i) == null) {
+                    this.faecher.set(i, kuchen);
                     this.kuchenSetup(i, kuchen);
                     return;
                 }
             }
-            this.fächer.add(kuchen);
-            this.kuchenSetup(this.fächer.size()-1, kuchen);
+            this.faecher.add(kuchen);
+            this.kuchenSetup(this.faecher.size()-1, kuchen);
     }
 
     private void kuchenSetup(Integer index, VerkaufsKuchen kuchen) {
@@ -132,7 +148,7 @@ public class Automat {
         KuchenArt tempKuchenArt = kuchen.getKuchenArt();
         ArrayList<VerkaufsKuchen> tempList = this.kuchenMap.get(tempKuchenArt);
         if (tempList == null) {
-            ArrayList<VerkaufsKuchen> newList = new ArrayList<VerkaufsKuchen>();
+            ArrayList<VerkaufsKuchen> newList = new ArrayList<>();
             newList.add(kuchen);
             this.kuchenMap.put(tempKuchenArt, newList);
         } else {
@@ -143,22 +159,38 @@ public class Automat {
     }
 
     public void removeKuchen(int index) throws Exception {
-        if (index >= this.fächer.size() || index < 0){
+        if (index >= this.faecher.size() || index < 0){
             throw new Exception("index out of bounds: " + index);
-        } else if ( this.fächer.get(index) == null) {
+        } else if ( this.faecher.get(index) == null) {
             throw new Exception("Fach bereits leer");
         }
-        VerkaufsKuchen tempKuchen = this.fächer.get(index);
-        tempKuchen.setFachnummer(-1);
-        tempKuchen.getAllergene().forEach(allergen -> {
+        VerkaufsKuchen tempKuchen = this.faecher.get(index);
+        setUpDeleteKuchen(tempKuchen,index);
+    }
+
+    public void setUpDeleteKuchen(VerkaufsKuchen kuchen, Integer i) throws Exception {
+        kuchen.setFachnummer(-1);
+        kuchen.getAllergene().forEach(allergen -> {
             try {
                 decAllergen(allergen);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
-        decKuchenCounter(tempKuchen.getHersteller());
-        this.kuchenMap.get(tempKuchen.getKuchenArt()).remove(tempKuchen);
-        this.fächer.set(index, null);
+        decKuchenCounter(kuchen.getHersteller());
+        this.kuchenMap.get(kuchen.getKuchenArt()).remove(kuchen);
+        this.faecher.set(i, null);
+    }
+
+    public void removeKuchen(VerkaufsKuchen kuchen) throws Exception {
+        if (this.kuchenMap.get(kuchen.getKuchenArt()) == null || !this.kuchenMap.get(kuchen.getKuchenArt()).contains(kuchen) ) {
+            throw new Exception("Kuchen nicht im Automaten");
+        }
+        for (int i = 0; i < faecher.size() ; i++) {
+            if ( faecher.get(i) != null && faecher.get(i) == kuchen) {
+                setUpDeleteKuchen(kuchen,i);
+            }
+        }
+
     }
 }
