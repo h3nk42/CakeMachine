@@ -8,7 +8,4 @@ public interface Verkaufsobjekt {
     Date getInspektionsdatum();
     int getFachnummer();
 
-    void setFachnummer(int fachnummer);
-
-    void setInspektionsdatum(Date inspektionsdatum);
 }

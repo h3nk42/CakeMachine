@@ -1,3 +1,4 @@
+/*
 package AutomatTests;
 
 import automat.Automat;
@@ -8,9 +9,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 
-import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -34,11 +33,13 @@ public class AutomatTests {
         automat.addHersteller("Lidl");
     }
 
-  /*  @Test
+  */
+/*  @Test
     public void testMock() {
         when(herstellerMock.getName()).thenReturn("mockmock");
         System.out.println("AutomatTests/AutomatTests.java: lineNumber: 39: " + herstellerMock.getName());
-    }*/
+    }*//*
+
 
     //Good
     @Test
@@ -61,46 +62,46 @@ public class AutomatTests {
     //Good
     @Test
     void createKremkuchen() throws Exception {
-        VerkaufsKuchen kremkuchen = new KremkuchenImpl(automat.getHersteller("Rewe"), now, "vanille");
+        VerkaufsKuchen kremkuchen = new KremkuchenImpl(automat.getHersteller("Rewe"),"vanille", new Allergen[] {Allergen.Haselnuss, Allergen.Gluten, Allergen.Sesamsamen}, BigDecimal.valueOf(1.99));
         automat.addKuchen(kremkuchen);
         Assertions.assertEquals(1, automat.getFaecher().size());
         Assertions.assertEquals(KuchenArt.Kremkuchen, automat.getFaecher().get(0).getKuchenArt());
         Assertions.assertEquals(automat.getHersteller("Rewe"), automat.getFaecher().get(0).getHersteller());
         Assertions.assertEquals("vanille", ((Kremkuchen) automat.getFaecher().get(0)).getKremsorte());
-        Assertions.assertEquals(BigDecimal.valueOf(1.75), automat.getFaecher().get(0).getPreis());
+        Assertions.assertEquals(BigDecimal.valueOf(1.99), automat.getFaecher().get(0).getPreis());
     }
 
     //Good
     @Test
     void createObstkuchen() throws Exception {
-        VerkaufsKuchen obstkuchen = new ObstkuchenImpl(automat.getHersteller("Rewe"), now, "Apfel");
+        VerkaufsKuchen obstkuchen = new ObstkuchenImpl(automat.getHersteller("Rewe"),"Apfel", new Allergen[] {Allergen.Haselnuss, Allergen.Gluten}, BigDecimal.valueOf(1.25) );
         automat.addKuchen(obstkuchen);
         Assertions.assertEquals(1, automat.getFaecher().size());
         Assertions.assertEquals(KuchenArt.Obstkuchen, automat.getFaecher().get(0).getKuchenArt());
         Assertions.assertEquals(automat.getHersteller("Rewe"), automat.getFaecher().get(0).getHersteller());
         Assertions.assertEquals("Apfel", ((Obstkuchen) automat.getFaecher().get(0)).getObstsorte());
-        Assertions.assertEquals(BigDecimal.valueOf(1.5), automat.getFaecher().get(0).getPreis());
+        Assertions.assertEquals(BigDecimal.valueOf(1.25), automat.getFaecher().get(0).getPreis());
     }
 
     //Good
     @Test
     void createObsttorte() throws Exception {
-        VerkaufsKuchen obststorte = new ObsttorteImpl(automat.getHersteller("Rewe"), now, "Apfel", "Schokolade");
+        VerkaufsKuchen obststorte = new ObsttorteImpl(automat.getHersteller("Rewe"),"Apfel", "Schokolade", new Allergen[] {Allergen.Erdnuss, Allergen.Gluten}, BigDecimal.valueOf(1.25) );
         automat.addKuchen(obststorte);
         Assertions.assertEquals(1, automat.getFaecher().size());
         Assertions.assertEquals(KuchenArt.Obsttorte, automat.getFaecher().get(0).getKuchenArt());
         Assertions.assertEquals(automat.getHersteller("Rewe"), automat.getFaecher().get(0).getHersteller());
         Assertions.assertEquals("Apfel", ((Obsttorte) automat.getFaecher().get(0)).getObstsorte());
         Assertions.assertEquals("Schokolade", ((Obsttorte) automat.getFaecher().get(0)).getKremsorte());
-        Assertions.assertEquals(BigDecimal.valueOf(2.25), automat.getFaecher().get(0).getPreis());
+        Assertions.assertEquals(BigDecimal.valueOf(1.25), automat.getFaecher().get(0).getPreis());
     }
 
     //Good
     @Test
     void createMultipleKuchen() throws Exception {
-        VerkaufsKuchen obsttorte = new ObsttorteImpl(automat.getHersteller("Rewe"), now, "Apfel", "Schokolade");
-        VerkaufsKuchen obstkuchen = new ObstkuchenImpl(automat.getHersteller("Rewe"), now, "Apfel");
-        VerkaufsKuchen kremkuchen = new KremkuchenImpl(automat.getHersteller("Rewe"), now, "vanille");
+        VerkaufsKuchen obsttorte = new ObsttorteImpl(automat.getHersteller("Rewe"),"Apfel", "Schokolade", new Allergen[] {Allergen.Erdnuss, Allergen.Gluten}, BigDecimal.valueOf(1.25) );
+        VerkaufsKuchen obstkuchen = new ObstkuchenImpl(automat.getHersteller("Rewe"),"Apfel", new Allergen[] {Allergen.Haselnuss, Allergen.Gluten}, BigDecimal.valueOf(1.25) );
+        VerkaufsKuchen kremkuchen = new KremkuchenImpl(automat.getHersteller("Rewe"),"vanille", new Allergen[] {Allergen.Haselnuss, Allergen.Gluten, Allergen.Sesamsamen}, BigDecimal.valueOf(1.99));
         automat.addKuchen(obsttorte);
         automat.addKuchen(obstkuchen);
         automat.addKuchen(kremkuchen);
@@ -115,7 +116,7 @@ public class AutomatTests {
 
     @Test
     void deleteKuchenWithIndex() throws Exception {
-        VerkaufsKuchen obsttorte = new ObsttorteImpl(automat.getHersteller("Rewe"), now, "Apfel", "Schokolade");
+        VerkaufsKuchen obsttorte = new ObsttorteImpl(automat.getHersteller("Rewe"),"Apfel", "Schokolade", new Allergen[] {Allergen.Erdnuss, Allergen.Gluten}, BigDecimal.valueOf(1.25) );
         automat.addKuchen(obsttorte);
         Assertions.assertEquals(obsttorte, automat.getFaecher().get(obsttorte.getFachnummer()));
         automat.removeKuchen(0);
@@ -125,10 +126,10 @@ public class AutomatTests {
 
     @Test
     void deleteHersteller() throws Exception {
-        VerkaufsKuchen obsttorteRewe = new ObsttorteImpl(automat.getHersteller("Rewe"), now, "Apfel", "Schokolade");
-        VerkaufsKuchen obstkuchenRewe = new ObstkuchenImpl(automat.getHersteller("Rewe"), now, "Apfel");
-        VerkaufsKuchen kremkuchenRewe = new KremkuchenImpl(automat.getHersteller("Rewe"), now, "vanille");
-        VerkaufsKuchen obsttorteLidl = new ObsttorteImpl(automat.getHersteller("Lidl"), now, "Apfel", "Schokolade");
+        VerkaufsKuchen obsttorteRewe = new ObsttorteImpl(automat.getHersteller("Rewe"),"Apfel", "Schokolade", new Allergen[] {Allergen.Erdnuss, Allergen.Gluten}, BigDecimal.valueOf(1.25) );
+        VerkaufsKuchen obstkuchenRewe = new ObstkuchenImpl(automat.getHersteller("Rewe"),"Apfel", new Allergen[] {Allergen.Haselnuss, Allergen.Gluten}, BigDecimal.valueOf(1.25) );
+        VerkaufsKuchen kremkuchenRewe = new KremkuchenImpl(automat.getHersteller("Rewe"),"vanille", new Allergen[] {Allergen.Haselnuss, Allergen.Gluten, Allergen.Sesamsamen}, BigDecimal.valueOf(1.99));
+        VerkaufsKuchen obsttorteLidl = new ObsttorteImpl(automat.getHersteller("Lidl"),"Apfel", "Schokolade", new Allergen[] {Allergen.Gluten, Allergen.Sesamsamen}, BigDecimal.valueOf(1.99));
         automat.addKuchen(obsttorteRewe);
         automat.addKuchen(obstkuchenRewe);
         automat.addKuchen(kremkuchenRewe);
@@ -147,8 +148,8 @@ public class AutomatTests {
     //bad
     @Test
     void reAddKuchenAfterHerstellerDeleted() throws Exception {
-        VerkaufsKuchen obsttorteRewe = new ObsttorteImpl(automat.getHersteller("Rewe"), now, "Apfel", "Schokolade");
-        VerkaufsKuchen obsttorteLidl = new ObsttorteImpl(automat.getHersteller("Lidl"), now, "Apfel", "Schokolade");
+        VerkaufsKuchen obsttorteRewe = new ObsttorteImpl(automat.getHersteller("Rewe"),"Apfel", "Schokolade", new Allergen[] {Allergen.Erdnuss, Allergen.Gluten}, BigDecimal.valueOf(1.25) );
+        VerkaufsKuchen obsttorteLidl = new ObsttorteImpl(automat.getHersteller("Lidl"),"Apfel", "Schokolade", new Allergen[] {Allergen.Gluten, Allergen.Sesamsamen}, BigDecimal.valueOf(1.99));
         automat.addKuchen(obsttorteRewe);
         automat.addKuchen(obsttorteLidl);
         Assertions.assertEquals(2, automat.getKuchen().size());
@@ -166,8 +167,8 @@ public class AutomatTests {
     //Good
     @Test
     void refillFachAfterDelete() throws Exception {
-        VerkaufsKuchen obsttorteRewe = new ObsttorteImpl(automat.getHersteller("Rewe"), now, "Apfel", "Schokolade");
-        VerkaufsKuchen obsttorteLidl = new ObsttorteImpl(automat.getHersteller("Lidl"), now, "Apfel", "Schokolade");
+        VerkaufsKuchen obsttorteRewe = new ObsttorteImpl(automat.getHersteller("Rewe"),"Apfel", "Schokolade", new Allergen[] {Allergen.Erdnuss, Allergen.Gluten}, BigDecimal.valueOf(1.25) );
+        VerkaufsKuchen obsttorteLidl = new ObsttorteImpl(automat.getHersteller("Lidl"),"Apfel", "Schokolade", new Allergen[] {Allergen.Gluten, Allergen.Sesamsamen}, BigDecimal.valueOf(1.99));
         automat.addKuchen(obsttorteRewe);
         automat.addKuchen(obsttorteLidl);
         Assertions.assertEquals(2, automat.getKuchen().size());
@@ -183,7 +184,7 @@ public class AutomatTests {
     //good
     @Test
     void deleteKuchenNoIndex() throws Exception {
-        VerkaufsKuchen obsttorteRewe = new ObsttorteImpl(automat.getHersteller("Rewe"), now, "Apfel", "Schokolade");
+        VerkaufsKuchen obsttorteRewe = new ObsttorteImpl(automat.getHersteller("Rewe"),"Apfel", "Schokolade", new Allergen[] {Allergen.Erdnuss, Allergen.Gluten}, BigDecimal.valueOf(1.25) );
         automat.addKuchen(obsttorteRewe);
         Assertions.assertEquals(1, automat.getKuchen().size());
         Assertions.assertEquals(obsttorteRewe, automat.getFaecher().get(obsttorteRewe.getFachnummer()));
@@ -195,10 +196,10 @@ public class AutomatTests {
     //good
     @Test
     void getAllergeneAdd() throws Exception {
-        VerkaufsKuchen obsttorteRewe = new ObsttorteImpl(automat.getHersteller("Rewe"), now, "Apfel", "Schokolade");
-        VerkaufsKuchen obsttorteRewe2 = new ObsttorteImpl(automat.getHersteller("Rewe"), now, "Apfel", "Schokolade");
-        Assertions.assertEquals(Allergen.Gluten, obsttorteRewe.getAllergene().toArray()[0]);
-        Assertions.assertEquals(Allergen.Erdnuss, obsttorteRewe.getAllergene().toArray()[1]);
+        VerkaufsKuchen obsttorteRewe = new ObsttorteImpl(automat.getHersteller("Rewe"),"Apfel", "Schokolade", new Allergen[] {Allergen.Erdnuss, Allergen.Gluten}, BigDecimal.valueOf(1.25) );
+        VerkaufsKuchen obsttorteRewe2 = new ObsttorteImpl(automat.getHersteller("Rewe"),"Apfel", "Schokolade", new Allergen[] {Allergen.Erdnuss, Allergen.Gluten}, BigDecimal.valueOf(1.25) );
+        Assertions.assertEquals(Allergen.Erdnuss, obsttorteRewe.getAllergene().toArray()[0]);
+        Assertions.assertEquals(Allergen.Gluten, obsttorteRewe.getAllergene().toArray()[1]);
         Assertions.assertEquals(true, automat.getAllergeneVorhanden().isEmpty());
         automat.addKuchen(obsttorteRewe2);
         Assertions.assertEquals(1, automat.getAllergeneVorhanden().get(Allergen.Gluten));
@@ -208,7 +209,7 @@ public class AutomatTests {
     //bad
     @Test
     void duplicateCakeAdd() throws Exception {
-        VerkaufsKuchen obsttorteRewe = new ObsttorteImpl(automat.getHersteller("Rewe"), now, "Apfel", "Schokolade");
+        VerkaufsKuchen obsttorteRewe = new ObsttorteImpl(automat.getHersteller("Rewe"),"Apfel", "Schokolade", new Allergen[] {Allergen.Erdnuss, Allergen.Gluten}, BigDecimal.valueOf(1.25) );
         automat.addKuchen(obsttorteRewe);
         Exception e = Assertions.assertThrows(Exception.class, () -> {
             automat.addKuchen(obsttorteRewe);
@@ -218,7 +219,7 @@ public class AutomatTests {
 
     @Test
     void getAllergeneRemoveCake() throws Exception {
-        VerkaufsKuchen obsttorteRewe = new ObsttorteImpl(automat.getHersteller("Rewe"), now, "Apfel", "Schokolade");
+        VerkaufsKuchen obsttorteRewe = new ObsttorteImpl(automat.getHersteller("Rewe"),"Apfel", "Schokolade", new Allergen[] {Allergen.Erdnuss, Allergen.Gluten}, BigDecimal.valueOf(1.25) );
         automat.addKuchen(obsttorteRewe);
         automat.removeKuchen(obsttorteRewe);
         Assertions.assertEquals(true, automat.getAllergeneVorhanden().isEmpty());
@@ -226,30 +227,32 @@ public class AutomatTests {
 
     @Test
     void deleteNonExistentCake() throws Exception {
-        VerkaufsKuchen obsttorteRewe = new ObsttorteImpl(automat.getHersteller("Rewe"), now, "Apfel", "Schokolade");
+        VerkaufsKuchen obsttorteRewe = new ObsttorteImpl(automat.getHersteller("Rewe"),"Apfel", "Schokolade", new Allergen[] {Allergen.Erdnuss, Allergen.Gluten}, BigDecimal.valueOf(1.25) );
         Exception e = Assertions.assertThrows(Exception.class, () -> {
             automat.removeKuchen(obsttorteRewe);
         }, "Kuchen bereits im Automaten");
         Assertions.assertTrue(e.getMessage().contains("Kuchen nicht im Automaten"));
     }
 
-    @Test
+    */
+/*@Test
     void updateKuchenInspektionsdatum() {
-        VerkaufsKuchen obsttorteRewe = new ObsttorteImpl(automat.getHersteller("Rewe"), now, "Apfel", "Schokolade");
+        VerkaufsKuchen obsttorteRewe = new ObsttorteImpl(automat.getHersteller("Rewe"),"Apfel", "Schokolade", new Allergen[] {Allergen.Erdnuss, Allergen.Gluten}, BigDecimal.valueOf(1.25) );
         Date oldDate = obsttorteRewe.getInspektionsdatum();
         Date newDate = new Date();
         obsttorteRewe.setInspektionsdatum(newDate);
         Assertions.assertEquals(false, oldDate == obsttorteRewe.getInspektionsdatum());
         Assertions.assertEquals(true, newDate == obsttorteRewe.getInspektionsdatum());
-    }
+    }*//*
+
 
     @Test
     void getKuchenArt() throws Exception {
         ArrayList<VerkaufsKuchen> kuchen = new ArrayList<>();
-        kuchen.add(new ObsttorteImpl(automat.getHersteller("Rewe"), now, "Apfel", "Schokolade"));
-        kuchen.add(new ObstkuchenImpl(automat.getHersteller("Rewe"), now, "Apfel"));
-        kuchen.add(new KremkuchenImpl(automat.getHersteller("Rewe"), now, "vanille"));
-        kuchen.add(new ObsttorteImpl(automat.getHersteller("Lidl"), now, "Apfel", "Schokolade"));
+        kuchen.add(new ObsttorteImpl(automat.getHersteller("Rewe"),"Apfel", "Schokolade", new Allergen[] {Allergen.Erdnuss, Allergen.Gluten}, BigDecimal.valueOf(1.25) ));
+        kuchen.add(new ObstkuchenImpl(automat.getHersteller("Rewe"),"Apfel", new Allergen[] {Allergen.Haselnuss, Allergen.Gluten}, BigDecimal.valueOf(1.25) ));
+        kuchen.add(new KremkuchenImpl(automat.getHersteller("Rewe"),"vanille", new Allergen[] {Allergen.Haselnuss, Allergen.Gluten, Allergen.Sesamsamen}, BigDecimal.valueOf(1.99)));
+        kuchen.add(new ObsttorteImpl(automat.getHersteller("Lidl"),"Apfel", "Schokolade", new Allergen[] {Allergen.Gluten, Allergen.Sesamsamen}, BigDecimal.valueOf(1.99)));
         automat.addKuchen(kuchen);
         Assertions.assertEquals(2, automat.getKuchen(KuchenArt.Obsttorte).size());
         Assertions.assertEquals(1, automat.getKuchen(KuchenArt.Obstkuchen).size());
@@ -259,12 +262,12 @@ public class AutomatTests {
     @Test
     void getHerstellerCounter() throws Exception {
         ArrayList<VerkaufsKuchen> kuchen = new ArrayList<>();
-        kuchen.add(new ObsttorteImpl(automat.getHersteller("Rewe"), now, "Apfel", "Schokolade"));
-        kuchen.add(new ObstkuchenImpl(automat.getHersteller("Rewe"), now, "Apfel"));
-        kuchen.add(new KremkuchenImpl(automat.getHersteller("Rewe"), now, "vanille"));
-        kuchen.add(new ObsttorteImpl(automat.getHersteller("Lidl"), now, "Apfel", "Schokolade"));
+        kuchen.add(new ObsttorteImpl(automat.getHersteller("Rewe"),"Apfel", "Schokolade", new Allergen[] {Allergen.Erdnuss, Allergen.Gluten}, BigDecimal.valueOf(1.25) ));
+        kuchen.add(new ObstkuchenImpl(automat.getHersteller("Rewe"),"Apfel", new Allergen[] {Allergen.Haselnuss, Allergen.Gluten}, BigDecimal.valueOf(1.25) ));
+        kuchen.add(new KremkuchenImpl(automat.getHersteller("Rewe"),"vanille", new Allergen[] {Allergen.Haselnuss, Allergen.Gluten, Allergen.Sesamsamen}, BigDecimal.valueOf(1.99)));
+        kuchen.add(new ObsttorteImpl(automat.getHersteller("Lidl"),"Apfel", "Schokolade", new Allergen[] {Allergen.Gluten, Allergen.Sesamsamen}, BigDecimal.valueOf(1.99)));
         automat.addKuchen(kuchen);
         Assertions.assertEquals(3, automat.getKuchenCounter(automat.getHersteller("Rewe")));
     }
-
 }
+*/

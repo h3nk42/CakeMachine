@@ -4,10 +4,10 @@ import automat.hersteller.Hersteller;
 import automat.hersteller.HerstellerFactory;
 import automat.hersteller.HerstellerFactoryImpl;
 import automat.verkaufsobjekte.Allergen;
-import automat.verkaufsobjekte.kuchen.KuchenArt;
-import automat.verkaufsobjekte.kuchen.VerkaufsKuchen;
+import automat.verkaufsobjekte.Verkaufsobjekt;
+import automat.verkaufsobjekte.kuchen.*;
 
-import java.lang.reflect.Array;
+import java.math.BigDecimal;
 import java.util.*;
 
 
@@ -18,20 +18,24 @@ public class Automat {
     private Map<KuchenArt, ArrayList<VerkaufsKuchen>> kuchenMap;
     private Map<Allergen, Integer> allergeneVorhanden;
     private HerstellerFactory herstellerFactory;
+    private Map<VerkaufsKuchen, Date> inspektionsDaten;
+    private Integer fachAnzahl;
 
     public Automat(Integer fachAnzahl) {
+        this.fachAnzahl = fachAnzahl;
         this.faecher = new ArrayList<>(fachAnzahl);
         this.kuchenCounter = new HashMap<>();
         this.kuchenMap = new HashMap<>();
         this.allergeneVorhanden = new HashMap<>();
         this.herstellerFactory = new HerstellerFactoryImpl();
+        this.inspektionsDaten = new HashMap<>();
     }
 
     public Hersteller getHersteller(String herstellerName) {
         return herstellerFactory.getHerstellerListe().get(herstellerName.toLowerCase());
     }
-    public HashMap<String, Hersteller> getHersteller() {
-        return herstellerFactory.getHerstellerListe();
+    public Collection<Hersteller> getHersteller() {
+        return herstellerFactory.getHerstellerListe().values();
     }
 
     public Hersteller addHersteller(String herstellerName ) throws Exception {
@@ -79,21 +83,54 @@ public class Automat {
         }
         return tempList;
     }
+
     public List<VerkaufsKuchen> getKuchen(KuchenArt kuchenArt) {
         return this.kuchenMap.get(kuchenArt);
     }
 
-    public void addKuchen(ArrayList<VerkaufsKuchen> kuchenArr ) throws Exception {
+   /* public void addKuchen(ArrayList<VerkaufsKuchen> kuchenArr ) throws Exception {
+        if(this.getKuchen().size() + kuchenArr.size()  > fachAnzahl){
+            throw new Exception("Mehr Kuchen in der Liste als Fächer frei");
+        }
         for (int i = 0; i < kuchenArr.size(); i++) {
             addKuchen(kuchenArr.get(i));
         }
+    }*/
+
+    public VerkaufsKuchen createKuchen(KuchenArt kuchenArt, Hersteller hersteller, BigDecimal preis, int naehrwert, Allergen[] allergene, String[] extraData ) throws Exception {
+        switch (kuchenArt) {
+            case Kremkuchen:
+                if(extraData.length != 1) {
+                    throw new Exception("only one String in extraData allowed");
+                }
+                VerkaufsKuchen tempKuchen = new KremkuchenImpl(hersteller,extraData[0], allergene, preis, naehrwert, this);
+                this.addKuchen(tempKuchen);
+                return tempKuchen;
+            case Obstkuchen:
+                if(extraData.length != 1) {
+                    throw new Exception("only one String in extraData allowed");
+                }
+                tempKuchen = new ObstkuchenImpl(hersteller,extraData[0], allergene, preis, naehrwert, this);
+                this.addKuchen(tempKuchen);
+                return tempKuchen;
+            case Obsttorte:
+                if(extraData.length != 2) {
+                    throw new Exception("only one String in extraData allowed");
+                }
+                tempKuchen = new ObsttorteImpl(hersteller,extraData[0], extraData[1], allergene, preis, naehrwert, this);
+                this.addKuchen(tempKuchen);
+                return tempKuchen;
+        }
+        return null;
     }
 
-    public  void  addKuchen(VerkaufsKuchen kuchen) throws Exception {
+    private  void  addKuchen(VerkaufsKuchen kuchen) throws Exception {
         if (kuchen.getHersteller() == null) {
             throw new Exception("Kuchen benoetigt Hersteller");
         } else if (this.getHersteller(kuchen.getHersteller().getName()) == null) {
             throw new Exception("Hersteller des Kuchens nicht existent");
+        } else if (this.getKuchen().size() == fachAnzahl ) {
+            throw new Exception("Alle Fächer voll");
         }
         if (this.kuchenMap.get(kuchen.getKuchenArt()) != null && this.kuchenMap.get(kuchen.getKuchenArt()).contains(kuchen) ) {
             throw new Exception("Kuchen bereits im Automaten");
@@ -110,7 +147,8 @@ public class Automat {
     }
 
     private void kuchenSetup(Integer index, VerkaufsKuchen kuchen) {
-        kuchen.setFachnummer(index);
+        //kuchen.setFachnummer(index);
+        this.inspektionsDaten.put(kuchen, new Date());
         incKuchenCounter(kuchen.getHersteller());
         addToKuchenMap(kuchen);
         kuchen.getAllergene().forEach((this::incAllergen));
@@ -169,7 +207,7 @@ public class Automat {
     }
 
     public void setUpDeleteKuchen(VerkaufsKuchen kuchen, Integer i) throws Exception {
-        kuchen.setFachnummer(-1);
+        //kuchen.setFachnummer(-1);
         kuchen.getAllergene().forEach(allergen -> {
             try {
                 decAllergen(allergen);
@@ -179,6 +217,7 @@ public class Automat {
         });
         decKuchenCounter(kuchen.getHersteller());
         this.kuchenMap.get(kuchen.getKuchenArt()).remove(kuchen);
+        this.inspektionsDaten.remove(kuchen);
         this.faecher.set(i, null);
     }
 
@@ -191,6 +230,17 @@ public class Automat {
                 setUpDeleteKuchen(kuchen,i);
             }
         }
+    }
 
+    public Date getInspektionsdatum(Verkaufsobjekt verkaufsobjekt) {
+        return inspektionsDaten.get((VerkaufsKuchen)verkaufsobjekt);
+    }
+
+    public Integer getFachnummer(Verkaufsobjekt verkaufsobjekt) {
+        return this.faecher.indexOf((VerkaufsKuchen) verkaufsobjekt);
+    }
+
+    public void setInspektionsdatum(VerkaufsKuchen kuchen, Date inspektionsdatumNeu) {
+        this.inspektionsDaten.put(kuchen,inspektionsdatumNeu);
     }
 }

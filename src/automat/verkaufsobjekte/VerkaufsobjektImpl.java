@@ -1,17 +1,18 @@
 package automat.verkaufsobjekte;
 
+import automat.Automat;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
 public class VerkaufsobjektImpl implements Verkaufsobjekt {
 
     protected BigDecimal preis;
-    protected Date inspektionsdatum;
-    protected int fachnummer;
+    protected Automat automat;
     
-    public VerkaufsobjektImpl (BigDecimal preis, Date inspektionsdatum) {
+    public VerkaufsobjektImpl (BigDecimal preis, Automat automat) {
         this.preis = preis;
-        this.inspektionsdatum = inspektionsdatum;
+        this.automat = automat;
     }
     @Override
     public BigDecimal getPreis() {
@@ -20,22 +21,12 @@ public class VerkaufsobjektImpl implements Verkaufsobjekt {
 
     @Override
     public Date getInspektionsdatum() {
-        return inspektionsdatum;
+        return automat.getInspektionsdatum(this);
     }
 
     @Override
     public int getFachnummer() {
-        return fachnummer;
-    }
-
-    @Override
-    public void setFachnummer(int fachnummer) {
-        this.fachnummer = fachnummer;
-    }
-
-    @Override
-    public void setInspektionsdatum(Date inspektionsdatum) {
-        this.inspektionsdatum = inspektionsdatum;
+        return automat.getFachnummer(this);
     }
 
 
@@ -44,8 +35,7 @@ public class VerkaufsobjektImpl implements Verkaufsobjekt {
     public String toString() {
         return "{"+
                 "preis=" + preis +
-                ", inspektionsdatum=" + inspektionsdatum +
-                ", fachnummer=" + fachnummer +
-                "} /// ";
+                ", inspektionsdatum=" + getInspektionsdatum() +
+                ", fachnummer=" + getFachnummer() ;
     }
 }

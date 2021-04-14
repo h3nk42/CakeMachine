@@ -1,5 +1,6 @@
 package automat.verkaufsobjekte.kuchen;
 
+import automat.Automat;
 import automat.hersteller.Hersteller;
 import automat.verkaufsobjekte.Allergen;
 import automat.verkaufsobjekte.VerkaufsobjektImpl;
@@ -18,8 +19,9 @@ public abstract class KuchenImpl extends VerkaufsobjektImpl implements Kuchen {
     protected Collection<Allergen> allergene;
     protected KuchenArt kuchenArt;
 
-    public KuchenImpl(Hersteller hersteller, BigDecimal preis, Date inspektionsdatum, KuchenArt kuchenArt) {
-        super(preis, inspektionsdatum);
+    public KuchenImpl(Hersteller hersteller, BigDecimal preis, KuchenArt kuchenArt, int naehrwert, Automat automat) {
+        super(preis, automat);
+        this.naehrwert = naehrwert;
         this.allergene = new ArrayList<>();
         this.hersteller = hersteller;
         this.kuchenArt = kuchenArt;
@@ -53,7 +55,8 @@ public abstract class KuchenImpl extends VerkaufsobjektImpl implements Kuchen {
     @Override
     public String toString() {
         return "{" +
-                "hersteller=" + hersteller +
+                "kuchenArt=" + kuchenArt +
+                ", hersteller=" + hersteller +
                 //", naehrwert=" + naehrwert +
                 //", haltbarkeit=" + haltbarkeit +
                 ", allergene=" + allergene +

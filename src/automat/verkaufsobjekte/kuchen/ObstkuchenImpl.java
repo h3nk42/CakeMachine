@@ -1,4 +1,5 @@
 package automat.verkaufsobjekte.kuchen;
+import automat.Automat;
 import automat.hersteller.Hersteller;
 import automat.verkaufsobjekte.Allergen;
 
@@ -9,11 +10,12 @@ public class ObstkuchenImpl extends KuchenImpl implements Obstkuchen, VerkaufsKu
 
     private String obstsorte;
 
-    public ObstkuchenImpl(Hersteller hersteller, Date inspektionsdatum, String obstsorte) {
-        super(hersteller, BigDecimal.valueOf(1.50), inspektionsdatum,KuchenArt.Obstkuchen);
+    public ObstkuchenImpl(Hersteller hersteller, String obstsorte, Allergen[] _allergene, BigDecimal preis, int naehrwert, Automat automat) {
+        super(hersteller, preis, KuchenArt.Obstkuchen, naehrwert, automat);
         this.obstsorte = obstsorte;
-        allergene.add(Allergen.Gluten);
-        allergene.add(Allergen.Haselnuss);
+        for (int i = 0; i < _allergene.length; i++) {
+            this.allergene.add(_allergene[i]);
+        }
     }
 
     @Override
@@ -28,6 +30,9 @@ public class ObstkuchenImpl extends KuchenImpl implements Obstkuchen, VerkaufsKu
 
     @Override
     public String toString() {
-        return super.toString();
+        return "{" +
+                super.toString() +
+                ", Obstsorte=" + obstsorte +
+                "} ///";
     }
 }
