@@ -1,7 +1,4 @@
 import automat.Automat;
-import automat.hersteller.Hersteller;
-import automat.hersteller.HerstellerFactory;
-import automat.hersteller.HerstellerFactoryImpl;
 import automat.verkaufsobjekte.Allergen;
 import automat.verkaufsobjekte.kuchen.*;
 
@@ -15,8 +12,8 @@ public class Main {
         Automat automat = new Automat(5);
         Date now = new Date();
         try {
-             automat.addHersteller("Krause");
-             automat.addHersteller("Martin");
+             automat.createHersteller("Krause");
+             automat.createHersteller("Martin");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -25,7 +22,7 @@ public class Main {
             e.printStackTrace();
         }//    public VerkaufsKuchen createKuchen(KuchenArt kuchenArt, Hersteller hersteller, BigDecimal preis, int naehrwert, Allergen[] allergene, String[] extraData ) throws Exception {
 
-        automat.createKuchen(KuchenArt.Obstkuchen, automat.getHersteller("Krause"),BigDecimal.valueOf(1.25), 333, new Allergen[] {Allergen.Erdnuss, Allergen.Gluten}, new String[] {"Apfel"});
+        /*automat.createKuchen(KuchenArt.Obstkuchen, automat.getHersteller("Krause"),BigDecimal.valueOf(1.25), 333, new Allergen[] {Allergen.Erdnuss, Allergen.Gluten}, new String[] {"Apfel"});
         automat.createKuchen(KuchenArt.Obstkuchen, automat.getHersteller("Krause"),BigDecimal.valueOf(1.25), 333, new Allergen[] {Allergen.Erdnuss, Allergen.Gluten}, new String[] {"Apfel"});
         automat.createKuchen(KuchenArt.Obstkuchen, automat.getHersteller("Krause"),BigDecimal.valueOf(1.25), 333, new Allergen[] {Allergen.Erdnuss, Allergen.Gluten}, new String[] {"Apfel"});
         automat.createKuchen(KuchenArt.Obsttorte, automat.getHersteller("Krause"),BigDecimal.valueOf(1.25), 333, new Allergen[] {Allergen.Erdnuss, Allergen.Gluten}, new String[] {"Apfel", "Vanille"});
@@ -35,6 +32,22 @@ public class Main {
         System.out.println("Main.java: lineNumber: 29: " + automat.getKuchen());
         Thread.sleep(5000);
         automat.setInspektionsdatum(automat.getKuchen().get(0), new Date());
-        System.out.println("Main.java: lineNumber: 29: " + automat.getKuchen());
+        System.out.println("Main.java: lineNumber: 29: " + automat.getKuchen());*/
+
+        Obstkuchen obstkuchen = (Obstkuchen) automat.createKuchen(KuchenArt.Obstkuchen, automat.getHersteller("Krause"),BigDecimal.valueOf(1.25), 333, new Allergen[] {Allergen.Erdnuss, Allergen.Gluten}, new String[] {"Apfel"});
+        System.out.println("Main.java: lineNumber: 41: " + obstkuchen.getFachnummer());
+        Obstkuchen obstkuchen2 = (Obstkuchen) automat.createKuchen(KuchenArt.Obstkuchen, automat.getHersteller("Krause"),BigDecimal.valueOf(1.25), 333, new Allergen[] {Allergen.Erdnuss, Allergen.Gluten}, new String[] {"Apfel"});
+        System.out.println("Main.java: lineNumber: 41: " + obstkuchen2.getFachnummer());
+        automat.removeKuchen((VerkaufsKuchen) obstkuchen2);
+        System.out.println("Main.java: lineNumber: 41: " + obstkuchen2.getFachnummer());
+
+        ArrayList<Integer> arr = new ArrayList<>();
+        arr.add(1);
+        System.out.println("Main.java: lineNumber: 48: " + arr.indexOf(1));
+        arr.remove(0);
+
+
+
+
     }
 }

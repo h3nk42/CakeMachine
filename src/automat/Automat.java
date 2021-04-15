@@ -38,7 +38,7 @@ public class Automat {
         return herstellerFactory.getHerstellerListe().values();
     }
 
-    public Hersteller addHersteller(String herstellerName ) throws Exception {
+    public Hersteller createHersteller(String herstellerName ) throws Exception {
         return herstellerFactory.produceHersteller(herstellerName);
     }
 
@@ -62,7 +62,10 @@ public class Automat {
         return faecher;
     }
 
-    public Integer getKuchenCounter(Hersteller hersteller) {
+    public Integer getKuchenCounter(Hersteller hersteller) throws Exception {
+        if(!(getHersteller().contains(hersteller))) {
+            throw new Exception("Hersteller unbekannt");
+        }
         return kuchenCounter.get(hersteller);
     }
 
@@ -207,7 +210,6 @@ public class Automat {
     }
 
     public void setUpDeleteKuchen(VerkaufsKuchen kuchen, Integer i) throws Exception {
-        //kuchen.setFachnummer(-1);
         kuchen.getAllergene().forEach(allergen -> {
             try {
                 decAllergen(allergen);
