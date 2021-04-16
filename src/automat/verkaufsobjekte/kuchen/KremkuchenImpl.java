@@ -14,8 +14,8 @@ public class KremkuchenImpl extends KuchenImpl implements Kremkuchen, VerkaufsKu
 
     private String kremsorte;
 
-    public KremkuchenImpl(Hersteller hersteller, String kremsorte, Allergen[] _allergene, BigDecimal preis, int naehrwert, Automat automat) {
-        super(hersteller, preis, KuchenArt.Kremkuchen, naehrwert, automat);
+    public KremkuchenImpl(Hersteller hersteller, String kremsorte, Allergen[] _allergene, BigDecimal preis, int naehrwert, Automat automat,Integer haltbarkeitInStunden) {
+        super(hersteller, preis, KuchenArt.Kremkuchen, naehrwert, automat,haltbarkeitInStunden);
         this.kremsorte = kremsorte;
         for (int i = 0; i < _allergene.length; i++) {
             this.allergene.add(_allergene[i]);

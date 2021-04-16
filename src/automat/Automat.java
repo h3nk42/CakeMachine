@@ -42,12 +42,12 @@ public class Automat {
         return herstellerFactory.produceHersteller(herstellerName);
     }
 
-    public void removeHersteller(String herstellerName ) {
+    public void deleteHersteller(String herstellerName ) {
         faecher.forEach(kuchen -> {
             if (kuchen != null) {
                     if ( kuchen.getHersteller().getName().equalsIgnoreCase(herstellerName)){
                         try {
-                            this.removeKuchen(kuchen.getFachnummer());
+                            this.deleteKuchen(kuchen.getFachnummer());
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -100,27 +100,27 @@ public class Automat {
         }
     }*/
 
-    public VerkaufsKuchen createKuchen(KuchenArt kuchenArt, Hersteller hersteller, BigDecimal preis, int naehrwert, Allergen[] allergene, String[] extraData ) throws Exception {
+    public VerkaufsKuchen createKuchen(KuchenArt kuchenArt, Hersteller hersteller, BigDecimal preis, int naehrwert, Allergen[] allergene, String[] extraData, Integer haltbarkeitInStunden ) throws Exception {
         switch (kuchenArt) {
             case Kremkuchen:
                 if(extraData.length != 1) {
                     throw new Exception("only one String in extraData allowed");
                 }
-                VerkaufsKuchen tempKuchen = new KremkuchenImpl(hersteller,extraData[0], allergene, preis, naehrwert, this);
+                VerkaufsKuchen tempKuchen = new KremkuchenImpl(hersteller,extraData[0], allergene, preis, naehrwert, this,haltbarkeitInStunden);
                 this.addKuchen(tempKuchen);
                 return tempKuchen;
             case Obstkuchen:
                 if(extraData.length != 1) {
                     throw new Exception("only one String in extraData allowed");
                 }
-                tempKuchen = new ObstkuchenImpl(hersteller,extraData[0], allergene, preis, naehrwert, this);
+                tempKuchen = new ObstkuchenImpl(hersteller,extraData[0], allergene, preis, naehrwert, this,haltbarkeitInStunden);
                 this.addKuchen(tempKuchen);
                 return tempKuchen;
             case Obsttorte:
                 if(extraData.length != 2) {
                     throw new Exception("only one String in extraData allowed");
                 }
-                tempKuchen = new ObsttorteImpl(hersteller,extraData[0], extraData[1], allergene, preis, naehrwert, this);
+                tempKuchen = new ObsttorteImpl(hersteller,extraData[0], extraData[1], allergene, preis, naehrwert, this, haltbarkeitInStunden);
                 this.addKuchen(tempKuchen);
                 return tempKuchen;
         }
@@ -199,7 +199,7 @@ public class Automat {
         }
     }
 
-    public void removeKuchen(int index) throws Exception {
+    public void deleteKuchen(int index) throws Exception {
         if (index >= this.faecher.size() || index < 0){
             throw new Exception("index out of bounds: " + index);
         } else if ( this.faecher.get(index) == null) {
@@ -223,7 +223,7 @@ public class Automat {
         this.faecher.set(i, null);
     }
 
-    public void removeKuchen(VerkaufsKuchen kuchen) throws Exception {
+    public void deleteKuchen(VerkaufsKuchen kuchen) throws Exception {
         if (this.kuchenMap.get(kuchen.getKuchenArt()) == null || !this.kuchenMap.get(kuchen.getKuchenArt()).contains(kuchen) ) {
             throw new Exception("Kuchen nicht im Automaten");
         }
@@ -242,7 +242,8 @@ public class Automat {
         return this.faecher.indexOf((VerkaufsKuchen) verkaufsobjekt);
     }
 
-    public void setInspektionsdatum(VerkaufsKuchen kuchen, Date inspektionsdatumNeu) {
-        this.inspektionsDaten.put(kuchen,inspektionsdatumNeu);
+    public void setInspektionsdatum(Integer fachnummer, Date inspektionsdatumNeu) {
+        VerkaufsKuchen tempKuchen = this.faecher.get(fachnummer);
+        this.inspektionsDaten.put(tempKuchen,inspektionsdatumNeu);
     }
 }

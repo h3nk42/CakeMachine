@@ -11,8 +11,8 @@ public class ObsttorteImpl extends KuchenImpl implements Obsttorte, VerkaufsKuch
     private String obstsorte;
     private String kremsorte;
 
-    public ObsttorteImpl(Hersteller hersteller, String obstsorte, String kremsorte, Allergen[] _allergene, BigDecimal preis, int naehrwert, Automat automat) {
-        super(hersteller, preis, KuchenArt.Obsttorte, naehrwert, automat);
+    public ObsttorteImpl(Hersteller hersteller, String obstsorte, String kremsorte, Allergen[] _allergene, BigDecimal preis, int naehrwert, Automat automat, Integer haltbarkeitInStunden) {
+        super(hersteller, preis, KuchenArt.Obsttorte, naehrwert, automat,haltbarkeitInStunden);
         this.kremsorte = kremsorte;
         this.obstsorte = obstsorte;
         for (int i = 0; i < _allergene.length; i++) {

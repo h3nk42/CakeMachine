@@ -7,6 +7,7 @@ import automat.verkaufsobjekte.VerkaufsobjektImpl;
 
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -19,12 +20,15 @@ public abstract class KuchenImpl extends VerkaufsobjektImpl implements Kuchen {
     protected Collection<Allergen> allergene;
     protected KuchenArt kuchenArt;
 
-    public KuchenImpl(Hersteller hersteller, BigDecimal preis, KuchenArt kuchenArt, int naehrwert, Automat automat) {
+    public KuchenImpl(Hersteller hersteller, BigDecimal preis, KuchenArt kuchenArt, int naehrwert, Automat automat, Integer haltbarkeitInStunden) {
         super(preis, automat);
         this.naehrwert = naehrwert;
         this.allergene = new ArrayList<>();
         this.hersteller = hersteller;
         this.kuchenArt = kuchenArt;
+        Instant now = Instant.now();
+        Instant then = Instant.now().plusSeconds(haltbarkeitInStunden*60*60);
+        this.haltbarkeit = Duration.between(now,then);
     }
 
     @Override
