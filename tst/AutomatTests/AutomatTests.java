@@ -214,24 +214,28 @@ public class AutomatTests {
     }
     @Test
     void getAllergene() throws Exception {
-        Assertions.assertEquals(true, automat.getAllergeneVorhanden().isEmpty());
-        VerkaufsKuchen kremkuchen = automat.createKuchen(KuchenArt.Kremkuchen, automat.getHersteller("Rewe"), BigDecimal.valueOf(1.99), 300, new Allergen[] {Allergen.Haselnuss, Allergen.Gluten, Allergen.Sesamsamen}, new String[] {"Vanille"},24);
+        Assertions.assertEquals(true, automat.getAllergene(true).isEmpty());
+        VerkaufsKuchen kremkuchen = automat.createKuchen(KuchenArt.Kremkuchen, automat.getHersteller("Rewe"), BigDecimal.valueOf(1.99), 300, new Allergen[] {Allergen.Haselnuss, Allergen.Gluten}, new String[] {"Vanille"},24);
         Assertions.assertEquals(Allergen.Haselnuss, kremkuchen.getAllergene().toArray()[0]);
         Assertions.assertEquals(Allergen.Gluten, kremkuchen.getAllergene().toArray()[1]);
-        Assertions.assertEquals(1, automat.getAllergeneVorhanden().get(Allergen.Gluten));
+        Assertions.assertTrue(automat.getAllergene(true).contains(Allergen.Haselnuss));
+        Assertions.assertTrue(automat.getAllergene(true).contains(Allergen.Gluten));
+        Assertions.assertTrue(automat.getAllergene(false).contains(Allergen.Sesamsamen));
+        Assertions.assertTrue(automat.getAllergene(false).contains(Allergen.Erdnuss));
+       /* Assertions.assertEquals(1, automat.getAllergeneVorhanden().get(Allergen.Gluten));
         Assertions.assertEquals(1, automat.getAllergeneVorhanden().get(Allergen.Haselnuss));
         Assertions.assertEquals(1, automat.getAllergeneVorhanden().get(Allergen.Sesamsamen));
-        Assertions.assertEquals(null, automat.getAllergeneVorhanden().get(Allergen.Erdnuss));
+        Assertions.assertEquals(null, automat.getAllergeneVorhanden().get(Allergen.Erdnuss));*/
 
     }
     @Test
     void getAllergeneAfterKuchenRemoved() throws Exception {
-        Assertions.assertEquals(true, automat.getAllergeneVorhanden().isEmpty());
+        Assertions.assertEquals(true, automat.getAllergene(true).isEmpty());
         VerkaufsKuchen kremkuchen = automat.createKuchen(KuchenArt.Kremkuchen, automat.getHersteller("Rewe"), BigDecimal.valueOf(1.99), 300, new Allergen[] {Allergen.Haselnuss, Allergen.Gluten, Allergen.Sesamsamen}, new String[] {"Vanille"},24);
         automat.deleteKuchen(kremkuchen);
-        Assertions.assertEquals(null, automat.getAllergeneVorhanden().get(Allergen.Haselnuss));
+        /*Assertions.assertEquals(null, automat.getAllergeneVorhanden().get(Allergen.Haselnuss));
         Assertions.assertEquals(null, automat.getAllergeneVorhanden().get(Allergen.Gluten));
-        Assertions.assertEquals(null, automat.getAllergeneVorhanden().get(Allergen.Sesamsamen));
+        Assertions.assertEquals(null, automat.getAllergeneVorhanden().get(Allergen.Sesamsamen));*/
     }
     @Test
     void getFaecher() throws Exception {

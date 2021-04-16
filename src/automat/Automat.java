@@ -73,8 +73,27 @@ public class Automat {
         return kuchenMap;
     }
 
-    public Map<Allergen, Integer> getAllergeneVorhanden() {
+    /*public Map<Allergen, Integer> getAllergeneVorhanden() {
         return allergeneVorhanden;
+    }*/
+
+    public List<Allergen> getAllergene(boolean showVorhandeneAllergene) {
+        ArrayList<Allergen> tempList = new ArrayList<>();
+        if (showVorhandeneAllergene) {
+            for ( Allergen a : allergeneVorhanden.keySet()) {
+                tempList.add(a);
+            }
+            return tempList;
+        } else {
+            Allergen[] allergene = Allergen.values();
+            for (int i = 0; i < allergene.length; i++) {
+                tempList.add(allergene[i]);
+            }
+            for ( Allergen a : allergeneVorhanden.keySet()) {
+                tempList.remove(a);
+            }
+            return tempList;
+        }
     }
 
     public List<VerkaufsKuchen> getKuchen() {
