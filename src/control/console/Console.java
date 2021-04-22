@@ -1,6 +1,10 @@
 package control.console;
 
+import control.automat.Automat;
 import view.consoleReader.*;
+import view.consoleReader.Create.InputEventListenerCreate;
+import view.consoleReader.Create.InputEventListenerCreateHersteller;
+import view.consoleReader.Create.InputEventListenerCreateKuchen;
 
 import java.util.Stack;
 
@@ -11,8 +15,11 @@ public class Console {
     private final InputEventListenerConstant lConst;
     private final InputEventListenerMode lMode;
     private final InputEventListenerCreate lCreate;
+    private final InputEventListenerCreateHersteller lCreateH;
+    private final InputEventListenerCreateKuchen lcreateK;
     private InputEventHandler handler;
     private Stack<ConsoleState> modeStack;
+    private Automat a;
 
 
     public Console() {
@@ -21,11 +28,14 @@ public class Console {
         lPrint = new InputEventListenerPrint();
         lConst = new InputEventListenerConstant(this);
         lMode = new InputEventListenerMode(this);
-        lCreate = new InputEventListenerCreate();
+        lCreate = new InputEventListenerCreate(this);
+        lCreateH = new InputEventListenerCreateHersteller(this);
+        lcreateK = new InputEventListenerCreateKuchen(this);
+        a = new Automat(10);
         modeStack = new Stack<>();
         modeStack.push(ConsoleState.none);
-        handler.add(lMode,true);
         handler.add(lConst,true);
+        handler.add(lMode,true);
     }
 
     public InputEventHandler getHandler() {
@@ -46,6 +56,9 @@ public class Console {
         setUpStateChange(this.getState(), false);
     }
 
+    public Automat getAutomat() {
+        return this.a;
+    }
 
     public void setUpStateChange(ConsoleState cState, Boolean isPre) {
         switch (cState) {
@@ -72,6 +85,14 @@ public class Console {
             case p:
                 if (isPre) handler.remove(lMode);
                 else handler.add(lMode, false);
+                break;
+            case ch:
+                if (isPre) handler.remove(lCreateH);
+                else handler.add(lCreateH, false);
+                break;
+            case ck:
+                if (isPre) handler.remove(lcreateK);
+                else handler.add(lcreateK, false);
                 break;
             case config:
                 if (isPre) handler.remove(lMode);

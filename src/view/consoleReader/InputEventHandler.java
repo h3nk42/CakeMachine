@@ -13,6 +13,7 @@ public class InputEventHandler {
         if(!isInitial){
             this.dontExecute.put(listener, true);
         }
+        this.dontExecute.put(listener, false);
         this.listenerList.add(listener);
     }
     public void remove(InputEventListener listener) {
@@ -21,7 +22,7 @@ public class InputEventHandler {
     public void handle(InputEvent event){
         for (int i = 0; i < listenerList.size(); i++) {
             InputEventListener tempListener =   listenerList.get(i);
-            if(this.dontExecute.get(tempListener) != null && this.dontExecute.get(tempListener) ) {
+            if (this.dontExecute.get(tempListener)) {
                 this.dontExecute.put(tempListener, false);
             } else {
                 tempListener.onInputEvent(event);
