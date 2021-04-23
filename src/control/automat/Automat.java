@@ -29,6 +29,12 @@ public class Automat {
         this.allergeneVorhanden = new HashMap<>();
         this.herstellerFactory = new HerstellerFactoryImpl();
         this.inspektionsDaten = new HashMap<>();
+        for (KuchenArt kuchenArt : KuchenArt.values()) {
+           this.kuchenMap.put(kuchenArt, new ArrayList<VerkaufsKuchen>() );
+        }
+        for (int i = 0; i < fachAnzahl; i++) {
+            this.faecher.add(null);
+        }
     }
 
     public Hersteller getHersteller(String herstellerName) {
@@ -42,7 +48,10 @@ public class Automat {
         return herstellerFactory.produceHersteller(herstellerName);
     }
 
-    public void deleteHersteller(String herstellerName ) {
+    public void deleteHersteller(String herstellerName ) throws Exception {
+        if(getHersteller(herstellerName)== null) {
+            throw new Exception("Hersteller nicht gefunden");
+        }
         faecher.forEach(kuchen -> {
             if (kuchen != null) {
                     if ( kuchen.getHersteller().getName().equalsIgnoreCase(herstellerName)){
@@ -66,7 +75,11 @@ public class Automat {
         if(!(getHersteller().contains(hersteller))) {
             throw new Exception("Hersteller unbekannt");
         }
-        return kuchenCounter.get(hersteller);
+        if (kuchenCounter.get(hersteller) != null) {
+            return kuchenCounter.get(hersteller);
+        }  else {
+            return 0;
+        }
     }
 
     public Map<KuchenArt, ArrayList<VerkaufsKuchen>> getKuchenMap() {
@@ -103,7 +116,8 @@ public class Automat {
     }
 
     public List<VerkaufsKuchen> getKuchen(KuchenArt kuchenArt) {
-        return this.kuchenMap.get(kuchenArt);
+            return this.kuchenMap.get(kuchenArt);
+
     }
 
     public VerkaufsKuchen createKuchen(KuchenArt kuchenArt, Hersteller hersteller, BigDecimal preis, int naehrwert, Allergen[] allergene, String[] extraData, Integer haltbarkeitInStunden ) throws Exception {
@@ -205,7 +219,7 @@ public class Automat {
     }
 
     public void deleteKuchen(int index) throws Exception {
-        if (index >= this.faecher.size() || index < 0){
+        if (index >= this.fachAnzahl || index < 0){
             throw new Exception("index out of bounds: " + index);
         } else if ( this.faecher.get(index) == null) {
             throw new Exception("Fach bereits leer");

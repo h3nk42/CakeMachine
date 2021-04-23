@@ -10,10 +10,7 @@ import view.output.OutputEventListenerPrint;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        /*Automat automat = new Automat(5);
-        AutomatConsole c = new AutomatConsole(automat);
-        c.initiate();*/
-        final int FACHANZAHL = 10;
+        final int FACHANZAHL = 3;
 
         /* ------- HANDLER SETUP ------- */
         OutputEventHandler outputEventHandler = new OutputEventHandler();

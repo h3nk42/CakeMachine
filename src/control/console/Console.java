@@ -10,6 +10,8 @@ import view.input.Input;
 import view.output.MessageType;
 import view.output.OutputEvent;
 import view.output.OutputEventHandler;
+
+import javax.xml.crypto.Data;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -52,19 +54,25 @@ public class Console {
                     messageToPrint = "\u001B[33m" + "Modus wählen:" + "\u001B[0m" + " \n c - Einfügen \n r - Anzeigen\n u - Ändern\n d - Löschen\n p - Speichern \n conf - Konfiguration \n exit - Programm beenden";
                     break;
                 case r:
-                    messageToPrint = "\u001B[33m" + "Anzeigen: " + "\u001B[0m" + " \n b - Zurück \n exit - Programm beenden";
+                    messageToPrint = "\u001B[33m" + "Anzeigen: " + "\u001B[0m" + " \n h - Hersteller mit Kuchenanzahl \n k [typ] - Kuchen ggf nur angegebener Typ  \n a [i/e] - Allergene [included/excluded] \n b - Zurück \n exit - Programm beenden";
                     break;
                 case c:
                     messageToPrint = "\u001B[33m" + "Einfügen: " + "\u001B[0m" + " \n h - Hersteller \n k - Kuchen \n b - Zurück \n exit - Programm beenden";
                     break;
                 case ch:
-                    messageToPrint = "\u001B[33m" + "Hersteller Einfügen: " + "\u001B[0m" + " \n <herstellerName> \n b - Zurück \n exit - Programm beenden";
+                    messageToPrint = "\u001B[33m" + "Hersteller Einfügen: " + "\u001B[0m" + " \n <herstellerName> - fügt Hersteller hinzu \n b - Zurück \n exit - Programm beenden";
                     break;
                 case ck:
                     messageToPrint = "\u001B[33m" + "Kuchen Einfügen: " + "\u001B[0m" + " \n <kuchenTyp> <herstellername> <preis> <nährwert> <haltbarkeit> <allergen,..> <kremsorte> oder/und <obstsorte> \n b - Zurück \n exit - Programm beenden";
                     break;
                 case d:
-                    messageToPrint = "\u001B[33m" + "Löschen: " + "\u001B[0m" + " \n b - Zurück \n exit - Programm beenden";
+                    messageToPrint = "\u001B[33m" + "Löschen: " + "\u001B[0m" + " \n h - Hersteller \n k - Kuchen \n b - Zurück \n exit - Programm beenden";
+                    break;
+                case dh:
+                    messageToPrint = "\u001B[33m" + "Hersteller Löschen: " + "\u001B[0m" + " \n <herstellerName> - löscht Hersteller \n b - Zurück \n exit - Programm beenden";
+                    break;
+                case dk:
+                    messageToPrint = "\u001B[33m" + "Kuchen Löschen: " + "\u001B[0m" + " \n <fachnummer> - löscht Kuchen \n b - Zurück \n exit - Programm beenden";
                     break;
                 case p:
                     messageToPrint = "\u001B[33m" + "Speichern: " + "\u001B[0m" + " \n b - Zurück \n exit - Programm beenden";
@@ -94,20 +102,15 @@ public class Console {
         }
         switch (consoleState) {
             case none:
-                handleNoneState(input);
-                break;
+                return handleNoneState(input);
             case c:
-                handleCreateState(input);
-                break;
+                return handleCreateState(input);
             case r:
-
-                break;
+                return handleReadState(input);
             case u:
-
                 break;
             case d:
-
-                break;
+                return handleDeleteState(input);
             case p:
 
                 break;
@@ -117,11 +120,129 @@ public class Console {
             case ck:
                 this.handleCreateKuchen(input);
                 break;
+            case dh:
+                handleDeleteHersteller(input);
+                break;
+            case dk:
+                this.handleDeleteKuchen(input);
+                break;
             case config:
 
                 break;
         }
         return false;
+    }
+
+    private boolean handleDeleteKuchen(String input) {
+        String[] splitText = input.split("\\s+");
+        if (splitText.length > 1)
+            return sendOutPutEvent("Zu viele Anweisungen! / kein Leerzeichen zu beginn erlaubt ", MessageType.error);
+        else if (!checkCharSize(input, 1, 3)) {
+            return sendOutPutEvent("1 - 3 Zeichen erlaubt", MessageType.error);
+        }
+        try {
+            int fachnummer = Integer.parseInt(splitText[0]);
+            Map<DataType, Object> tempMap = new HashMap<>();
+            tempMap.put(DataType.fachnummer,fachnummer);
+            AutomatEvent automatEvent = new AutomatEvent(this, tempMap, this.getState(), OperationType.dKuchen);
+            automatEventHandler.handle(automatEvent);
+            return true;
+        }catch (Exception e) {
+            return sendOutPutEvent("keine nummer angegeben!",MessageType.error);
+        }
+    }
+
+    private boolean handleDeleteHersteller(String input) {
+        String[] splitText = input.split("\\s+");
+        if (splitText.length > 1)
+            return sendOutPutEvent("Zu viele Anweisungen! / kein Leerzeichen zu beginn erlaubt ", MessageType.error);
+        try {
+            String herstellerName = extractString(splitText[0],10);
+            Map<DataType, Object> tempMap = new HashMap<>();
+            tempMap.put(DataType.hersteller, herstellerName);
+            AutomatEvent automatEvent = new AutomatEvent(this, tempMap, this.getState(), OperationType.dHersteller);
+            automatEventHandler.handle(automatEvent);
+            return true;
+        }catch (Exception e) {
+            return sendOutPutEvent(e.getMessage() ,MessageType.error);
+        }
+    }
+
+    private boolean handleDeleteState(String input) {
+        switch(input) {
+            case "h":
+                return this.changeState(ConsoleState.dh);
+            case "k":
+                return this.changeState(ConsoleState.dk);
+        }
+        return false;
+    }
+
+    private boolean handleReadState(String input) {
+        if (!this.checkArgumentSize(input, 1, 2))
+            return this.sendOutPutEvent("zu wenig / zu viele Anweisungen!", MessageType.error);
+        String[] splitText = input.split("\\s+");
+        switch (splitText[0]) {
+            case "h":
+                AutomatEvent automatEvent = new AutomatEvent(this, new HashMap<>(), this.getState(), OperationType.rHersteller);
+                automatEventHandler.handle(automatEvent);
+                return true;
+            case "k":
+                return handleReadKuchen(splitText);
+            case "a":
+                return handleReadAllergene(splitText);
+            default:
+                sendOutPutEvent("Anweisung nicht erkannt", MessageType.error);
+                return false;
+        }
+    }
+
+    private boolean handleReadAllergene(String[] splitText) {
+        HashMap<DataType, Object> tempMap = new HashMap<>();
+        AutomatEvent automatEvent;
+        if (splitText.length>1) {
+            try {
+                String enthalten = extractString(splitText[1],1);
+                switch(enthalten) {
+                    case "i":
+                        tempMap.put(DataType.bool, true);
+                        automatEvent = new AutomatEvent(this, tempMap, this.getState(), OperationType.rAllergene);
+                        automatEventHandler.handle(automatEvent);
+                        return true;
+                    case "e":
+                        tempMap.put(DataType.bool, false);
+                        automatEvent = new AutomatEvent(this, tempMap, this.getState(), OperationType.rAllergene);
+                        automatEventHandler.handle(automatEvent);
+                        return true;
+                    default:
+                        sendOutPutEvent("2. Anweisung nicht erkannt", MessageType.error);
+                        return false;
+                }
+            } catch (Exception e) {
+                sendOutPutEvent(e.getMessage(),MessageType.error);
+                return false;
+            }
+        } else {
+            sendOutPutEvent("2. Anweisung fehlt", MessageType.error);
+            return false;
+        }
+    }
+
+    private boolean handleReadKuchen(String[] splitText) {
+        AutomatEvent automatEvent;
+        HashMap<DataType, Object> tempMap = new HashMap<>();
+        if (splitText.length>1) {
+            try {
+                KuchenArt kuchenArt = extractKuchenArt(splitText[1]);
+                tempMap.put(DataType.kuchenart, kuchenArt);
+            } catch (Exception e) {
+                sendOutPutEvent(e.getMessage(),MessageType.error);
+                return false;
+            }
+        }
+        automatEvent = new AutomatEvent(this, tempMap, this.getState(), OperationType.rKuchen);
+        automatEventHandler.handle(automatEvent);
+        return true;
     }
 
     private boolean handleNoneState(String input) {
@@ -344,6 +465,6 @@ public class Console {
 }
 
 
-//Kremkuchen rewe 4,50 386 36 Gluten,Erdnuss Butter
-
-//obsttorte rewe 4,50 386 36 Gluten,Erdnuss Butter
+// Kremkuchen rewe 4,50 386 36 Gluten,Erdnuss Butter
+// obstkuchen lidl 4,50 386 36 Gluten,Erdnuss Apfel
+// obsttorte rewe 4,50 386 36 Gluten,Erdnuss Kirsche Butter

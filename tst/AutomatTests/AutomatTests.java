@@ -12,6 +12,7 @@ import org.mockito.Mock;
 
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 
@@ -74,13 +75,17 @@ public class AutomatTests {
         VerkaufsKuchen obsttorteRewe = automat.createKuchen(KuchenArt.Obsttorte, automat.getHersteller("Rewe"), BigDecimal.valueOf(1.25), 300, new Allergen[] {Allergen.Haselnuss, Allergen.Gluten, Allergen.Sesamsamen}, new String[] {"Apfel","Vanille"},24);
         VerkaufsKuchen obsttorteRewe2 = automat.createKuchen(KuchenArt.Obsttorte, automat.getHersteller("Rewe"), BigDecimal.valueOf(1.25), 300, new Allergen[] {Allergen.Haselnuss, Allergen.Gluten, Allergen.Sesamsamen}, new String[] {"Apfel","Vanille"},24);
         Assertions.assertEquals(2, automat.getKuchenCounter(automat.getHersteller("ReWE")));
-        Assertions.assertEquals(null, automat.getKuchenCounter(automat.getHersteller("lidl")));
+        Assertions.assertEquals(0, automat.getKuchenCounter(automat.getHersteller("lidl")));
     }
 
     // HERSTELLER --- DELETE
     @Test
     void deleteHerstellerIgnoreCase() {
-        automat.deleteHersteller("rEWe");
+        try {
+            automat.deleteHersteller("rEWe");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Assertions.assertEquals(null, automat.getHersteller("Rewe"));
     }
 
@@ -131,7 +136,6 @@ public class AutomatTests {
         VerkaufsKuchen kremkuchen = automat.createKuchen(KuchenArt.Kremkuchen, automat.getHersteller("Rewe"), BigDecimal.valueOf(1.99), 300, new Allergen[] {Allergen.Haselnuss, Allergen.Gluten, Allergen.Sesamsamen}, new String[] {"Vanille"},24);
         VerkaufsKuchen obsttorte = automat.createKuchen(KuchenArt.Obsttorte, automat.getHersteller("Rewe"), BigDecimal.valueOf(1.25), 300, new Allergen[] {Allergen.Haselnuss, Allergen.Gluten, Allergen.Sesamsamen}, new String[] {"Apfel","Vanille"},24);
         VerkaufsKuchen obstkuchen = automat.createKuchen(KuchenArt.Obstkuchen, automat.getHersteller("Rewe"), BigDecimal.valueOf(1.25), 300, new Allergen[] {Allergen.Haselnuss, Allergen.Gluten, Allergen.Sesamsamen}, new String[] {"Apfel"},36);
-        Assertions.assertEquals(3, automat.getFaecher().size());
         Assertions.assertEquals(obsttorte, automat.getFaecher().get(obsttorte.getFachnummer()));
         Assertions.assertEquals(obstkuchen, automat.getFaecher().get(obstkuchen.getFachnummer()));
         Assertions.assertEquals(kremkuchen, automat.getFaecher().get(kremkuchen.getFachnummer()));
@@ -191,7 +195,7 @@ public class AutomatTests {
     @Test
     void getKuchenWithArt() throws Exception {
         VerkaufsKuchen kremkuchen = automat.createKuchen(KuchenArt.Kremkuchen, automat.getHersteller("Rewe"), BigDecimal.valueOf(1.99), 300, new Allergen[] {Allergen.Haselnuss, Allergen.Gluten, Allergen.Sesamsamen}, new String[] {"Vanille"},24);
-        Assertions.assertEquals(null, automat.getKuchen(KuchenArt.Obstkuchen));
+        Assertions.assertEquals(new ArrayList<VerkaufsKuchen>(), automat.getKuchen(KuchenArt.Obstkuchen));
         Assertions.assertEquals(1, automat.getKuchen(KuchenArt.Kremkuchen).size());
     }
     @Test

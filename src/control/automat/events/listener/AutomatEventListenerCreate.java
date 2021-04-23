@@ -42,7 +42,7 @@ public class AutomatEventListenerCreate implements AutomatEventListener {
         String name = (String) event.getData().get(DataType.hersteller);
         try {
             automat.createHersteller(name);
-            OutputEvent outputEvent = new OutputEvent(this, "erfolg: " + automat.getHersteller().toString(), MessageType.success);
+            OutputEvent outputEvent = new OutputEvent(this, "erfolg" , MessageType.success);
             outputEventHandler.handle(outputEvent);
         } catch (Exception e) {
             OutputEvent outputEvent = new OutputEvent(this, e.getMessage(), MessageType.error);
@@ -80,7 +80,7 @@ public class AutomatEventListenerCreate implements AutomatEventListener {
                     throw new Exception("Kuchenart nicht erkannt");
             }
             automat.createKuchen(kuchenArt, hersteller,preis,naehrwert,allergene,kremObstData,haltbarkeit );
-            OutputEvent outputEvent = new OutputEvent(this, "erfolg: " + automat.getKuchen().toString(), MessageType.success);
+            OutputEvent outputEvent = new OutputEvent(this, "erfolg", MessageType.success);
             outputEventHandler.handle(outputEvent);
         } catch (Exception e) {
             OutputEvent outputEvent = new OutputEvent(this, e.getMessage(), MessageType.error);
