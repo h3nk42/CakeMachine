@@ -5,6 +5,7 @@ import control.console.Console;
 import view.output.Output;
 import view.output.OutputEventHandler;
 import view.output.OutputEventListener;
+
 import view.output.OutputEventListenerPrint;
 
 public class Main {

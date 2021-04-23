@@ -1,9 +1,8 @@
 package view.output;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
+
 
 public class OutputEventHandler {
     private List<OutputEventListener> listenerList = new LinkedList<>();
@@ -16,7 +15,7 @@ public class OutputEventHandler {
     }
     public void handle(OutputEvent oEvent){
         for (int i = 0; i < listenerList.size(); i++) {
-            OutputEventListener oEventListener =   listenerList.get(i);
+            OutputEventListener oEventListener = listenerList.get(i);
             oEventListener.onOutputEvent(oEvent);
         }
     }

@@ -4,14 +4,15 @@ import control.automat.events.AutomatEvent;
 import control.automat.events.AutomatEventHandler;
 import control.automat.events.DataType;
 import control.automat.events.OperationType;
-import sun.plugin2.message.Message;
+import control.automat.verkaufsobjekte.Allergen;
+import control.automat.verkaufsobjekte.kuchen.KuchenArt;
 import view.input.Input;
 import view.output.MessageType;
 import view.output.OutputEvent;
 import view.output.OutputEventHandler;
-
-import javax.xml.crypto.Data;
+import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Stack;
 
@@ -21,31 +22,12 @@ public class Console {
     private Stack<ConsoleState> modeStack;
     private OutputEventHandler outputEventHandler;
     private AutomatEventHandler automatEventHandler;
-    /*private final InputEventListenerConstant lConst;
-    private final InputEventListenerMode lMode;
-    private final InputEventListenerCreate lCreate;
-    private final InputEventListenerCreateHersteller lCreateH;
-    private final InputEventListenerCreateKuchen lcreateK;
-    private InputEventHandler handler;
-    private Automat automat;
-     */
-
 
     public Console(OutputEventHandler outputEventHandler, AutomatEventHandler automatEventHandler) {
         this.outputEventHandler = outputEventHandler;
         this.automatEventHandler = automatEventHandler;
         modeStack = new Stack<>();
         modeStack.push(ConsoleState.none);
-       /* this.automat = automat;
-        reader = new Reader(this);
-        handler = new InputEventHandler(this.automat);
-        lConst = new InputEventListenerConstant(this);
-        lMode = new InputEventListenerMode(this);
-        lCreate = new InputEventListenerCreate(this);
-        lCreateH = new InputEventListenerCreateHersteller(this);
-        lcreateK = new InputEventListenerCreateKuchen(this);
-        handler.add(lConst,true);
-        handler.add(lMode,true);*/
         this.input = new Input();
     }
 
@@ -133,7 +115,7 @@ public class Console {
                 handleCreateHersteller(input);
                 break;
             case ck:
-
+                this.handleCreateKuchen(input);
                 break;
             case config:
 
@@ -178,15 +160,154 @@ public class Console {
         String[] splitText = input.split("\\s+");
         if (splitText.length > 1)
             return sendOutPutEvent("Zu viele Anweisungen! / kein Leerzeichen zu beginn erlaubt ", MessageType.error);
-        else if (!checkCharSize(input,3,10)) {
+        else if (!checkCharSize(input, 3, 10)) {
             return sendOutPutEvent("3 - 10 Zeichen erlaubt", MessageType.error);
-        };
+        }
+        ;
         Map<DataType, Object> tempMap = new HashMap<>();
         tempMap.put(DataType.hersteller, splitText[0]);
-        AutomatEvent automatEvent = new AutomatEvent(this,tempMap,this.getState(), OperationType.cHersteller);
+        AutomatEvent automatEvent = new AutomatEvent(this, tempMap, this.getState(), OperationType.cHersteller);
         automatEventHandler.handle(automatEvent);
         return true;
     }
+
+    private boolean handleCreateKuchen(String input) {
+        String[] splitText = input.split("\\s+");
+        int expectedArguments;
+        KuchenArt kuchenArt = null;
+        try {
+            kuchenArt = extractKuchenArt(splitText[0]);
+            switch (kuchenArt) {
+                case Obsttorte:
+                    expectedArguments = 8;
+                    break;
+                default:
+                    expectedArguments = 7;
+                    break;
+            }
+
+            if (splitText.length != expectedArguments) {
+                sendOutPutEvent("zu wenig/zu viele Argumente", MessageType.error);
+                return false;
+            }
+            String hersteller = extractString(splitText[1], 10);
+            BigDecimal preis = extractPreis(splitText[2]);
+            int naehrwert = extractInt(splitText[3], 5, "Nährwert nicht erkannt - erlaubtes Format: <ZAHL> keine zeichen, maximal 5 Zahlen");
+            int haltbarkeit = extractInt(splitText[4], 3, "Haltbarkeit nicht erkannt - erlaubtes Format: <ZAHL> keine zeichen, maximal 3 Zahlen");
+            Allergen[] allergene = extractAllergene(splitText[5]);
+            String obstsorte;
+            String kremsorte;
+            Map<DataType, Object> tempMap = new HashMap<>();
+            tempMap.put(DataType.kuchenart, kuchenArt);
+            tempMap.put(DataType.hersteller, hersteller);
+            tempMap.put(DataType.preis, preis);
+            tempMap.put(DataType.naehrwert, naehrwert);
+            tempMap.put(DataType.haltbarkeit, haltbarkeit);
+            tempMap.put(DataType.allergene, allergene);
+            switch (kuchenArt) {
+                case Kremkuchen:
+                    obstsorte = extractString(splitText[6], 10);
+                    tempMap.put(DataType.obstsorte, obstsorte);
+                    return sendAutomatEvent(tempMap, OperationType.cKuchen);
+                case Obstkuchen:
+                    kremsorte = extractString(splitText[6], 10);
+                    tempMap.put(DataType.kremsorte, kremsorte);
+                    return sendAutomatEvent(tempMap, OperationType.cKuchen);
+                case Obsttorte:
+                    obstsorte = extractString(splitText[6], 10);
+                    kremsorte = extractString(splitText[7], 10);
+                    tempMap.put(DataType.obstsorte, obstsorte);
+                    tempMap.put(DataType.kremsorte, kremsorte);
+                    return sendAutomatEvent(tempMap, OperationType.cKuchen);
+            }
+        } catch (Exception e) {
+            sendOutPutEvent(e.getMessage(), MessageType.error);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean sendAutomatEvent(Map<DataType, Object> tempMap, OperationType operationType) {
+        AutomatEvent automatEvent = new AutomatEvent(this, tempMap, this.getState(), operationType);
+        automatEventHandler.handle(automatEvent);
+        return true;
+    }
+
+
+    private String extractString(String input, int maxChars) throws Exception {
+        input = input.toLowerCase();
+        if (input.length() > 10) throw new Exception("maximal 10 Buchstaben pro text-argument");
+        return input;
+    }
+
+    private KuchenArt extractKuchenArt(String input) throws Exception {
+        input = input.toLowerCase();
+        switch (input) {
+            case "kremkuchen":
+                return KuchenArt.Kremkuchen;
+            case "obstkuchen":
+                return KuchenArt.Obstkuchen;
+            case "obsttorte":
+                return KuchenArt.Obsttorte;
+        }
+        throw new Exception("Kuchenart nicht erkannt");
+    }
+
+    private BigDecimal extractPreis(String input) throws Exception {
+        input = input.toLowerCase();
+        input = input.replaceAll(",", ".");
+        String errorMsg = "Preis nicht erkannt - erlaubtes Format: <ZAHL> oder <ZAHL,ZAHL> oder <ZAHL.ZAHL>, maximal 5 Zeichen";
+        try {
+            checkSize(5, input, errorMsg);
+            Float f = Float.parseFloat(input);
+            return BigDecimal.valueOf(f);
+        } catch (Exception e) {
+            throw new Exception(errorMsg);
+        }
+    }
+
+    private int extractInt(String input, int maxChars, String errorMsg) throws Exception {
+        input = input.toLowerCase();
+        try {
+            checkSize(maxChars, input, errorMsg);
+            int tempN = Integer.parseInt(input);
+            return tempN;
+        } catch (Exception e) {
+            throw new Exception(errorMsg);
+        }
+    }
+
+    private Allergen[] extractAllergene(String input) throws Exception {
+        input = input.toLowerCase();
+        String[] inputArr = input.split("\\s*,\\s*");
+        HashSet<Allergen> allergenSet = new HashSet<>();
+        for (int i = 0; i < inputArr.length; i++) {
+            switch (inputArr[i]) {
+                case "gluten":
+                    allergenSet.add(Allergen.Gluten);
+                    break;
+                case "erdnuss":
+                    allergenSet.add(Allergen.Erdnuss);
+                    break;
+                case "haselnuss":
+                    allergenSet.add(Allergen.Haselnuss);
+                    break;
+                case "sesamsamen":
+                    allergenSet.add(Allergen.Sesamsamen);
+                    break;
+                default:
+                    throw new Exception("Allergen nicht erkannt");
+            }
+        }
+        return allergenSet.toArray(new Allergen[allergenSet.size()]);
+    }
+
+    private void checkSize(int sizeAllowed, String input, String errorMsg) throws Exception {
+        if (input.length() > sizeAllowed) {
+            throw new Exception(errorMsg);
+        }
+    }
+
 
     private boolean checkArgumentSize(String input, int minSize, int maxSize) {
         String[] splitText = input.split("\\s+");
@@ -207,78 +328,22 @@ public class Console {
         }
     }
 
-    public boolean changeState() {
+    private boolean changeState() {
         this.modeStack.pop();
         return true;
-        /*setUpStateChange(this.modeStack.pop(), true);
-        setUpStateChange(this.getState(), false);*/
     }
 
-    public boolean changeState(ConsoleState newCState) {
+    private boolean changeState(ConsoleState newCState) {
         this.modeStack.push(newCState);
         return true;
-       /* setUpStateChange(this.getState(), true);
-        setUpStateChange(this.modeStack.push(newCState), false);*/
     }
 
-    /* public InputEventHandler getHandler() {
-         return this.handler;
-     }
-
-     public void initiate() {
-         reader.start();
-     }
-
-
-
-
-
-     public Automat getAutomat() {
-         return this.automat;
-     }
-
-     public void setUpStateChange(ConsoleState cState, Boolean isPre) {
-         switch (cState) {
-             case none:
-                 if (isPre) handler.remove(lMode);
-                 else handler.add(lMode,false);
-                 break;
-             case c:
-                 if (isPre) handler.remove(lCreate);
-                 else handler.add(lCreate,false);
-                 break;
-             case r:
-                 if (isPre) handler.remove(lMode);
-                 else handler.add(lMode, false);
-                 break;
-             case u:
-                 if (isPre) handler.remove(lMode);
-                 else handler.add(lMode, false);
-                 break;
-             case d:
-                 if (isPre) handler.remove(lMode);
-                 else handler.add(lMode, false);
-                 break;
-             case p:
-                 if (isPre) handler.remove(lMode);
-                 else handler.add(lMode, false);
-                 break;
-             case ch:
-                 if (isPre) handler.remove(lCreateH);
-                 else handler.add(lCreateH, false);
-                 break;
-             case ck:
-                 if (isPre) handler.remove(lcreateK);
-                 else handler.add(lcreateK, false);
-                 break;
-             case config:
-                 if (isPre) handler.remove(lMode);
-                 else handler.add(lMode, false);
-                 break;
-         }
-     }
- */
-    public ConsoleState getState() {
+    private ConsoleState getState() {
         return this.modeStack.peek();
     }
 }
+
+
+//Kremkuchen rewe 4,50 386 36 Gluten,Erdnuss Butter
+
+//obsttorte rewe 4,50 386 36 Gluten,Erdnuss Butter
