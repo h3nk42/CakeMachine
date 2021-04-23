@@ -1,4 +1,4 @@
-package view.consoleReader.Create;
+package control.automat.events.listener;
 
 import control.console.Console;
 import view.consoleReader.InputEvent;
@@ -20,9 +20,9 @@ public class InputEventListenerCreateHersteller implements InputEventListener {
             sb.*/
             String[] splitText = text.split(" \\s+");
             try {
-                c.getAutomat().createHersteller(splitText[0]);
-                System.out.println("view/consoleReader/Create/InputEventListenerCreateHersteller.java: lineNumber: 24: " + c.getAutomat().getHersteller());
-            } catch (Exception e) {
+              /*  c.getAutomat().createHersteller(splitText[0]);
+                System.out.println("control/automat/automatListener/Create/InputEventListenerCreateHersteller.java: lineNumber: 24: " + c.getAutomat().getHersteller());
+           */ } catch (Exception e) {
                 System.out.println("\u001B[31m \n --- " + e.getMessage() + " --- \n \u001B[0m");
             }
         }

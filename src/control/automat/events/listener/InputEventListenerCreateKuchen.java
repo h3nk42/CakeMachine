@@ -1,4 +1,4 @@
-package view.consoleReader.Create;
+package control.automat.events.listener;
 
 import control.automat.hersteller.Hersteller;
 import control.automat.verkaufsobjekte.Allergen;
@@ -8,7 +8,6 @@ import view.consoleReader.InputEvent;
 import view.consoleReader.InputEventListener;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.HashSet;
 
 public class InputEventListenerCreateKuchen implements InputEventListener {
@@ -48,7 +47,7 @@ public class InputEventListenerCreateKuchen implements InputEventListener {
                 String obstsorte;
                 String kremsorte;
                 switch(kuchenArt){
-                    case Kremkuchen:
+                    /*case Kremkuchen:
                         obstsorte = extractString(splitText[6]);
                         c.getAutomat().createKuchen(kuchenArt,hersteller,preis, naehrwert, allergene, new String[]{obstsorte}, haltbarkeit);
                         break;
@@ -60,7 +59,7 @@ public class InputEventListenerCreateKuchen implements InputEventListener {
                         obstsorte = extractString(splitText[6]);
                         kremsorte = extractString(splitText[7]);
                         c.getAutomat().createKuchen(kuchenArt,hersteller,preis, naehrwert, allergene, new String[]{obstsorte,kremsorte}, haltbarkeit);
-                        break;
+                        break;*/
                 }
             } catch (Exception e) {
                 System.out.println("\u001B[31m \n --- " + e.getMessage() + " --- \n \u001B[0m");
@@ -125,13 +124,14 @@ public class InputEventListenerCreateKuchen implements InputEventListener {
     }
 
     private Hersteller extractHersteller(String input) throws Exception {
-        input = input.toLowerCase();
+       /* input = input.toLowerCase();
         Hersteller tempH = c.getAutomat().getHersteller(input);
         if (tempH != null) {
             return tempH;
         } else {
             throw new Exception("Hersteller nicht erkannt");
-        }
+        }*/
+        return null;
     }
 
     private BigDecimal extractPreis(String input) throws Exception {

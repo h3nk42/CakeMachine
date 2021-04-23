@@ -22,7 +22,7 @@ public class InputEventListenerConstant implements InputEventListener {
                     if(c.getState() == ConsoleState.none) {
                         System.out.println("\u001B[31m" + "\n --- es geht nicht weiter zurück! --- \n" + "\u001B[0m");
                     } else {
-                        c.changeState();
+                        //c.changeState();
                     }
                     break;
             }

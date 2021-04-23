@@ -16,7 +16,7 @@ public class InputEventListenerMode implements InputEventListener {
         if (null != event.getText()) {
             String text = event.getText().toLowerCase();
             switch (text) {
-                case "c":
+                /*case "c":
                     c.changeState(ConsoleState.c);
                     break;
                 case "r":
@@ -33,7 +33,7 @@ public class InputEventListenerMode implements InputEventListener {
                     break;
                 case "conf":
                     c.changeState(ConsoleState.config);
-                    break;
+                    break;*/
             }
         }
     }
