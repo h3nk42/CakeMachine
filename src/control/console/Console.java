@@ -63,7 +63,7 @@ public class Console {
                     messageToPrint = "\u001B[33m" + "Hersteller Einfügen: " + "\u001B[0m" + " \n <herstellerName> - fügt Hersteller hinzu \n b - Zurück \n exit - Programm beenden";
                     break;
                 case ck:
-                    messageToPrint = "\u001B[33m" + "Kuchen Einfügen: " + "\u001B[0m" + " \n <kuchenTyp> <herstellername> <preis> <nährwert> <haltbarkeit> <allergen,..> <kremsorte> oder/und <obstsorte> \n b - Zurück \n exit - Programm beenden";
+                    messageToPrint = "\u001B[33m" + "Kuchen Einfügen: " + "\u001B[0m" + " \n <kuchenTyp> <herstellername> <preis> <nährwert> <haltbarkeit> <allergen,..> oder <,> <kremsorte> oder/und <obstsorte> \n b - Zurück \n exit - Programm beenden";
                     break;
                 case d:
                     messageToPrint = "\u001B[33m" + "Löschen: " + "\u001B[0m" + " \n h - Hersteller \n k - Kuchen \n b - Zurück \n exit - Programm beenden";

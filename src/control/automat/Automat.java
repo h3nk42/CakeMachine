@@ -220,7 +220,7 @@ public class Automat {
 
     public void deleteKuchen(int index) throws Exception {
         if (index >= this.fachAnzahl || index < 0){
-            throw new Exception("index out of bounds: " + index);
+            throw new Exception("Fachnummer ausserhalb der Fachanzahl, möglich: 0 - " + (fachAnzahl-1));
         } else if ( this.faecher.get(index) == null) {
             throw new Exception("Fach bereits leer");
         }
