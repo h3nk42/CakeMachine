@@ -1,12 +1,7 @@
 package control.automat.events;
 
-import control.automat.Automat;
-import view.consoleReader.InputEvent;
-
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class AutomatEventHandler {
     private List<AutomatEventListener> listenerList = new LinkedList<>();

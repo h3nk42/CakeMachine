@@ -1,7 +1,5 @@
 package view.output;
 
-import view.consoleReader.InputEvent;
-
 public class OutputEventListenerPrint implements OutputEventListener {
     private final Output out;
 
@@ -18,6 +16,10 @@ public class OutputEventListenerPrint implements OutputEventListener {
                     break;
                 case error:
                     out.printLine("\u001B[31m \n --- " + event.getText() + " --- \n \u001B[0m");
+                    break;
+                case success:
+                    out.printLine("\u001B[36m \n --- " + event.getText() + " --- \n \u001B[0m");
+                    break;
             }
 
         }

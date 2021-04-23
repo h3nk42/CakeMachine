@@ -1,8 +1,5 @@
 package view.input;
 
-import view.consoleReader.InputEvent;
-import view.consoleReader.InputEventHandler;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

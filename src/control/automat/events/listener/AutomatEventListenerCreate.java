@@ -24,20 +24,29 @@ public class AutomatEventListenerCreate implements AutomatEventListener {
         if (null != event.getData()) {
             switch(event.getOperationType()) {
                 case cKuchen:
+                    handleCK(event);
                     break;
                 case cHersteller:
-                    String name = (String) event.getData().get(DataType.hersteller);
-                    try {
-                        automat.createHersteller(name);
-                        OutputEvent outputEvent = new OutputEvent(this, "erfolg: " + automat.getHersteller().toString(), MessageType.normal);
-                        outputEventHandler.handle(outputEvent);
-                    } catch (Exception e) {
-                        OutputEvent outputEvent = new OutputEvent(this, e.getMessage(), MessageType.error);
-                        outputEventHandler.handle(outputEvent);
-                    }
+                    handleCH(event);
                     break;
             }
         }
+    }
+
+    private void handleCH(AutomatEvent event) {
+        String name = (String) event.getData().get(DataType.hersteller);
+        try {
+            automat.createHersteller(name);
+            OutputEvent outputEvent = new OutputEvent(this, "erfolg: " + automat.getHersteller().toString(), MessageType.success);
+            outputEventHandler.handle(outputEvent);
+        } catch (Exception e) {
+            OutputEvent outputEvent = new OutputEvent(this, e.getMessage(), MessageType.error);
+            outputEventHandler.handle(outputEvent);
+        }
+    }
+
+    private void handleCK(AutomatEvent event) {
+
     }
 
     @Override

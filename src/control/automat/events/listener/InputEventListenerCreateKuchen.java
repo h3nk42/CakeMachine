@@ -1,16 +1,16 @@
 package control.automat.events.listener;
 
+import control.automat.events.AutomatEvent;
+import control.automat.events.AutomatEventListener;
 import control.automat.hersteller.Hersteller;
 import control.automat.verkaufsobjekte.Allergen;
 import control.automat.verkaufsobjekte.kuchen.KuchenArt;
 import control.console.Console;
-import view.consoleReader.InputEvent;
-import view.consoleReader.InputEventListener;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
 
-public class InputEventListenerCreateKuchen implements InputEventListener {
+public class InputEventListenerCreateKuchen implements AutomatEventListener {
 
     private Console c;
 
@@ -19,9 +19,9 @@ public class InputEventListenerCreateKuchen implements InputEventListener {
     }
 
     @Override
-    public void onInputEvent(InputEvent event) {
-        if (null != event.getText()) {
-            String text = event.getText();
+    public void onAutomatEvent(AutomatEvent event) {
+        if (null != event.getData()) {
+            String text = "lul";
            /* StringBuilder sb = new StringBuilder(text);
             sb.*/
             String[] splitText = text.split("\\s+");
@@ -158,6 +158,7 @@ public class InputEventListenerCreateKuchen implements InputEventListener {
     public String toString() {
         return "create";
     }
+
 
     /*Kremkuchen r 4,50 386 36 Gluten,Erdnuss Butter*/
 

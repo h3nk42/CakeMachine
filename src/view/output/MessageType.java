@@ -1,5 +1,5 @@
 package view.output;
 
 public enum MessageType {
-    normal,error
+    normal,error,success
 }
