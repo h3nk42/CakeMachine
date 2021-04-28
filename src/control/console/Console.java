@@ -4,14 +4,15 @@ import control.automat.events.AutomatEvent;
 import control.automat.events.AutomatEventHandler;
 import control.automat.events.DataType;
 import control.automat.events.OperationType;
-import control.automat.verkaufsobjekte.Allergen;
-import control.automat.verkaufsobjekte.kuchen.KuchenArt;
+import model.automat.verkaufsobjekte.Allergen;
+import model.automat.verkaufsobjekte.kuchen.KuchenArt;
 import view.input.Input;
+import view.input.InputEvent;
+import view.input.InputEventListener;
 import view.output.MessageType;
 import view.output.OutputEvent;
 import view.output.OutputEventHandler;
 
-import javax.xml.crypto.Data;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,11 +20,12 @@ import java.util.Map;
 import java.util.Stack;
 
 
-public class Console {
+public class Console implements InputEventListener {
     private final Input input;
     private Stack<ConsoleState> modeStack;
     private OutputEventHandler outputEventHandler;
     private AutomatEventHandler automatEventHandler;
+
 
     public Console(OutputEventHandler outputEventHandler, AutomatEventHandler automatEventHandler) {
         this.outputEventHandler = outputEventHandler;
@@ -33,20 +35,17 @@ public class Console {
         this.input = new Input();
     }
 
-    public String awaitInput() {
-        String inText = input.awaitInput();
-        return inText;
-    }
 
-    public boolean sendOutPutEvent(String textToSend, MessageType messageType) {
+    private boolean sendOutPutEvent(String textToSend, MessageType messageType) {
         OutputEvent oEventPrintText = new OutputEvent(this, textToSend, messageType);
         outputEventHandler.handle(oEventPrintText);
         return true;
     }
 
-    public void initiateLoop() {
-        while (true) {
-
+    @Override
+    public void onInputEvent(InputEvent event) {
+            switch(event.getInputEventType()) {
+                case print:
             /* PRINT CONSOLE STATUS */
             String messageToPrint = "";
             switch (this.getState()) {
@@ -81,13 +80,14 @@ public class Console {
                     messageToPrint = "\u001B[33m" + "Konfiguration: " + "\u001B[0m" + " \n b - Zurück \n exit - Programm beenden";
                     break;
             }
-
             this.sendOutPutEvent(messageToPrint, MessageType.normal);
+                    break;
 
-            /* HANDLE NEXT INPUT */
-            String inPutText = this.awaitInput();
-            handleInput(inPutText, getState());
-        }
+                /* HANDLE INPUT */
+                case read:
+                    handleInput(event.getText(), getState());
+                    break;
+            }
     }
 
     private boolean handleInput(String input, ConsoleState consoleState) {

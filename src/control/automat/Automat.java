@@ -1,11 +1,11 @@
 package control.automat;
 
-import control.automat.hersteller.Hersteller;
-import control.automat.hersteller.HerstellerFactory;
-import control.automat.hersteller.HerstellerFactoryImpl;
-import control.automat.verkaufsobjekte.Allergen;
-import control.automat.verkaufsobjekte.Verkaufsobjekt;
-import control.automat.verkaufsobjekte.kuchen.*;
+import model.automat.hersteller.Hersteller;
+import model.automat.hersteller.HerstellerFactory;
+import model.automat.hersteller.HerstellerFactoryImpl;
+import model.automat.verkaufsobjekte.Allergen;
+import model.automat.verkaufsobjekte.Verkaufsobjekt;
+import model.automat.verkaufsobjekte.kuchen.*;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -154,9 +154,6 @@ public class Automat {
             throw new Exception("Hersteller des Kuchens nicht existent");
         } else if (this.getKuchen().size() == fachAnzahl ) {
             throw new Exception("Alle Fächer voll");
-        }
-        if (this.kuchenMap.get(kuchen.getKuchenArt()) != null && this.kuchenMap.get(kuchen.getKuchenArt()).contains(kuchen) ) {
-            throw new Exception("Kuchen bereits im Automaten");
         }
             for (int i = 0; i < this.faecher.size(); i++) {
                 if (this.faecher.get(i) == null) {

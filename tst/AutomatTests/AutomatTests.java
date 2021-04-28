@@ -2,9 +2,11 @@
 package AutomatTests;
 
 import control.automat.Automat;
-import control.automat.hersteller.Hersteller;
-import control.automat.verkaufsobjekte.Allergen;
-import control.automat.verkaufsobjekte.kuchen.*;
+import model.automat.hersteller.Hersteller;
+import model.automat.hersteller.HerstellerFactory;
+import model.automat.hersteller.HerstellerFactoryImpl;
+import model.automat.verkaufsobjekte.Allergen;
+import model.automat.verkaufsobjekte.kuchen.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -145,6 +147,17 @@ public class AutomatTests {
     }
 
     @Test
+    void createKuchenWithoutHersteller() throws Exception {
+        HerstellerFactory herstellerFactory = new HerstellerFactoryImpl();
+        Hersteller testHersteller = herstellerFactory.produceHersteller("harry");
+        Exception e = Assertions.assertThrows(Exception.class, () -> {
+            automat.createKuchen(KuchenArt.Obsttorte, testHersteller, BigDecimal.valueOf(1.25), 300, new Allergen[] {Allergen.Haselnuss, Allergen.Gluten, Allergen.Sesamsamen}, new String[] {"Apfel","Vanille"},24);
+        },"Hersteller des Kuchens nicht existent");
+        Assertions.assertTrue(e.getMessage().contains("Hersteller des Kuchens nicht existent"));
+
+    }
+
+    @Test
     void createKuchenAfterHerstellerDeleted() throws Exception {
         VerkaufsKuchen obsttorteRewe = automat.createKuchen(KuchenArt.Obsttorte, automat.getHersteller("Rewe"), BigDecimal.valueOf(1.25), 300, new Allergen[] {Allergen.Haselnuss, Allergen.Gluten, Allergen.Sesamsamen}, new String[] {"Apfel","Vanille"},24);
         VerkaufsKuchen obsttorteLidl = automat.createKuchen(KuchenArt.Obsttorte, automat.getHersteller("Lidl"), BigDecimal.valueOf(1.25), 300, new Allergen[] {Allergen.Haselnuss, Allergen.Gluten, Allergen.Sesamsamen}, new String[] {"Apfel","Vanille"},24);
@@ -220,10 +233,10 @@ public class AutomatTests {
         Assertions.assertTrue(automat.getAllergene(true).contains(Allergen.Gluten));
         Assertions.assertTrue(automat.getAllergene(false).contains(Allergen.Sesamsamen));
         Assertions.assertTrue(automat.getAllergene(false).contains(Allergen.Erdnuss));
-       /* Assertions.assertEquals(1, control.automat.getAllergeneVorhanden().get(Allergen.Gluten));
-        Assertions.assertEquals(1, control.automat.getAllergeneVorhanden().get(Allergen.Haselnuss));
-        Assertions.assertEquals(1, control.automat.getAllergeneVorhanden().get(Allergen.Sesamsamen));
-        Assertions.assertEquals(null, control.automat.getAllergeneVorhanden().get(Allergen.Erdnuss));*/
+       /* Assertions.assertEquals(1, model.automat.getAllergeneVorhanden().get(Allergen.Gluten));
+        Assertions.assertEquals(1, model.automat.getAllergeneVorhanden().get(Allergen.Haselnuss));
+        Assertions.assertEquals(1, model.automat.getAllergeneVorhanden().get(Allergen.Sesamsamen));
+        Assertions.assertEquals(null, model.automat.getAllergeneVorhanden().get(Allergen.Erdnuss));*/
 
     }
     @Test
@@ -231,9 +244,9 @@ public class AutomatTests {
         Assertions.assertEquals(true, automat.getAllergene(true).isEmpty());
         VerkaufsKuchen kremkuchen = automat.createKuchen(KuchenArt.Kremkuchen, automat.getHersteller("Rewe"), BigDecimal.valueOf(1.99), 300, new Allergen[] {Allergen.Haselnuss, Allergen.Gluten, Allergen.Sesamsamen}, new String[] {"Vanille"},24);
         automat.deleteKuchen(kremkuchen);
-        /*Assertions.assertEquals(null, control.automat.getAllergeneVorhanden().get(Allergen.Haselnuss));
-        Assertions.assertEquals(null, control.automat.getAllergeneVorhanden().get(Allergen.Gluten));
-        Assertions.assertEquals(null, control.automat.getAllergeneVorhanden().get(Allergen.Sesamsamen));*/
+        /*Assertions.assertEquals(null, model.automat.getAllergeneVorhanden().get(Allergen.Haselnuss));
+        Assertions.assertEquals(null, model.automat.getAllergeneVorhanden().get(Allergen.Gluten));
+        Assertions.assertEquals(null, model.automat.getAllergeneVorhanden().get(Allergen.Sesamsamen));*/
     }
     @Test
     void getFaecher() throws Exception {

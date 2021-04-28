@@ -1,5 +1,6 @@
 package control.automat;
 
+import control.automat.Automat;
 import control.automat.events.AutomatEventHandler;
 import control.automat.events.listener.AutomatEventListenerCreate;
 import control.automat.events.listener.AutomatEventListenerDelete;
