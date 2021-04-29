@@ -82,26 +82,22 @@ public class Automat {
         }
     }
 
-    public Map<KuchenArt, ArrayList<VerkaufsKuchen>> getKuchenMap() {
+    private Map<KuchenArt, ArrayList<VerkaufsKuchen>> getKuchenMap() {
         return kuchenMap;
     }
 
-    public List<Allergen> getAllergene(boolean showVorhandeneAllergene) {
-        ArrayList<Allergen> tempList = new ArrayList<>();
+    public Set<Allergen> getAllergene(boolean showVorhandeneAllergene) {
+        HashSet<Allergen> tempSet = new HashSet<>();
         if (showVorhandeneAllergene) {
-            for ( Allergen a : allergeneVorhanden.keySet()) {
-                tempList.add(a);
-            }
-            return tempList;
+            tempSet.addAll(allergeneVorhanden.keySet());
+            return tempSet;
         } else {
             Allergen[] allergene = Allergen.values();
-            for (int i = 0; i < allergene.length; i++) {
-                tempList.add(allergene[i]);
-            }
+            tempSet.addAll(Arrays.asList(allergene));
             for ( Allergen a : allergeneVorhanden.keySet()) {
-                tempList.remove(a);
+                tempSet.remove(a);
             }
-            return tempList;
+            return tempSet;
         }
     }
 
@@ -261,5 +257,9 @@ public class Automat {
     public void setInspektionsdatum(Integer fachnummer, Date inspektionsdatumNeu) {
         VerkaufsKuchen tempKuchen = this.faecher.get(fachnummer);
         this.inspektionsDaten.put(tempKuchen,inspektionsdatumNeu);
+    }
+
+    public int getFachanzahl() {
+        return fachAnzahl;
     }
 }

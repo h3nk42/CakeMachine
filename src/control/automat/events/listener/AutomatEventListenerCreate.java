@@ -1,6 +1,6 @@
 package control.automat.events.listener;
 
-import control.automat.Automat;
+import control.automat.AutomatController;
 import control.automat.events.AutomatEvent;
 import control.automat.events.AutomatEventListener;
 import control.automat.events.DataType;
@@ -8,6 +8,7 @@ import model.automat.hersteller.Hersteller;
 import model.automat.verkaufsobjekte.Allergen;
 import model.automat.verkaufsobjekte.kuchen.KuchenArt;
 import view.output.MessageType;
+import view.output.Output;
 import view.output.OutputEvent;
 import view.output.OutputEventHandler;
 
@@ -16,12 +17,13 @@ import java.util.Map;
 
 public class AutomatEventListenerCreate implements AutomatEventListener {
 
-    private Automat automat;
+    private AutomatController automat;
     private OutputEventHandler outputEventHandler;
 
-    public AutomatEventListenerCreate(Automat automat, OutputEventHandler outputEventHandler) {
-        this.automat = automat;
+    public AutomatEventListenerCreate(OutputEventHandler outputEventHandler, AutomatController automatController) {
+        this.automat = automatController;
         this.outputEventHandler = outputEventHandler;
+
     }
 
     @Override
@@ -42,8 +44,7 @@ public class AutomatEventListenerCreate implements AutomatEventListener {
         String name = (String) event.getData().get(DataType.hersteller);
         try {
             automat.createHersteller(name);
-            OutputEvent outputEvent = new OutputEvent(this, "erfolg" , MessageType.success);
-            outputEventHandler.handle(outputEvent);
+            Output.print(this, "erfolg", MessageType.success, outputEventHandler);
         } catch (Exception e) {
             OutputEvent outputEvent = new OutputEvent(this, e.getMessage(), MessageType.error);
             outputEventHandler.handle(outputEvent);
@@ -80,8 +81,9 @@ public class AutomatEventListenerCreate implements AutomatEventListener {
                     throw new Exception("Kuchenart nicht erkannt");
             }
             automat.createKuchen(kuchenArt, hersteller,preis,naehrwert,allergene,kremObstData,haltbarkeit );
-            OutputEvent outputEvent = new OutputEvent(this, "erfolg", MessageType.success);
-            outputEventHandler.handle(outputEvent);
+            Output.print(this, "erfolg", MessageType.success, outputEventHandler);
+            automat.aktualisiereAllergene();
+            automat.aktualisiereKuchenCapacity();
         } catch (Exception e) {
             OutputEvent outputEvent = new OutputEvent(this, e.getMessage(), MessageType.error);
             outputEventHandler.handle(outputEvent);

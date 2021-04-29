@@ -20,8 +20,10 @@ public class OutputEventListenerPrint implements OutputEventListener {
                 case success:
                     out.printLine("\u001B[36m \n --- " + event.getText() + " --- \n \u001B[0m");
                     break;
+                case warning:
+                    out.printLine("\u001B[33m \n --- " + event.getText() + " --- \n \u001B[0m");
+                    break;
             }
-
         }
     }
 }

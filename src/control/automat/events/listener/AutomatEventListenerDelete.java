@@ -1,20 +1,22 @@
 package control.automat.events.listener;
 
 import control.automat.Automat;
+import control.automat.AutomatController;
 import control.automat.events.AutomatEvent;
 import control.automat.events.AutomatEventListener;
 import control.automat.events.DataType;
 import view.output.MessageType;
+import view.output.Output;
 import view.output.OutputEvent;
 import view.output.OutputEventHandler;
 
 public class AutomatEventListenerDelete implements AutomatEventListener {
 
-    private Automat automat;
+    private AutomatController automat;
     private OutputEventHandler outputEventHandler;
 
-    public AutomatEventListenerDelete(Automat automat, OutputEventHandler outputEventHandler) {
-        this.automat = automat;
+    public AutomatEventListenerDelete(OutputEventHandler outputEventHandler, AutomatController automatController) {
+        this.automat = automatController;
         this.outputEventHandler = outputEventHandler;
     }
 
@@ -36,8 +38,9 @@ public class AutomatEventListenerDelete implements AutomatEventListener {
         int fachnummer = (int) event.getData().get(DataType.fachnummer);
         try{
             automat.deleteKuchen(fachnummer);
-            OutputEvent outputEvent = new OutputEvent(this, "erfolg", MessageType.success);
-            outputEventHandler.handle(outputEvent);
+            Output.print(this, "erfolg", MessageType.success, outputEventHandler);
+            automat.aktualisiereKuchenCapacity();
+            automat.aktualisiereAllergene();
             return;
         } catch (Exception e) {
             OutputEvent outputEvent = new OutputEvent(this, e.getMessage(), MessageType.error);
@@ -49,8 +52,7 @@ public class AutomatEventListenerDelete implements AutomatEventListener {
         String herstellerName = (String) event.getData().get(DataType.hersteller);
         try{
             automat.deleteHersteller(herstellerName);
-            OutputEvent outputEvent = new OutputEvent(this, "erfolg", MessageType.success);
-            outputEventHandler.handle(outputEvent);
+            Output.print(this, "erfolg", MessageType.success, outputEventHandler);
             return;
         } catch (Exception e) {
             OutputEvent outputEvent = new OutputEvent(this, e.getMessage(), MessageType.error);

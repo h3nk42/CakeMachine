@@ -1,6 +1,6 @@
 package control.automat.events.listener;
 
-import control.automat.Automat;
+import control.automat.AutomatController;
 import control.automat.events.AutomatEvent;
 import control.automat.events.AutomatEventListener;
 import control.automat.events.DataType;
@@ -8,18 +8,20 @@ import model.automat.verkaufsobjekte.Allergen;
 import model.automat.verkaufsobjekte.kuchen.KuchenArt;
 import model.automat.verkaufsobjekte.kuchen.VerkaufsKuchen;
 import view.output.MessageType;
+import view.output.Output;
 import view.output.OutputEvent;
 import view.output.OutputEventHandler;
 
 import java.util.List;
+import java.util.Set;
 
 public class AutomatEventListenerRead implements AutomatEventListener {
 
-    private Automat automat;
     private OutputEventHandler outputEventHandler;
+    private AutomatController automat;
 
-    public AutomatEventListenerRead(Automat automat, OutputEventHandler outputEventHandler) {
-        this.automat = automat;
+    public AutomatEventListenerRead(OutputEventHandler outputEventHandler, AutomatController automatController) {
+        this.automat = automatController;
         this.outputEventHandler = outputEventHandler;
     }
 
@@ -43,17 +45,16 @@ public class AutomatEventListenerRead implements AutomatEventListener {
     private void handleReadAllergene(AutomatEvent event) {
         StringBuilder sb = new StringBuilder();
         boolean included = (boolean) event.getData().get(DataType.bool);
-        List<Allergen> tempList = automat.getAllergene(included);
+        Set<Allergen> tempset = automat.getAllergene(included);
         sb.append("[");
-        tempList.forEach(allergen -> sb.append(""
+        tempset.forEach(allergen -> sb.append(""
                 + allergen
                 + ","
         ));
         sb.append("]");
         String allergeneTitle = "";
         if (!included) allergeneTitle = "nicht ";
-        OutputEvent outputEvent = new OutputEvent(this, allergeneTitle + "vorhandene Allergene:" + sb, MessageType.success);
-        outputEventHandler.handle(outputEvent);
+        Output.print(this, allergeneTitle + "vorhandene Allergene:" + sb, MessageType.success, outputEventHandler);
     }
 
     private void handleReadKuchen(AutomatEvent event) {
@@ -97,8 +98,7 @@ public class AutomatEventListenerRead implements AutomatEventListener {
                     + "}, \n"));
         }
         sb.append("]");
-        OutputEvent outputEvent = new OutputEvent(this, "Kuchen:" + sb, MessageType.success);
-        outputEventHandler.handle(outputEvent);
+        Output.print(this, "Kuchen:" + sb, MessageType.success, outputEventHandler);
     }
 
     private void handleReadHersteller(AutomatEvent event) {
