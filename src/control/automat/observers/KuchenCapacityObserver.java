@@ -1,44 +1,46 @@
 package control.automat.observers;
 
+import control.automat.Automat;
+import control.automat.AutomatController;
 import view.output.MessageType;
 import view.output.Output;
 import view.output.OutputEventHandler;
 
 public class KuchenCapacityObserver implements Observer {
 
-    private AutomatSubject automatSubject;
+    private AutomatController automatController;
     private OutputEventHandler outputEventHandler;
     private Double lastCapacity;
     private boolean over90;
 
-    public KuchenCapacityObserver(AutomatSubject automatSubject, OutputEventHandler outputEventHandler) {
-        this.automatSubject = automatSubject;
+    public KuchenCapacityObserver(AutomatController automatController, OutputEventHandler outputEventHandler) {
+        this.automatController = automatController;
         this.outputEventHandler = outputEventHandler;
-        automatSubject.meldeAn(this);
+        automatController.meldeAn(this);
         this.lastCapacity = Double.valueOf(0);
         this.over90 = false;
     }
 
     @Override
     public void aktualisiere() {
-            if (automatSubject.getCapacity()!=lastCapacity) {
+            if (automatController.getCapacity()!=lastCapacity) {
                 checkCapacity();
                 updateCapacity();
             }
     }
 
     private void checkCapacity() {
-        if(automatSubject.getCapacity() > 0.9) {
+        if(automatController.getCapacity() > 0.9) {
             if(!over90) {
                 Output.print(this, "Kapazität über 90%!", MessageType.warning, outputEventHandler);
                 this.over90 = true;
             }
-        } else if (automatSubject.getCapacity() <= 0.5) {
+        } else if (automatController.getCapacity() <= 0.5) {
             this.over90 = false;
         }
     }
 
     private void updateCapacity() {
-        lastCapacity = automatSubject.getCapacity();
+        lastCapacity = automatController.getCapacity();
     }
 }

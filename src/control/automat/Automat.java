@@ -13,13 +13,13 @@ import java.util.*;
 
 public class Automat {
 
-    private List<VerkaufsKuchen> faecher;
-    private Map<Hersteller, Integer> kuchenCounter;
-    private Map<KuchenArt, ArrayList<VerkaufsKuchen>> kuchenMap;
-    private Map<Allergen, Integer> allergeneVorhanden;
-    private HerstellerFactory herstellerFactory;
-    private Map<VerkaufsKuchen, Date> inspektionsDaten;
-    private Integer fachAnzahl;
+    private volatile List<VerkaufsKuchen> faecher;
+    private volatile Map<Hersteller, Integer> kuchenCounter;
+    private volatile Map<KuchenArt, ArrayList<VerkaufsKuchen>> kuchenMap;
+    private volatile Map<Allergen, Integer> allergeneVorhanden;
+    private volatile HerstellerFactory herstellerFactory;
+    private volatile Map<VerkaufsKuchen, Date> inspektionsDaten;
+    private volatile Integer fachAnzahl;
 
     public Automat(Integer fachAnzahl) {
         this.fachAnzahl = fachAnzahl;
@@ -101,7 +101,7 @@ public class Automat {
         }
     }
 
-    public List<VerkaufsKuchen> getKuchen() {
+    public synchronized List<VerkaufsKuchen> getKuchen() {
         List<VerkaufsKuchen> tempList = new ArrayList<VerkaufsKuchen>();
         for (KuchenArt kuchenArt : KuchenArt.values()) {
             if (this.kuchenMap.get(kuchenArt) != null) {
@@ -116,7 +116,7 @@ public class Automat {
 
     }
 
-    public VerkaufsKuchen createKuchen(KuchenArt kuchenArt, Hersteller hersteller, BigDecimal preis, int naehrwert, Allergen[] allergene, String[] extraData, Integer haltbarkeitInStunden ) throws Exception {
+    public synchronized VerkaufsKuchen createKuchen(KuchenArt kuchenArt, Hersteller hersteller, BigDecimal preis, int naehrwert, Allergen[] allergene, String[] extraData, Integer haltbarkeitInStunden ) throws Exception {
         switch (kuchenArt) {
             case Kremkuchen:
                 if(extraData.length != 1) {
@@ -211,9 +211,9 @@ public class Automat {
         }
     }
 
-    public void deleteKuchen(int index) throws Exception {
+    public synchronized void deleteKuchen(int index) throws Exception {
         if (index >= this.fachAnzahl || index < 0){
-            throw new Exception("Fachnummer ausserhalb der Fachanzahl, möglich: 0 - " + (fachAnzahl-1));
+            throw new Exception("Fachnummer ausserhalb der Fachanzahl, möglich: 0 - " + (fachAnzahl-1) + "aktueller index: " + index);
         } else if ( this.faecher.get(index) == null) {
             throw new Exception("Fach bereits leer");
         }
@@ -261,5 +261,12 @@ public class Automat {
 
     public int getFachanzahl() {
         return fachAnzahl;
+    }
+
+    public boolean isFull() {
+        return (this.getKuchen().size() == fachAnzahl);
+    }
+    public boolean isEmpty(){
+        return (this.getKuchen().size()== 0);
     }
 }

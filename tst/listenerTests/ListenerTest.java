@@ -12,9 +12,9 @@ import control.console.AutomatConsole;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import view.input.InputEvent;
-import view.input.InputEventHandler;
-import view.input.InputEventType;
+import control.console.input.InputEvent;
+import control.console.input.InputEventHandler;
+import control.console.input.InputEventType;
 import view.output.*;
 
 import java.io.ByteArrayOutputStream;
@@ -48,13 +48,12 @@ public class ListenerTest {
             OutputEventListener outputEventListener = new OutputEventListenerPrint(out);
             outputEventHandler.add(outputEventListener, true);
 
-            /* ------- OBSERVER SETUP ------- */
-            AutomatSubject automatSubject = new AutomatSubject();
-            KuchenCapacityObserver kuchenCapacityObserver = new KuchenCapacityObserver(automatSubject, outputEventHandler);
-            AllergeneObserver allergeneObserver = new AllergeneObserver(automatSubject, outputEventHandler);
-
             /* ------- AUTOMAT SETUP ------- */
-            AutomatController automatController = new AutomatController(FACHANZAHL,automatEventHandler, outputEventHandler, automatSubject);
+            AutomatController automatController = new AutomatController(FACHANZAHL,automatEventHandler, outputEventHandler);
+
+            /* ------- OBSERVER SETUP ------- */
+            KuchenCapacityObserver kuchenCapacityObserver = new KuchenCapacityObserver(automatController, outputEventHandler);
+            AllergeneObserver allergeneObserver = new AllergeneObserver(automatController, outputEventHandler);
 
             /* ------- CONSOLE SETUP ------- */
             AutomatConsole console = new AutomatConsole(outputEventHandler, automatEventHandler);

@@ -5,22 +5,29 @@ import control.automat.events.listener.AutomatEventListenerCreate;
 import control.automat.events.listener.AutomatEventListenerDelete;
 import control.automat.events.listener.AutomatEventListenerRead;
 import control.automat.observers.AutomatSubject;
+import control.automat.observers.Observer;
+import control.automat.observers.Subjekt;
+import model.automat.verkaufsobjekte.Allergen;
 import view.output.OutputEventHandler;
 
-public class AutomatController extends Automat {
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
-    //private final Automat automat;
+public class AutomatController extends Automat implements Subjekt {
+
     private AutomatEventHandler automatEventHandler;
     private OutputEventHandler outputEventHandler;
-    private AutomatSubject automatSubject;
+
+    private List<Observer> beobachterList = new LinkedList<>();
+    private double kuchenCapacity;
+    private Set<Allergen> allergene;
 
 
-    public AutomatController(Integer fachAnzahl, AutomatEventHandler automatEventHandler, OutputEventHandler outputEventHandler, AutomatSubject automatSubject) {
+    public AutomatController(Integer fachAnzahl, AutomatEventHandler automatEventHandler, OutputEventHandler outputEventHandler) {
         super(fachAnzahl);
-        //this.automat = new Automat(fachAnzahl);
         this.automatEventHandler = automatEventHandler;
         this.outputEventHandler = outputEventHandler;
-        this.automatSubject = automatSubject;
         AutomatEventListenerRead automatEventListenerRead = new AutomatEventListenerRead(outputEventHandler, this);
         AutomatEventListenerCreate automatEventListenerCreate = new AutomatEventListenerCreate(outputEventHandler, this);
         AutomatEventListenerDelete automatEventListenerDelete = new AutomatEventListenerDelete(outputEventHandler,this);
@@ -32,11 +39,11 @@ public class AutomatController extends Automat {
 
     /* ------- OBSERVER STATUS UPDATES ------- */
     public void aktualisiereKuchenCapacity() {
-        automatSubject.setKuchenCapacity(calcKuchenCapacity());
+        setKuchenCapacity(calcKuchenCapacity());
     }
 
     public void aktualisiereAllergene() {
-        automatSubject.setAllergene(getAllergene(true));
+        setAllergene(getAllergene(true));
     }
 
     protected double calcKuchenCapacity() {
@@ -44,5 +51,37 @@ public class AutomatController extends Automat {
         double fachAnzahl = Double.valueOf(getFachanzahl());
         double capacity = kuchenAnzahl/fachAnzahl;
         return capacity;
+    }
+
+
+    @Override
+    public void meldeAn(Observer beobachter) {
+        this.beobachterList.add(beobachter);
+    }
+
+    @Override
+    public void meldeAb(Observer beobachter) {
+        this.beobachterList.remove(beobachter);
+    }
+
+    @Override
+    public void benachrichtige() {
+        for (Observer beobachter : beobachterList) {
+            beobachter.aktualisiere();
+        }
+    }
+
+    public double getCapacity() {
+        return kuchenCapacity;
+    }
+    public Set<Allergen> getAllergene() {return allergene;}
+
+    public void setKuchenCapacity(double kuchenCapacity) {
+        this.kuchenCapacity = kuchenCapacity;
+        this.benachrichtige();
+    }
+    public void setAllergene(Set<Allergen> allergene) {
+        this.allergene = allergene;
+        this.benachrichtige();
     }
 }

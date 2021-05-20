@@ -1,5 +1,6 @@
 package control.automat.observers;
 
+import control.automat.AutomatController;
 import model.automat.verkaufsobjekte.Allergen;
 import view.output.MessageType;
 import view.output.Output;
@@ -10,31 +11,31 @@ import java.util.Set;
 
 public class AllergeneObserver implements Observer {
 
-    private AutomatSubject automatSubject;
+    private AutomatController automatController;
     private OutputEventHandler outputEventHandler;
     private Set<Allergen> lastAllergene;
 
-    public AllergeneObserver(AutomatSubject automatSubject, OutputEventHandler outputEventHandler) {
-        this.automatSubject = automatSubject;
+    public AllergeneObserver(AutomatController automatController, OutputEventHandler outputEventHandler) {
+        this.automatController = automatController;
         this.outputEventHandler = outputEventHandler;
         this.lastAllergene = new HashSet<>();
-        automatSubject.meldeAn(this);
+        automatController.meldeAn(this);
     }
 
     @Override
     public void aktualisiere() {
             if (!checkIfAllergeneMatch()) {
-                lastAllergene = automatSubject.getAllergene();
+                lastAllergene = automatController.getAllergene();
                 Output.print(this, "Allergene haben sich verändert!", MessageType.warning, outputEventHandler);
             }
     }
 
     private boolean checkIfAllergeneMatch() {
-        if(lastAllergene.size()!=automatSubject.getAllergene().size()){
+        if(lastAllergene.size()!=automatController.getAllergene().size()){
             return false;
         } else {
             for(Allergen a: lastAllergene) {
-                if( !automatSubject.getAllergene().contains(a) ){
+                if( !automatController.getAllergene().contains(a) ){
                     return false;
                 }
             }
