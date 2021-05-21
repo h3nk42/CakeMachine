@@ -4,9 +4,8 @@ import control.automat.AutomatController;
 import control.automat.events.AutomatEvent;
 import control.automat.events.AutomatEventHandler;
 import control.automat.events.DataType;
-import control.automat.events.OperationType;
+import control.automat.events.AutomatOperationType;
 import control.automat.observers.AllergeneObserver;
-import control.automat.observers.AutomatSubject;
 import control.automat.observers.KuchenCapacityObserver;
 import control.console.AutomatConsole;
 import model.automat.verkaufsobjekte.Allergen;
@@ -73,7 +72,7 @@ public class ObserverTest {
     void testCapacityObserver() {
         HashMap tempMap = new HashMap<DataType, Object>();
         tempMap.put(DataType.hersteller, "rewe");
-        AutomatEvent automatEventCreate = new AutomatEvent(this, tempMap, OperationType.cHersteller);
+        AutomatEvent automatEventCreate = new AutomatEvent(this, tempMap, AutomatOperationType.cHersteller);
         automatEventHandler.handle(automatEventCreate);
 
         tempMap.put(DataType.kuchenart, KuchenArt.Kremkuchen);
@@ -83,7 +82,7 @@ public class ObserverTest {
         tempMap.put(DataType.haltbarkeit, 24);
         tempMap.put(DataType.allergene, new Allergen[]{Allergen.Gluten,Allergen.Gluten});
         tempMap.put(DataType.kremsorte, "vanille");
-        AutomatEvent automatEvent = new AutomatEvent(this, tempMap,  OperationType.cKuchen);
+        AutomatEvent automatEvent = new AutomatEvent(this, tempMap,  AutomatOperationType.cKuchen);
         for (int i = 0; i < 10; i++) {
             outContent.reset();
             automatEventHandler.handle(automatEvent);
@@ -102,7 +101,7 @@ public class ObserverTest {
     void testAllergenObserverAddCake() {
         HashMap tempMap = new HashMap<DataType, Object>();
         tempMap.put(DataType.hersteller, "rewe");
-        AutomatEvent automatEventCreate = new AutomatEvent(this, tempMap, OperationType.cHersteller);
+        AutomatEvent automatEventCreate = new AutomatEvent(this, tempMap, AutomatOperationType.cHersteller);
         automatEventHandler.handle(automatEventCreate);
 
         tempMap.put(DataType.kuchenart, KuchenArt.Kremkuchen);
@@ -112,7 +111,7 @@ public class ObserverTest {
         tempMap.put(DataType.haltbarkeit, 24);
         tempMap.put(DataType.allergene, new Allergen[]{Allergen.Gluten,Allergen.Gluten});
         tempMap.put(DataType.kremsorte, "vanille");
-        AutomatEvent automatEvent = new AutomatEvent(this, tempMap,  OperationType.cKuchen);
+        AutomatEvent automatEvent = new AutomatEvent(this, tempMap,  AutomatOperationType.cKuchen);
         outContent.reset();
         automatEventHandler.handle(automatEvent);
 
@@ -128,7 +127,7 @@ public class ObserverTest {
     void testAllergenObserverAddDifferentCake() {
         HashMap tempMap = new HashMap<DataType, Object>();
         tempMap.put(DataType.hersteller, "rewe");
-        AutomatEvent automatEventCreate = new AutomatEvent(this, tempMap, OperationType.cHersteller);
+        AutomatEvent automatEventCreate = new AutomatEvent(this, tempMap, AutomatOperationType.cHersteller);
         automatEventHandler.handle(automatEventCreate);
 
         tempMap.put(DataType.kuchenart, KuchenArt.Kremkuchen);
@@ -138,7 +137,7 @@ public class ObserverTest {
         tempMap.put(DataType.haltbarkeit, 24);
         tempMap.put(DataType.allergene, new Allergen[]{Allergen.Gluten,Allergen.Gluten});
         tempMap.put(DataType.kremsorte, "vanille");
-        AutomatEvent automatEvent = new AutomatEvent(this, tempMap,  OperationType.cKuchen);
+        AutomatEvent automatEvent = new AutomatEvent(this, tempMap,  AutomatOperationType.cKuchen);
         automatEventHandler.handle(automatEvent);
         tempMap.put(DataType.allergene, new Allergen[]{Allergen.Gluten,Allergen.Haselnuss});
         outContent.reset();
@@ -155,7 +154,7 @@ public class ObserverTest {
     void testAllergenObserverAddSameCakeTwice() {
         HashMap tempMap = new HashMap<DataType, Object>();
         tempMap.put(DataType.hersteller, "rewe");
-        AutomatEvent automatEventCreate = new AutomatEvent(this, tempMap, OperationType.cHersteller);
+        AutomatEvent automatEventCreate = new AutomatEvent(this, tempMap, AutomatOperationType.cHersteller);
         automatEventHandler.handle(automatEventCreate);
 
         tempMap.put(DataType.kuchenart, KuchenArt.Kremkuchen);
@@ -165,7 +164,7 @@ public class ObserverTest {
         tempMap.put(DataType.haltbarkeit, 24);
         tempMap.put(DataType.allergene, new Allergen[]{Allergen.Gluten,Allergen.Gluten});
         tempMap.put(DataType.kremsorte, "vanille");
-        AutomatEvent automatEvent = new AutomatEvent(this, tempMap,  OperationType.cKuchen);
+        AutomatEvent automatEvent = new AutomatEvent(this, tempMap,  AutomatOperationType.cKuchen);
         automatEventHandler.handle(automatEvent);
         outContent.reset();
         automatEventHandler.handle(automatEvent);

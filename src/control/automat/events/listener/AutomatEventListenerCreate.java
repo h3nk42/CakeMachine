@@ -45,6 +45,7 @@ public class AutomatEventListenerCreate implements AutomatEventListener {
         try {
             automat.createHersteller(name);
             Output.print(this, "erfolg", MessageType.success, outputEventHandler);
+            automat.aktualisiereHersteller();
         } catch (Exception e) {
             OutputEvent outputEvent = new OutputEvent(this, e.getMessage(), MessageType.error);
             outputEventHandler.handle(outputEvent);

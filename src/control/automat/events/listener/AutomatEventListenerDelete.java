@@ -53,6 +53,7 @@ public class AutomatEventListenerDelete implements AutomatEventListener {
         try{
             automat.deleteHersteller(herstellerName);
             Output.print(this, "erfolg", MessageType.success, outputEventHandler);
+            automat.aktualisiereHersteller();
             return;
         } catch (Exception e) {
             OutputEvent outputEvent = new OutputEvent(this, e.getMessage(), MessageType.error);

@@ -4,6 +4,7 @@ import Threads.DeleteCakeThread;
 import control.automat.AutomatController;
 import control.automat.events.AutomatEventHandler;
 import control.automat.observers.CreateDeleteCakeObserver;
+import view.gui.events.UpdateGuiEventHandler;
 import view.output.Output;
 import view.output.OutputEventHandler;
 import view.output.OutputEventListener;
@@ -17,6 +18,7 @@ public class Simulation1 {
         /* ------- HANDLER SETUP ------- */
         OutputEventHandler outputEventHandler = new OutputEventHandler();
         AutomatEventHandler automatEventHandler = new AutomatEventHandler();
+        UpdateGuiEventHandler updateGuiEventHandler = new UpdateGuiEventHandler();
         /* ------- OUTPUT SETUP ------- */
         Output out = new Output();
         OutputEventListener outputEventListener = new OutputEventListenerPrint(out);
@@ -25,10 +27,11 @@ public class Simulation1 {
         AutomatController automatController = new AutomatController(FACHANZAHL,automatEventHandler, outputEventHandler);
         AutomatSimWrapper automatSimWrapper = new AutomatSimWrapper(automatController,automatEventHandler);
 
+
         /* ------- OBSERVER SETUP ------- */
         //KuchenCapacityObserver kuchenCapacityObserver = new KuchenCapacityObserver(automatController, outputEventHandler);
         //AllergeneObserver allergeneObserver = new AllergeneObserver(automatController, outputEventHandler);
-        CreateDeleteCakeObserver anyChangeObserver = new CreateDeleteCakeObserver(automatController, outputEventHandler);
+        CreateDeleteCakeObserver anyChangeObserver = new CreateDeleteCakeObserver(automatController, outputEventHandler,updateGuiEventHandler);
 
         String[] herstellerArr = new String[]{"rewe","lidl","frodo"};
         for (int i = 0; i < herstellerArr.length; i++) {

@@ -4,9 +4,8 @@ import control.automat.AutomatController;
 import control.automat.events.AutomatEvent;
 import control.automat.events.AutomatEventHandler;
 import control.automat.events.DataType;
-import control.automat.events.OperationType;
+import control.automat.events.AutomatOperationType;
 import control.automat.observers.AllergeneObserver;
-import control.automat.observers.AutomatSubject;
 import control.automat.observers.KuchenCapacityObserver;
 import control.console.AutomatConsole;
 import org.junit.jupiter.api.Assertions;
@@ -130,10 +129,10 @@ public class ListenerTest {
     void testCreateReadEvent() {
         HashMap tempMap = new HashMap<DataType, Object>();
         tempMap.put(DataType.hersteller, "rewe");
-        AutomatEvent automatEventCreate = new AutomatEvent(this, tempMap, OperationType.cHersteller);
+        AutomatEvent automatEventCreate = new AutomatEvent(this, tempMap, AutomatOperationType.cHersteller);
         automatEventHandler.handle(automatEventCreate);
         outContent.toString();
-        AutomatEvent automatEventRead = new AutomatEvent(this, new HashMap<DataType, Object>(), OperationType.rHersteller);
+        AutomatEvent automatEventRead = new AutomatEvent(this, new HashMap<DataType, Object>(), AutomatOperationType.rHersteller);
         automatEventHandler.handle(automatEventRead);
         Assertions.assertEquals("\u001B[36m "+ System.lineSeparator() +
                 " --- erfolg --- "+ System.lineSeparator() +
@@ -149,12 +148,12 @@ public class ListenerTest {
     void testReadDeleteEvent() {
         HashMap tempMap = new HashMap<DataType, Object>();
         tempMap.put(DataType.hersteller, "rewe");
-        AutomatEvent automatEventCreate = new AutomatEvent(this, tempMap, OperationType.cHersteller);
+        AutomatEvent automatEventCreate = new AutomatEvent(this, tempMap, AutomatOperationType.cHersteller);
         automatEventHandler.handle(automatEventCreate);
         outContent.reset();
-        AutomatEvent automatEventDelete = new AutomatEvent(this, tempMap, OperationType.dHersteller);
+        AutomatEvent automatEventDelete = new AutomatEvent(this, tempMap, AutomatOperationType.dHersteller);
         automatEventHandler.handle(automatEventDelete);
-        AutomatEvent automatEventRead = new AutomatEvent(this, new HashMap<DataType, Object>(), OperationType.rHersteller);
+        AutomatEvent automatEventRead = new AutomatEvent(this, new HashMap<DataType, Object>(), AutomatOperationType.rHersteller);
         automatEventHandler.handle(automatEventRead);
         Assertions.assertEquals("\u001B[36m " +System.lineSeparator() +
                 " --- erfolg --- " +System.lineSeparator() +

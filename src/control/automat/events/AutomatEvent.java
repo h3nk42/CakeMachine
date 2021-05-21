@@ -1,25 +1,23 @@
 package control.automat.events;
 
-import control.console.ConsoleState;
-
 import java.util.EventObject;
 import java.util.Map;
 
 public class AutomatEvent extends EventObject {
     private Map<DataType, Object> data;
-    private OperationType operationType;
+    private AutomatOperationType automatOperationType;
 
-    public AutomatEvent(Object source, Map<DataType, Object> data, OperationType operationType) {
+    public AutomatEvent(Object source, Map<DataType, Object> data, AutomatOperationType automatOperationType) {
         super(source);
         this.data = data;
-        this.operationType = operationType;
+        this.automatOperationType = automatOperationType;
     }
 
     public Map<DataType, Object> getData() {
         return this.data;
     }
 
-    public OperationType getOperationType() {
-        return operationType;
+    public AutomatOperationType getOperationType() {
+        return automatOperationType;
     }
 }

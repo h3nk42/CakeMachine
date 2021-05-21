@@ -1,10 +1,7 @@
 package Threads;
 
 import control.automat.AutomatController;
-import control.automat.events.AutomatEvent;
-import control.automat.events.AutomatEventHandler;
 import control.automat.events.DataType;
-import control.automat.events.OperationType;
 import model.automat.verkaufsobjekte.kuchen.VerkaufsKuchen;
 
 import java.util.HashMap;

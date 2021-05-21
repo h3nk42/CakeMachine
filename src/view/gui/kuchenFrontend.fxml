@@ -4,34 +4,51 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.SpinnerValueFactory.DoubleSpinnerValueFactory?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-
-<AnchorPane maxHeight="-Infinity" fx:controller="view.gui.FeController" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="712.0" prefWidth="995.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="712.0" prefWidth="995.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.gui.FeController">
    <children>
-      <Button layoutX="633.0" layoutY="114.0" mnemonicParsing="false" text="Hinzufügen" onAction="#printHelloWorld" />
-      <Label layoutX="166.0" layoutY="78.0" text="Preis" />
-      <ListView layoutX="633.0" layoutY="169.0" prefHeight="181.0" prefWidth="126.0" />
-      <TextArea layoutX="633.0" layoutY="63.0" prefHeight="26.0" prefWidth="126.0" fx:id="herstellerInputField"  />
-      <Button layoutX="163.0" layoutY="228.0" mnemonicParsing="false" text="Hinzufügen" />
-      <Label layoutX="166.0" layoutY="21.0" text="Kuchen" />
-      <ListView layoutX="165.0" layoutY="275.0" prefHeight="181.0" prefWidth="387.0" />
-      <TextArea layoutX="166.0" layoutY="100.0" prefHeight="26.0" prefWidth="119.0" />
-      <RadioButton layoutX="163.0" layoutY="44.0" mnemonicParsing="false" text="Kremkuchen" />
-      <RadioButton layoutX="281.0" layoutY="44.0" mnemonicParsing="false" text="Obstkuchen" />
-      <RadioButton layoutX="398.0" layoutY="44.0" mnemonicParsing="false" text="Obsttorte" />
-      <TextArea layoutX="299.0" layoutY="100.0" prefHeight="26.0" prefWidth="119.0" />
-      <TextArea layoutX="437.0" layoutY="100.0" prefHeight="26.0" prefWidth="119.0" />
-      <TextArea layoutX="165.0" layoutY="169.0" prefHeight="26.0" prefWidth="119.0" />
-      <TextArea layoutX="298.0" layoutY="169.0" prefHeight="26.0" prefWidth="119.0" />
-      <TextArea layoutX="436.0" layoutY="169.0" prefHeight="26.0" prefWidth="119.0" />
-      <Label layoutX="642.0" layoutY="37.0" text="Hersteller" />
-      <Label layoutX="300.0" layoutY="78.0" text="Naehrwert" />
-      <Label layoutX="441.0" layoutY="78.0" text="Haltbarkeit" />
-      <Label layoutX="166.0" layoutY="147.0" text="Allergene" />
-      <Label layoutX="300.0" layoutY="147.0" text="Krem/Obstsorte" />
-      <Label layoutX="441.0" layoutY="147.0" text=".." />
+      <Button layoutX="502.0" layoutY="111.0" mnemonicParsing="false" onAction="#createHerstellerButtonHandler" text="Hinzufügen" />
+      <Label layoutX="35.0" layoutY="75.0" text="Preis (cent)" />
+      <ListView fx:id="herstellerView" layoutX="502.0" layoutY="166.0" prefHeight="181.0" prefWidth="126.0" />
+      <Button layoutX="502.0" layoutY="363.0" mnemonicParsing="false" onAction="#deleteHerstellerButtonHandler" text="Entfernen" />
+      <TextArea fx:id="herstellerInputField" layoutX="502.0" layoutY="60.0" prefHeight="26.0" prefWidth="126.0" />
+      <Button layoutX="32.0" layoutY="225.0" mnemonicParsing="false" onAction="#createKuchenButtonHandler" text="Hinzufügen" />
+      <Label layoutX="34.0" layoutY="14.0" text="Kuchen" />
+      <ListView layoutX="34.0" layoutY="272.0" prefHeight="181.0" prefWidth="387.0" />
+      <RadioButton fx:id="kremkuchenButton" layoutX="32.0" layoutY="41.0" mnemonicParsing="false" onAction="#kremkuchenButtonHandler" selected="true" text="Kremkuchen" />
+      <RadioButton fx:id="obstkuchenButton" layoutX="150.0" layoutY="41.0" mnemonicParsing="false" onAction="#obstkuchenButtonHandler" text="Obstkuchen" />
+      <RadioButton fx:id="obsttorteButton" layoutX="267.0" layoutY="41.0" mnemonicParsing="false" onAction="#obsttorteButtonHandler" text="Obsttorte" />
+      <TextArea fx:id="allergeneInput" layoutX="34.0" layoutY="166.0" prefHeight="26.0" prefWidth="119.0" />
+      <TextArea fx:id="kremsorteInput" layoutX="167.0" layoutY="166.0" prefHeight="26.0" prefWidth="119.0" />
+      <TextArea fx:id="obstsorteInput" layoutX="305.0" layoutY="166.0" prefHeight="26.0" prefWidth="119.0" />
+      <Label layoutX="502.0" layoutY="33.0" text="Hersteller" />
+      <Label layoutX="169.0" layoutY="75.0" text="Naehrwert" />
+      <Label layoutX="300.0" layoutY="73.0" text="Haltbarkeit (Stunden)" />
+      <Label layoutX="35.0" layoutY="144.0" text="Allergene" />
+      <Label fx:id="kremsorteLabel" layoutX="169.0" layoutY="144.0" text="Kremsorte" />
+      <Label fx:id="obstsorteLabel" layoutX="305.0" layoutY="144.0" text="Obstsorte" />
+      <Spinner fx:id="preisSpinner" editable="false" layoutX="32.0" layoutY="98.0" prefHeight="18.0" prefWidth="106.0">
+      <valueFactory>
+         <SpinnerValueFactory.DoubleSpinnerValueFactory max="1000" min="10" />
+      </valueFactory>
+      </Spinner>
+      <Spinner fx:id="haltbarkeitSpinner" editable="false" layoutX="300.0" layoutY="98.0" prefHeight="18.0" prefWidth="106.0">
+         <valueFactory>
+            <SpinnerValueFactory.DoubleSpinnerValueFactory max="128" min="8" />
+         </valueFactory>
+      </Spinner>
+      <Spinner fx:id="naehrwertSpinner" editable="false" layoutX="167.0" layoutY="98.0" prefHeight="18.0" prefWidth="106.0">
+      <valueFactory>
+         <SpinnerValueFactory.DoubleSpinnerValueFactory max="2000" min="100" />
+      </valueFactory>
+      </Spinner>
+      <Button layoutX="32.0" layoutY="473.0" mnemonicParsing="false" text="entfernen" />
+      <ListView layoutX="27.0" layoutY="514.0" prefHeight="181.0" prefWidth="638.0" />
+      <Label layoutX="548.0" layoutY="491.0" text="Fehler Anzeige" />
+
    </children>
 </AnchorPane>

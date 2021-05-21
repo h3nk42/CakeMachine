@@ -1,6 +1,7 @@
 package control.automat.observers;
 
 import control.automat.AutomatController;
+import view.gui.events.UpdateGuiEventHandler;
 import view.output.MessageType;
 import view.output.Output;
 import view.output.OutputEventHandler;
@@ -9,11 +10,13 @@ public class CreateDeleteCakeObserver implements Observer {
 
     private AutomatController automatController;
     private OutputEventHandler outputEventHandler;
+    private UpdateGuiEventHandler updateGuiEventHandler;
     private Integer kuchenAnzahl = 0;
 
-    public CreateDeleteCakeObserver(AutomatController automatController, OutputEventHandler outputEventHandler){
+    public CreateDeleteCakeObserver(AutomatController automatController, OutputEventHandler outputEventHandler, UpdateGuiEventHandler updateGuiEventHandler){
         this.automatController = automatController;
         this.outputEventHandler = outputEventHandler;
+        this.updateGuiEventHandler = updateGuiEventHandler;
         automatController.meldeAn(this);
         updateKuchenAnzahl();
     }

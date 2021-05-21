@@ -3,7 +3,7 @@ package control.console;
 import control.automat.events.AutomatEvent;
 import control.automat.events.AutomatEventHandler;
 import control.automat.events.DataType;
-import control.automat.events.OperationType;
+import control.automat.events.AutomatOperationType;
 import model.automat.verkaufsobjekte.Allergen;
 import model.automat.verkaufsobjekte.kuchen.KuchenArt;
 import control.console.input.Input;
@@ -144,7 +144,7 @@ public class AutomatConsole implements InputEventListener {
             int fachnummer = Integer.parseInt(splitText[0]);
             Map<DataType, Object> tempMap = new HashMap<>();
             tempMap.put(DataType.fachnummer,fachnummer);
-            AutomatEvent automatEvent = new AutomatEvent(this, tempMap, OperationType.dKuchen);
+            AutomatEvent automatEvent = new AutomatEvent(this, tempMap, AutomatOperationType.dKuchen);
             automatEventHandler.handle(automatEvent);
             return true;
         }catch (Exception e) {
@@ -160,7 +160,7 @@ public class AutomatConsole implements InputEventListener {
             String herstellerName = extractString(splitText[0],10);
             Map<DataType, Object> tempMap = new HashMap<>();
             tempMap.put(DataType.hersteller, herstellerName);
-            AutomatEvent automatEvent = new AutomatEvent(this, tempMap, OperationType.dHersteller);
+            AutomatEvent automatEvent = new AutomatEvent(this, tempMap, AutomatOperationType.dHersteller);
             automatEventHandler.handle(automatEvent);
             return true;
         }catch (Exception e) {
@@ -184,7 +184,7 @@ public class AutomatConsole implements InputEventListener {
         String[] splitText = input.split("\\s+");
         switch (splitText[0]) {
             case "h":
-                AutomatEvent automatEvent = new AutomatEvent(this, new HashMap<>(), OperationType.rHersteller);
+                AutomatEvent automatEvent = new AutomatEvent(this, new HashMap<>(), AutomatOperationType.rHersteller);
                 automatEventHandler.handle(automatEvent);
                 return true;
             case "k":
@@ -206,12 +206,12 @@ public class AutomatConsole implements InputEventListener {
                 switch(enthalten) {
                     case "i":
                         tempMap.put(DataType.bool, true);
-                        automatEvent = new AutomatEvent(this, tempMap, OperationType.rAllergene);
+                        automatEvent = new AutomatEvent(this, tempMap, AutomatOperationType.rAllergene);
                         automatEventHandler.handle(automatEvent);
                         return true;
                     case "e":
                         tempMap.put(DataType.bool, false);
-                        automatEvent = new AutomatEvent(this, tempMap,  OperationType.rAllergene);
+                        automatEvent = new AutomatEvent(this, tempMap,  AutomatOperationType.rAllergene);
                         automatEventHandler.handle(automatEvent);
                         return true;
                     default:
@@ -240,7 +240,7 @@ public class AutomatConsole implements InputEventListener {
                 return false;
             }
         }
-        automatEvent = new AutomatEvent(this, tempMap,  OperationType.rKuchen);
+        automatEvent = new AutomatEvent(this, tempMap,  AutomatOperationType.rKuchen);
         automatEventHandler.handle(automatEvent);
         return true;
     }
@@ -287,7 +287,7 @@ public class AutomatConsole implements InputEventListener {
         ;
         Map<DataType, Object> tempMap = new HashMap<>();
         tempMap.put(DataType.hersteller, splitText[0]);
-        AutomatEvent automatEvent = new AutomatEvent(this, tempMap, OperationType.cHersteller);
+        AutomatEvent automatEvent = new AutomatEvent(this, tempMap, AutomatOperationType.cHersteller);
         automatEventHandler.handle(automatEvent);
         return true;
     }
@@ -329,17 +329,17 @@ public class AutomatConsole implements InputEventListener {
                 case Kremkuchen:
                     obstsorte = extractString(splitText[6], 10);
                     tempMap.put(DataType.obstsorte, obstsorte);
-                    return sendAutomatEvent(tempMap, OperationType.cKuchen);
+                    return sendAutomatEvent(tempMap, AutomatOperationType.cKuchen);
                 case Obstkuchen:
                     kremsorte = extractString(splitText[6], 10);
                     tempMap.put(DataType.kremsorte, kremsorte);
-                    return sendAutomatEvent(tempMap, OperationType.cKuchen);
+                    return sendAutomatEvent(tempMap, AutomatOperationType.cKuchen);
                 case Obsttorte:
                     obstsorte = extractString(splitText[6], 10);
                     kremsorte = extractString(splitText[7], 10);
                     tempMap.put(DataType.obstsorte, obstsorte);
                     tempMap.put(DataType.kremsorte, kremsorte);
-                    return sendAutomatEvent(tempMap, OperationType.cKuchen);
+                    return sendAutomatEvent(tempMap, AutomatOperationType.cKuchen);
             }
         } catch (Exception e) {
             sendOutPutEvent(e.getMessage(), MessageType.error);
@@ -348,8 +348,8 @@ public class AutomatConsole implements InputEventListener {
         return true;
     }
 
-    private boolean sendAutomatEvent(Map<DataType, Object> tempMap, OperationType operationType) {
-        AutomatEvent automatEvent = new AutomatEvent(this, tempMap,  operationType);
+    private boolean sendAutomatEvent(Map<DataType, Object> tempMap, AutomatOperationType automatOperationType) {
+        AutomatEvent automatEvent = new AutomatEvent(this, tempMap, automatOperationType);
         automatEventHandler.handle(automatEvent);
         return true;
     }
@@ -398,7 +398,7 @@ public class AutomatConsole implements InputEventListener {
         }
     }
 
-    private Allergen[] extractAllergene(String input) throws Exception {
+    public static Allergen[] extractAllergene(String input) throws Exception {
         input = input.toLowerCase();
         String[] inputArr = input.split("\\s*,\\s*");
         HashSet<Allergen> allergenSet = new HashSet<>();

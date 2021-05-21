@@ -10,6 +10,7 @@ import control.automat.observers.Subjekt;
 import model.automat.verkaufsobjekte.Allergen;
 import view.output.OutputEventHandler;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -20,8 +21,8 @@ public class AutomatController extends Automat implements Subjekt {
     private OutputEventHandler outputEventHandler;
 
     private List<Observer> beobachterList = new LinkedList<>();
-    private double kuchenCapacity;
-    private Set<Allergen> allergene;
+    private double kuchenCapacity = 0;
+    private Set<Allergen> allergene = new HashSet<>();
 
 
     public AutomatController(Integer fachAnzahl, AutomatEventHandler automatEventHandler, OutputEventHandler outputEventHandler) {
@@ -44,6 +45,10 @@ public class AutomatController extends Automat implements Subjekt {
 
     public void aktualisiereAllergene() {
         setAllergene(getAllergene(true));
+    }
+
+    public void aktualisiereHersteller() {
+        this.benachrichtige();
     }
 
     protected double calcKuchenCapacity() {

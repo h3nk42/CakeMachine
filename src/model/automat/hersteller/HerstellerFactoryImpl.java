@@ -12,6 +12,12 @@ public class HerstellerFactoryImpl implements HerstellerFactory {
 
     @Override
     public Hersteller produceHersteller(String _name) throws Exception {
+        if(_name.contains(" ")) {
+            throw new Exception("Keine Leerzeichen im Herstellernamen");
+        }
+        if(_name.equals("")) {
+            throw new Exception("Keine leeren Herstellernamen");
+        }
         if (this.herstellerListe.containsKey(_name.toLowerCase())) {
             throw new Exception("Identischer Hersteller schon vorhanden!");
         } else {

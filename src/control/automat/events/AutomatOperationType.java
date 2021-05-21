@@ -1,5 +1,5 @@
 package control.automat.events;
 
-public enum OperationType {
+public enum AutomatOperationType {
     cHersteller,cKuchen,rHersteller,rKuchen,rAllergene,dHersteller,dKuchen
 }
