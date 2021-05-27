@@ -113,7 +113,6 @@ public class Automat {
 
     public List<VerkaufsKuchen> getKuchen(KuchenArt kuchenArt) {
             return this.kuchenMap.get(kuchenArt);
-
     }
 
     public synchronized VerkaufsKuchen createKuchen(KuchenArt kuchenArt, Hersteller hersteller, BigDecimal preis, int naehrwert, Allergen[] allergene, String[] extraData, Integer haltbarkeitInStunden ) throws Exception {

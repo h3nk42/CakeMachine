@@ -416,6 +416,8 @@ public class AutomatConsole implements InputEventListener {
                 case "sesamsamen":
                     allergenSet.add(Allergen.Sesamsamen);
                     break;
+                case "":
+                    break;
                 default:
                     throw new Exception("Allergen nicht erkannt. [gluten, erdnuss, haselnuss, sesamsamen]");
             }

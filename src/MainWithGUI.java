@@ -59,7 +59,7 @@ public class MainWithGUI extends Application {
         FXMLLoader loader = new FXMLLoader( Objects.requireNonNull(getClass().getClassLoader().getResource("view/gui/kuchenFrontend.fxml")) );
         Parent root = loader.load();
         primaryStage.setTitle("Kuchenautomat");
-        Scene scene = new Scene(root, 800, 800);
+        Scene scene = new Scene(root, 900, 550);
         FeController feController = loader.getController();
         feController.setAutomatEventHandler(automatEventHandler);
         updateGuiEventHandler.add(feController);

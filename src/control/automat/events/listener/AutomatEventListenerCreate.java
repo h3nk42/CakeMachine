@@ -67,15 +67,24 @@ public class AutomatEventListenerCreate implements AutomatEventListener {
             switch(kuchenArt) {
                 case Obstkuchen:
                     obstsorte = (String) eventData.get(DataType.obstsorte);
+                    if( obstsorte.equals("")) {
+                        throw new Exception("Obstsorte leer");
+                    }
                     kremObstData = new String[]{obstsorte};
                     break;
                 case Kremkuchen:
                     kremsorte = (String) eventData.get(DataType.kremsorte);
+                    if( kremsorte.equals("")) {
+                        throw new Exception("Kremsorte leer");
+                    }
                     kremObstData = new String[]{kremsorte};
                     break;
                 case Obsttorte:
                     obstsorte = (String) eventData.get(DataType.obstsorte);
                     kremsorte = (String) eventData.get(DataType.kremsorte);
+                    if( kremsorte.equals("") || obstsorte.equals("")) {
+                        throw new Exception("Obstsorte | Kremsorte leer");
+                    }
                     kremObstData = new String[]{obstsorte,kremsorte};
                     break;
                 default:

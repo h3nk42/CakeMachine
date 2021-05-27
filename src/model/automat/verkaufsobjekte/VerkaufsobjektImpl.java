@@ -30,10 +30,10 @@ public class VerkaufsobjektImpl implements Verkaufsobjekt {
 
     @Override
     public String toString() {
-        return "{"+
+        return "fachnummer=" + getFachnummer() + ", " +
                 "preis=" + preis +
-                ", inspektionsdatum=" + getInspektionsdatum() +
-                ", fachnummer=" + getFachnummer() ;
+                ", inspektionsdatum=" + getInspektionsdatum()
+                 ;
     }
 
 

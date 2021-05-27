@@ -1,10 +1,16 @@
 package control.automat.observers;
 
 import control.automat.AutomatController;
+import control.automat.events.DataType;
+import view.gui.events.GuiEventType;
+import view.gui.events.UpdateGuiEvent;
 import view.gui.events.UpdateGuiEventHandler;
 import view.output.MessageType;
 import view.output.Output;
 import view.output.OutputEventHandler;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class CreateDeleteCakeObserver implements Observer {
 
@@ -26,11 +32,13 @@ public class CreateDeleteCakeObserver implements Observer {
         switch(updateKuchenAnzahl()) {
             case -1:
                 Output.print(this, "Kuchen entfernt", MessageType.warning, outputEventHandler);
+                sendUpdateEvent();
                 break;
             case 0:
                 //Output.print(this, "Kuchen gleich", MessageType.warning, outputEventHandler);
                 break;
             case 1:
+                sendUpdateEvent();
                 Output.print(this, "Kuchen hinzugefügt", MessageType.warning, outputEventHandler);
                 break;
         }
@@ -49,6 +57,13 @@ public class CreateDeleteCakeObserver implements Observer {
             setCount();
             return 0;
         }
+    }
+
+    private void sendUpdateEvent() {
+        Map<DataType, Object> eventData = new HashMap<>();
+        eventData.put(DataType.kuchenListe, automatController.getKuchen());
+        UpdateGuiEvent updateGuiEvent = new UpdateGuiEvent(this, eventData, GuiEventType.kuchenData);
+        updateGuiEventHandler.handle(updateGuiEvent);
     }
 
     private void setCount() {

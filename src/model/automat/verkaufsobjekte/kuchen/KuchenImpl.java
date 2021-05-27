@@ -73,12 +73,12 @@ public abstract class KuchenImpl extends VerkaufsobjektImpl implements Kuchen {
 
     @Override
     public String toString() {
-        return "{" +
+        return  super.toString() +
                 "kuchenArt=" + kuchenArt +
                 ", hersteller=" + hersteller +
-                //", naehrwert=" + naehrwert +
-                //", haltbarkeit=" + haltbarkeit +
-                ", allergene=" + allergene +
-                "} " + super.toString();
+                ", naehrwert=" + naehrwert +
+                ", haltbarkeit=" + haltbarkeit +
+                ", allergene=" + allergene;
+
     }
 }

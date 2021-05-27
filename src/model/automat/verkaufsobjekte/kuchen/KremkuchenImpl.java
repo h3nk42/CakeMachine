@@ -15,9 +15,9 @@ public class KremkuchenImpl extends KuchenImpl implements Kremkuchen, VerkaufsKu
 
     @Override
     public String toString() {
-        return "{" +
+        return
                 super.toString() +
-                ", Kremsorte=" + kremsorte +
-                "} ///";
+                ", Kremsorte=" + kremsorte
+               ;
     }
 }
