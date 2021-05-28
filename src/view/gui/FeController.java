@@ -154,6 +154,7 @@ public class FeController implements UpdateGuiEventListener {
     private void deleteKuchenButtonHandler(ActionEvent event) {
         event.consume();
         if (selectedKuchenFachnummer != null) {
+            System.out.println("view/gui/FeController.java: lineNumber: 155: " + "delete" + selectedKuchenFachnummer);
             Map<DataType, Object> tempMap = new HashMap<>();
             tempMap.put(DataType.fachnummer, selectedKuchenFachnummer);
             AutomatEvent dKuchenEvent = new AutomatEvent(this, tempMap, AutomatOperationType.dKuchen);
@@ -198,6 +199,7 @@ public class FeController implements UpdateGuiEventListener {
         kremsorteLabel.setVisible(false);
     }
 
+
     @FXML
     private void obsttorteButtonHandler(ActionEvent event) {
         event.consume();
@@ -215,6 +217,17 @@ public class FeController implements UpdateGuiEventListener {
         obstsorteInput.setVisible(true);
         kremsorteInput.setVisible(true);
         kremsorteLabel.setVisible(true);
+    }
+
+    @FXML
+    private void inspectKuchenButtonHandler(ActionEvent event) {
+        event.consume();
+        if (selectedKuchenFachnummer != null) {
+            Map<DataType, Object> tempMap = new HashMap<>();
+            tempMap.put(DataType.fachnummer, selectedKuchenFachnummer);
+            AutomatEvent dKuchenEvent = new AutomatEvent(this, tempMap, AutomatOperationType.inspectKuchen);
+            automatEventHandler.handle(dKuchenEvent);
+        }
     }
 
     public void setAutomatEventHandler(AutomatEventHandler automatEventHandler) {
@@ -238,27 +251,45 @@ public class FeController implements UpdateGuiEventListener {
             }
         });
 
+        kuchenView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (newValue != null) {
+
+                    String[] firstSplit = newValue.split("=");
+                    String[] secondSplit = firstSplit[1].split(",");
+                    selectedKuchenFachnummer = Integer.parseInt(secondSplit[0]);
+                }
+            }
+        });
+
         kuchenView.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                String kuchenString = (String) kuchenView.getSelectionModel().getSelectedItem();
-                String[] firstSplit = kuchenString.split("=");
-                String[] secondSplit = firstSplit[1].split(",");
-                dragStartFachnummer = Integer.parseInt(secondSplit[0]);
+                if(kuchenList != null && kuchenList.size()>1) {
+                    String kuchenString = (String) kuchenView.getSelectionModel().getSelectedItem();
+                    String[] firstSplit = kuchenString.split("=");
+                    String[] secondSplit = firstSplit[1].split(",");
+                    dragStartFachnummer = Integer.parseInt(secondSplit[0]);
+                }
             }
         });
 
         kuchenView.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                String droppedCake = event.getPickResult().getIntersectedNode().toString();
-                String[] firstSplit = droppedCake.split("=");
-                String[] secondSplit = firstSplit[2].split(",");
-                int droppedOnFachnummer = Integer.parseInt(secondSplit[0]);
-                Map<DataType, Object> tempMap = new HashMap<>();
-                tempMap.put(DataType.fachnummer, new int[] {dragStartFachnummer, droppedOnFachnummer});
-                AutomatEvent automatEvent = new AutomatEvent(this, tempMap, AutomatOperationType.swapKuchen);
-                automatEventHandler.handle(automatEvent);
+                if(kuchenList != null && kuchenList.size()>1 ) {
+                    String droppedCake = event.getPickResult().getIntersectedNode().toString();
+                    String[] firstSplit = droppedCake.split("=");
+                    String[] secondSplit = firstSplit[2].split(",");
+                    int droppedOnFachnummer = Integer.parseInt(secondSplit[0]);
+                    if( dragStartFachnummer != droppedOnFachnummer) {
+                        Map<DataType, Object> tempMap = new HashMap<>();
+                        tempMap.put(DataType.fachnummer, new int[]{dragStartFachnummer, droppedOnFachnummer});
+                        AutomatEvent automatEvent = new AutomatEvent(this, tempMap, AutomatOperationType.swapKuchen);
+                        automatEventHandler.handle(automatEvent);
+                    }
+                }
             }
         });
 
