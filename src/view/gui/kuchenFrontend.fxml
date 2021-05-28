@@ -54,8 +54,8 @@
       </Spinner>
       <RadioButton fx:id="fachnummerSortButton" disable="true" layoutX="32.0" layoutY="270.0" mnemonicParsing="false" onAction="#fachnummerSortButtonHandler" selected="true" text="Fachnummer" />
       <RadioButton fx:id="herstellerSortButton" layoutX="150.0" layoutY="270.0" mnemonicParsing="false" onAction="#herstellerSortButtonHandler" text="Hersteller" />
-      <RadioButton fx:id="inspectSortButton" layoutX="412.0" layoutY="271.0" mnemonicParsing="false" onAction="#inspectSortButtonHandler" text="Haltbarkeit" />
-      <RadioButton fx:id="haltbarkeitSortButton" layoutX="252.0" layoutY="271.0" mnemonicParsing="false" onAction="#haltbarkeitSortButtonHandler" text="Inspektionsdatum" />
+      <RadioButton fx:id="haltbarkeitSortButton" layoutX="412.0" layoutY="271.0" mnemonicParsing="false" onAction="#haltbarkeitSortButtonHandler" text="Haltbarkeit" />
+      <RadioButton fx:id="inspectSortButton" layoutX="252.0" layoutY="271.0" mnemonicParsing="false" onAction="#inspectSortButtonHandler" text="Inspektionsdatum" />
       <VBox layoutX="13.0" layoutY="505.0" prefHeight="42.0" prefWidth="102.0" AnchorPane.topAnchor="505.0" />
       <HBox layoutX="525.0" layoutY="30.0" prefHeight="291.0" prefWidth="477.0" AnchorPane.leftAnchor="525.0" AnchorPane.rightAnchor="-7.0">
          <children>

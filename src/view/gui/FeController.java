@@ -315,18 +315,20 @@ public class FeController implements UpdateGuiEventListener {
     }
 
     private void updateKuchenView() {
-        ObservableList<String> items = FXCollections.observableArrayList();
-        for (VerkaufsKuchen kuchen : this.kuchenList) {
-            items.add(kuchen.toString());
-            System.out.println("view/gui/FeController.java: lineNumber: 321: " + kuchen.getFachnummer());
+        if (kuchenList != null && kuchenList.size()>0) {
+            sortKuchenList();
+            ObservableList<String> items = FXCollections.observableArrayList();
+            for (VerkaufsKuchen verkaufsKuchen : this.kuchenList) {
+                items.add(verkaufsKuchen.toString());
+            }
+            this.kuchenView.setItems(items);
         }
-        this.kuchenView.setItems(items);
     }
 
     public void fachnummerSortButtonHandler(ActionEvent actionEvent) {
         actionEvent.consume();
         this.selectedSort = SortType.fachnummer;
-        sortKuchenList();
+        updateKuchenView();
 
         fachnummerSortButton.setDisable(true);
         herstellerSortButton.setDisable(false);
@@ -343,7 +345,8 @@ public class FeController implements UpdateGuiEventListener {
     public void herstellerSortButtonHandler(ActionEvent actionEvent) {
         actionEvent.consume();
         this.selectedSort = SortType.hersteller;
-        sortKuchenList();
+        updateKuchenView();
+
         herstellerSortButton.setDisable(true);
         fachnummerSortButton.setDisable(false);
         inspectSortButton.setDisable(false);
@@ -358,7 +361,9 @@ public class FeController implements UpdateGuiEventListener {
     public void inspectSortButtonHandler(ActionEvent actionEvent) {
         actionEvent.consume();
         this.selectedSort = SortType.inspect;
-        sortKuchenList();
+
+        updateKuchenView();
+
         inspectSortButton.setDisable(true);
         herstellerSortButton.setDisable(false);
         fachnummerSortButton.setDisable(false);
@@ -373,7 +378,7 @@ public class FeController implements UpdateGuiEventListener {
     public void haltbarkeitSortButtonHandler(ActionEvent actionEvent) {
         actionEvent.consume();
         this.selectedSort = SortType.haltbarkeit;
-        sortKuchenList();
+        updateKuchenView();
         haltbarkeitSortButton.setDisable(true);
         herstellerSortButton.setDisable(false);
         inspectSortButton.setDisable(false);
@@ -386,14 +391,19 @@ public class FeController implements UpdateGuiEventListener {
     }
 
     private void sortKuchenList() {
-        if (kuchenList != null) {
             switch(selectedSort){
                 case fachnummer:
                     Collections.sort(kuchenList, new KuchenComparators.FachnummerComparator());
+                    break;
                 case hersteller:
                     Collections.sort(kuchenList, new KuchenComparators.HerstellerComparator());
+                    break;
+                case inspect:
+                    Collections.sort(kuchenList, new KuchenComparators.InspektionsDatumComparator());
+                    break;
+                case haltbarkeit:
+                    Collections.sort(kuchenList, new KuchenComparators.HaltbarkeitComparator());
+                    break;
             }
-            updateKuchenView();
-        }
     }
 }
