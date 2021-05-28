@@ -64,6 +64,9 @@ public class CreateDeleteCakeObserver implements Observer {
         eventData.put(DataType.kuchenListe, automatController.getKuchen());
         UpdateGuiEvent updateGuiEvent = new UpdateGuiEvent(this, eventData, GuiEventType.kuchenData);
         updateGuiEventHandler.handle(updateGuiEvent);
+        eventData.put(DataType.hersteller, automatController.getKuchenCounter());
+        UpdateGuiEvent updateGuiEventHersteller = new UpdateGuiEvent(this, eventData, GuiEventType.herstellerData);
+        updateGuiEventHandler.handle(updateGuiEventHersteller);
     }
 
     private void setCount() {

@@ -40,7 +40,7 @@ public class MainWithGUI extends Application {
         outputEventHandler.add(outputEventListener, true);
 
         /* ------- AUTOMAT SETUP ------- */
-        AutomatController automatController = new AutomatController(FACHANZAHL,automatEventHandler, outputEventHandler);
+        AutomatController automatController = new AutomatController(FACHANZAHL,automatEventHandler, outputEventHandler, updateGuiEventHandler);
 
         /* ------- OBSERVER SETUP ------- */
         KuchenCapacityObserver kuchenCapacityObserver = new KuchenCapacityObserver(automatController, outputEventHandler);

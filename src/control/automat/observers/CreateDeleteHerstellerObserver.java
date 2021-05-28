@@ -46,7 +46,7 @@ public class CreateDeleteHerstellerObserver implements Observer {
 
     private void sendUpdateEvent() {
         Map<DataType, Object> eventData = new HashMap<>();
-        eventData.put(DataType.hersteller, automatController.getHersteller());
+        eventData.put(DataType.hersteller, automatController.getKuchenCounter());
         UpdateGuiEvent updateGuiEvent = new UpdateGuiEvent(this, eventData, GuiEventType.herstellerData);
         updateGuiEventHandler.handle(updateGuiEvent);
     }

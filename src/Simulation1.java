@@ -24,7 +24,7 @@ public class Simulation1 {
         OutputEventListener outputEventListener = new OutputEventListenerPrint(out);
         outputEventHandler.add(outputEventListener, true);
         /* ------- AUTOMAT SETUP ------- */
-        AutomatController automatController = new AutomatController(FACHANZAHL,automatEventHandler, outputEventHandler);
+        AutomatController automatController = new AutomatController(FACHANZAHL,automatEventHandler, outputEventHandler,updateGuiEventHandler);
         AutomatSimWrapper automatSimWrapper = new AutomatSimWrapper(automatController,automatEventHandler);
 
 

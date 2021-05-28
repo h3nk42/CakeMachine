@@ -9,8 +9,10 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import model.automat.hersteller.Hersteller;
 import model.automat.verkaufsobjekte.Allergen;
@@ -31,8 +33,8 @@ public class FeController implements UpdateGuiEventListener {
 
 
     private AutomatEventHandler automatEventHandler;
-    private Collection<Hersteller> herstellerList;
     private ArrayList<VerkaufsKuchen> kuchenList;
+    private Map<Hersteller, Integer> herstellerMap = new HashMap<>();
 
     @FXML
     private AnchorPane container ;
@@ -92,6 +94,7 @@ public class FeController implements UpdateGuiEventListener {
 
     private SortType selectedSort = SortType.fachnummer;
 
+    private int dragStartFachnummer;
 
     @FXML
     private void createHerstellerButtonHandler(ActionEvent event) {
@@ -228,18 +231,34 @@ public class FeController implements UpdateGuiEventListener {
         herstellerView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-               selectedHerstellerName = newValue;
+                if (newValue != null) {
+                    String[] firstSplit = newValue.split(",");
+                    selectedHerstellerName = firstSplit[0];
+                }
             }
         });
 
-        kuchenView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+        kuchenView.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (newValue != null) {
-                    String[] firstSplit = newValue.split("=");
-                    String[] secondSplit = firstSplit[1].split(",");
-                    selectedKuchenFachnummer = Integer.parseInt(secondSplit[0]);
-                }
+            public void handle(MouseEvent event) {
+                String kuchenString = (String) kuchenView.getSelectionModel().getSelectedItem();
+                String[] firstSplit = kuchenString.split("=");
+                String[] secondSplit = firstSplit[1].split(",");
+                dragStartFachnummer = Integer.parseInt(secondSplit[0]);
+            }
+        });
+
+        kuchenView.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                String droppedCake = event.getPickResult().getIntersectedNode().toString();
+                String[] firstSplit = droppedCake.split("=");
+                String[] secondSplit = firstSplit[2].split(",");
+                int droppedOnFachnummer = Integer.parseInt(secondSplit[0]);
+                Map<DataType, Object> tempMap = new HashMap<>();
+                tempMap.put(DataType.fachnummer, new int[] {dragStartFachnummer, droppedOnFachnummer});
+                AutomatEvent automatEvent = new AutomatEvent(this, tempMap, AutomatOperationType.swapKuchen);
+                automatEventHandler.handle(automatEvent);
             }
         });
 
@@ -296,7 +315,7 @@ public class FeController implements UpdateGuiEventListener {
         GuiEventType guiEventType = event.getGuiEventType();
         switch (guiEventType){
             case herstellerData:
-                this.herstellerList = (Collection<Hersteller>) event.getData().get(DataType.hersteller);
+                this.herstellerMap = (Map<Hersteller, Integer>) event.getData().get(DataType.hersteller);
                 this.updateHerstellerView();
                 break;
             case kuchenData:
@@ -308,8 +327,8 @@ public class FeController implements UpdateGuiEventListener {
 
     private void updateHerstellerView() {
         ObservableList<String> items = FXCollections.observableArrayList();
-        for (Hersteller hersteller : this.herstellerList) {
-           items.add(hersteller.getName());
+        for (Hersteller hersteller : this.herstellerMap.keySet()) {
+           items.add(hersteller.getName() + ", Kuchen: " + this.herstellerMap.get(hersteller));
         }
         this.herstellerView.setItems(items);
     }

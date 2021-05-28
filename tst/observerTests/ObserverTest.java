@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import control.console.input.InputEventHandler;
+import view.gui.events.UpdateGuiEventHandler;
 import view.output.*;
 
 import java.io.ByteArrayOutputStream;
@@ -25,6 +26,7 @@ public class ObserverTest {
 
         private InputEventHandler inputEventHandler;
         private OutputEventHandler outputEventHandler;
+        private UpdateGuiEventHandler updateGuiEventHandler;
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
@@ -42,6 +44,7 @@ public class ObserverTest {
             outputEventHandler = new OutputEventHandler();
             automatEventHandler = new AutomatEventHandler();
             inputEventHandler = new InputEventHandler();
+             updateGuiEventHandler = new UpdateGuiEventHandler();
 
             /* ------- OUTPUT SETUP ------- */
             Output out = new Output();
@@ -49,7 +52,7 @@ public class ObserverTest {
             outputEventHandler.add(outputEventListener, true);
 
             /* ------- AUTOMAT SETUP ------- */
-            AutomatController automatController = new AutomatController(FACHANZAHL,automatEventHandler, outputEventHandler);
+            AutomatController automatController = new AutomatController(FACHANZAHL,automatEventHandler, outputEventHandler,updateGuiEventHandler);
 
             /* ------- OBSERVER SETUP ------- */
             KuchenCapacityObserver kuchenCapacityObserver = new KuchenCapacityObserver(automatController, outputEventHandler);

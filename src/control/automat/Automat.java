@@ -45,11 +45,14 @@ public class Automat {
     }
 
     public Hersteller createHersteller(String herstellerName ) throws Exception {
-        return herstellerFactory.produceHersteller(herstellerName);
+        Hersteller newHersteller =  herstellerFactory.produceHersteller(herstellerName);
+        this.kuchenCounter.put(newHersteller, getKuchenCounter(newHersteller));
+        return newHersteller;
     }
 
     public void deleteHersteller(String herstellerName ) throws Exception {
-        if(getHersteller(herstellerName)== null) {
+        Hersteller tempHersteller = getHersteller(herstellerName);
+        if(tempHersteller== null) {
             throw new Exception("Hersteller nicht gefunden");
         }
         faecher.forEach(kuchen -> {
@@ -64,6 +67,7 @@ public class Automat {
                 }
             }
         );
+        this.kuchenCounter.remove(tempHersteller);
         herstellerFactory.deleteHersteller(herstellerName);
     }
 
@@ -80,6 +84,10 @@ public class Automat {
         }  else {
             return 0;
         }
+    }
+
+    public Map<Hersteller, Integer>  getKuchenCounter() {
+        return kuchenCounter;
     }
 
     private Map<KuchenArt, ArrayList<VerkaufsKuchen>> getKuchenMap() {
@@ -253,7 +261,22 @@ public class Automat {
         return this.faecher.indexOf((VerkaufsKuchen) verkaufsobjekt);
     }
 
-    public void setInspektionsdatum(Integer fachnummer, Date inspektionsdatumNeu) {
+    public boolean swapFachnummer(int fach1, int fach2) throws Exception {
+        if(this.faecher.get(fach1) == null | this.faecher.get(fach2) == null ){
+            throw new Exception("Index zeigt auf leeres Fach");
+        }
+        Collections.swap(this.faecher, fach1,fach2);
+        return false;
+    }
+
+    public void aktualisiereInspektionsdatum(Integer fachnummer) throws Exception {
+        this.setInspektionsdatum(fachnummer, new Date());
+    }
+
+    public void setInspektionsdatum(Integer fachnummer, Date inspektionsdatumNeu) throws Exception {
+        if(this.faecher.get(fachnummer) == null ) {
+            throw new Exception("Index zeigt auf leeres Fach");
+        }
         VerkaufsKuchen tempKuchen = this.faecher.get(fachnummer);
         this.inspektionsDaten.put(tempKuchen,inspektionsdatumNeu);
     }
