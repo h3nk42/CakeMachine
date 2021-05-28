@@ -35,9 +35,14 @@ public class FeController implements UpdateGuiEventListener {
     private AutomatEventHandler automatEventHandler;
     private ArrayList<VerkaufsKuchen> kuchenList;
     private Map<Hersteller, Integer> herstellerMap = new HashMap<>();
+    private Set<Allergen>[] allergeneVorhanden;
 
     @FXML
     private AnchorPane container ;
+
+    /* ALLERGENE AREA */
+    @FXML
+    private TextArea allergeneView;
 
     /* HERSTELLER AREA */
     @FXML
@@ -93,6 +98,8 @@ public class FeController implements UpdateGuiEventListener {
     private int haltbarkeit = 8;
 
     private SortType selectedSort = SortType.fachnummer;
+
+    private boolean vorhandeneAllergeneAnzeigen = false;
 
     private int dragStartFachnummer;
 
@@ -353,6 +360,9 @@ public class FeController implements UpdateGuiEventListener {
                 this.kuchenList = (ArrayList<VerkaufsKuchen>) event.getData().get(DataType.kuchenListe);
                 updateKuchenView();
                 break;
+            case allergenData:
+                this.allergeneVorhanden = (Set<Allergen>[]) event.getData().get(DataType.allergene);
+                updateAllergeneView();
         }
     }
 
@@ -365,7 +375,7 @@ public class FeController implements UpdateGuiEventListener {
     }
 
     private void updateKuchenView() {
-        if (kuchenList != null && kuchenList.size()>0) {
+        if (kuchenList != null ) {
             sortKuchenList();
             ObservableList<String> items = FXCollections.observableArrayList();
             for (VerkaufsKuchen verkaufsKuchen : this.kuchenList) {
@@ -374,6 +384,17 @@ public class FeController implements UpdateGuiEventListener {
             this.kuchenView.setItems(items);
         }
     }
+
+    private void updateAllergeneView() {
+        if (allergeneVorhanden != null) {
+            if(vorhandeneAllergeneAnzeigen) {
+                this.allergeneView.setText(this.allergeneVorhanden[1].toString());
+            } else {
+                this.allergeneView.setText(this.allergeneVorhanden[0].toString());
+            }
+        }
+    }
+
 
     public void fachnummerSortButtonHandler(ActionEvent actionEvent) {
         actionEvent.consume();
@@ -439,6 +460,25 @@ public class FeController implements UpdateGuiEventListener {
         inspectSortButton.setSelected(false);
         fachnummerSortButton.setSelected(false);
     }
+
+    public void allergeneSwitchButtonHandler(ActionEvent actionEvent) {
+        actionEvent.consume();
+        this.vorhandeneAllergeneAnzeigen = !this.vorhandeneAllergeneAnzeigen;
+            if(vorhandeneAllergeneAnzeigen) {
+                if(this.allergeneVorhanden == null ) {
+                    this.allergeneView.setText("[]");
+                } else {
+                    this.allergeneView.setText(this.allergeneVorhanden[1].toString());
+                }
+            } else {
+                if(this.allergeneVorhanden == null ) {
+                    this.allergeneView.setText("[Sesamsamen, Erdnuss, Haselnuss]");
+                } else {
+                    this.allergeneView.setText(this.allergeneVorhanden[0].toString());
+                }
+            }
+    }
+
 
     private void sortKuchenList() {
             switch(selectedSort){

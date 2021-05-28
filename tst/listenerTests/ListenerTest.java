@@ -55,7 +55,7 @@ public class ListenerTest {
 
             /* ------- OBSERVER SETUP ------- */
             KuchenCapacityObserver kuchenCapacityObserver = new KuchenCapacityObserver(automatController, outputEventHandler);
-            AllergeneObserver allergeneObserver = new AllergeneObserver(automatController, outputEventHandler);
+            AllergeneObserver allergeneObserver = new AllergeneObserver(automatController, outputEventHandler, updateGuiEventHandler);
 
             /* ------- CONSOLE SETUP ------- */
             AutomatConsole console = new AutomatConsole(outputEventHandler, automatEventHandler);

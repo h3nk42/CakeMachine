@@ -58,15 +58,18 @@
       <RadioButton fx:id="haltbarkeitSortButton" layoutX="412.0" layoutY="271.0" mnemonicParsing="false" onAction="#haltbarkeitSortButtonHandler" text="Haltbarkeit" />
       <RadioButton fx:id="inspectSortButton" layoutX="252.0" layoutY="271.0" mnemonicParsing="false" onAction="#inspectSortButtonHandler" text="Inspektionsdatum" />
       <VBox layoutX="13.0" layoutY="505.0" prefHeight="42.0" prefWidth="102.0" AnchorPane.topAnchor="505.0" />
-      <HBox layoutX="525.0" layoutY="30.0" prefHeight="291.0" prefWidth="477.0" AnchorPane.leftAnchor="525.0" AnchorPane.rightAnchor="-7.0">
+      <HBox layoutX="525.0" layoutY="30.0" prefHeight="291.0" prefWidth="477.0" AnchorPane.leftAnchor="525.0" AnchorPane.rightAnchor="0.0">
          <children>
             <AnchorPane prefHeight="291.0" prefWidth="453.0">
                <children>
                   <Button layoutX="16.0" layoutY="289.0" mnemonicParsing="false" onAction="#deleteHerstellerButtonHandler" text="Entfernen" AnchorPane.bottomAnchor="14.0" />
-                  <ListView fx:id="herstellerView" layoutX="14.0" layoutY="130.0" prefHeight="115.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="49.0" AnchorPane.topAnchor="130.0" />
+                  <ListView fx:id="herstellerView" layoutX="14.0" layoutY="130.0" prefHeight="115.0" prefWidth="203.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="236.0" AnchorPane.topAnchor="130.0" />
                   <Button layoutX="16.0" layoutY="87.0" mnemonicParsing="false" onAction="#createHerstellerButtonHandler" text="Hinzufügen" AnchorPane.topAnchor="87.0" />
                   <TextArea fx:id="herstellerInputField" layoutX="16.0" layoutY="37.0" prefHeight="26.0" prefWidth="126.0" AnchorPane.topAnchor="37.0" />
                   <Label layoutX="16.0" layoutY="6.0" text="Hersteller" AnchorPane.topAnchor="6.0" />
+                  <Label layoutX="227.0" layoutY="105.0" text="Allergene" />
+                  <RadioButton fx:id="allergeneButton" layoutX="329.0" layoutY="104.0" mnemonicParsing="false" onAction="#allergeneSwitchButtonHandler" text="Vorhanden" />
+                  <TextArea fx:id="allergeneView" editable="false" layoutX="230.0" layoutY="130.0" prefHeight="115.0" prefWidth="203.0" text="[Gluten, Sesamsamen, Erdnuss, Haselnuss]" AnchorPane.rightAnchor="20.0" />
                </children>
             </AnchorPane>
          </children>

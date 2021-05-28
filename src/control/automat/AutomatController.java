@@ -86,6 +86,7 @@ public class AutomatController extends Automat implements Subjekt {
     public double getCapacity() {
         return kuchenCapacity;
     }
+
     public Set<Allergen> getAllergene() {return allergene;}
 
     public void setKuchenCapacity(double kuchenCapacity) {
