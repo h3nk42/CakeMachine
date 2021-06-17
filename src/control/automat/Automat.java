@@ -7,11 +7,12 @@ import model.automat.verkaufsobjekte.Allergen;
 import model.automat.verkaufsobjekte.Verkaufsobjekt;
 import model.automat.verkaufsobjekte.kuchen.*;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;
 
 
-public class Automat {
+public class Automat implements Serializable {
 
     private volatile List<VerkaufsKuchen> faecher;
     private volatile Map<Hersteller, Integer> kuchenCounter;
@@ -290,5 +291,18 @@ public class Automat {
     }
     public boolean isEmpty(){
         return (this.getKuchen().size()== 0);
+    }
+
+    @Override
+    public String toString() {
+        return "Automat{" +
+                "faecher=" + faecher +
+                ", kuchenCounter=" + kuchenCounter +
+                ", kuchenMap=" + kuchenMap +
+                ", allergeneVorhanden=" + allergeneVorhanden +
+                ", herstellerFactory=" + herstellerFactory +
+                ", inspektionsDaten=" + inspektionsDaten +
+                ", fachAnzahl=" + fachAnzahl +
+                '}';
     }
 }

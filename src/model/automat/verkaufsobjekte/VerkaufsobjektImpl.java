@@ -1,10 +1,11 @@
 package model.automat.verkaufsobjekte;
 import control.automat.Automat;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class VerkaufsobjektImpl implements Verkaufsobjekt {
+public class VerkaufsobjektImpl implements Verkaufsobjekt, Serializable {
 
     private BigDecimal preis;
     private Automat automat;

@@ -1,6 +1,8 @@
 package model.automat.hersteller;
 
-class HerstellerImpl implements Hersteller {
+import java.io.Serializable;
+
+class HerstellerImpl implements Hersteller, Serializable {
 
     private String name;
 

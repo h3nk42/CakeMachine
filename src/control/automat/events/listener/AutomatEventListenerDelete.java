@@ -10,7 +10,9 @@ import view.output.Output;
 import view.output.OutputEvent;
 import view.output.OutputEventHandler;
 
-public class AutomatEventListenerDelete implements AutomatEventListener {
+import java.io.Serializable;
+
+public class AutomatEventListenerDelete implements AutomatEventListener, Serializable {
 
     private AutomatController automat;
     private OutputEventHandler outputEventHandler;

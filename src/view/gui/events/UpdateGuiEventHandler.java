@@ -1,9 +1,10 @@
 package view.gui.events;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-public class UpdateGuiEventHandler {
+public class UpdateGuiEventHandler implements Serializable {
     private List<UpdateGuiEventListener> listenerList = new LinkedList<>();
 
     public void add(UpdateGuiEventListener listener) {

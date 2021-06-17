@@ -20,17 +20,22 @@ import java.util.Set;
 
 public class AutomatController extends Automat implements Subjekt {
 
-    private AutomatEventHandler automatEventHandler;
-    private OutputEventHandler outputEventHandler;
-    private UpdateGuiEventHandler updateGuiEventHandler;
+    private transient AutomatEventHandler automatEventHandler;
+    private transient OutputEventHandler outputEventHandler;
+    private transient UpdateGuiEventHandler updateGuiEventHandler;
 
-    private List<Observer> beobachterList = new LinkedList<>();
+    private transient List<Observer> beobachterList = new LinkedList<>();
     private double kuchenCapacity = 0;
     private Set<Allergen> allergene = new HashSet<>();
 
 
     public AutomatController(Integer fachAnzahl, AutomatEventHandler automatEventHandler, OutputEventHandler outputEventHandler, UpdateGuiEventHandler updateGuiEventHandler) {
         super(fachAnzahl);
+        rehydrate(automatEventHandler,outputEventHandler,updateGuiEventHandler);
+    }
+
+    public void rehydrate(AutomatEventHandler automatEventHandler, OutputEventHandler outputEventHandler, UpdateGuiEventHandler updateGuiEventHandler) {
+        this.beobachterList = new LinkedList<>();
         this.automatEventHandler = automatEventHandler;
         this.outputEventHandler = outputEventHandler;
         this.updateGuiEventHandler = updateGuiEventHandler;
@@ -96,5 +101,29 @@ public class AutomatController extends Automat implements Subjekt {
     public void setAllergene(Set<Allergen> allergene) {
         this.allergene = allergene;
         this.benachrichtige();
+    }
+
+    public void setAutomatEventHandler(AutomatEventHandler automatEventHandler) {
+        this.automatEventHandler = automatEventHandler;
+    }
+
+    public void setOutputEventHandler(OutputEventHandler outputEventHandler) {
+        this.outputEventHandler = outputEventHandler;
+    }
+
+    public void setUpdateGuiEventHandler(UpdateGuiEventHandler updateGuiEventHandler) {
+        this.updateGuiEventHandler = updateGuiEventHandler;
+    }
+
+    @Override
+    public String toString() {
+        return "AutomatController{" +
+                "automatEventHandler=" + automatEventHandler +
+                ", outputEventHandler=" + outputEventHandler +
+                ", updateGuiEventHandler=" + updateGuiEventHandler +
+                ", beobachterList=" + beobachterList +
+                ", kuchenCapacity=" + kuchenCapacity +
+                ", allergene=" + allergene +
+                "} " + super.toString();
     }
 }

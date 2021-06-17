@@ -12,10 +12,11 @@ import view.output.Output;
 import view.output.OutputEvent;
 import view.output.OutputEventHandler;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Map;
 
-public class AutomatEventListenerCreate implements AutomatEventListener {
+public class AutomatEventListenerCreate implements AutomatEventListener, Serializable {
 
     private AutomatController automat;
     private OutputEventHandler outputEventHandler;

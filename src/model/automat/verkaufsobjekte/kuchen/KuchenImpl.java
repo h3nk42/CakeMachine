@@ -5,6 +5,7 @@ import model.automat.hersteller.Hersteller;
 import model.automat.verkaufsobjekte.Allergen;
 import model.automat.verkaufsobjekte.VerkaufsobjektImpl;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.Instant;

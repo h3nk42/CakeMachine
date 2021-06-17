@@ -1,6 +1,8 @@
 package view.output;
 
-public class Output {
+import java.io.Serializable;
+
+public class Output implements Serializable {
     protected void printLine(String textToPrint) {
         System.out.println(textToPrint);
     }

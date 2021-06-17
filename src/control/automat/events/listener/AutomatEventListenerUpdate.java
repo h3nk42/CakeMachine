@@ -12,10 +12,11 @@ import view.output.Output;
 import view.output.OutputEvent;
 import view.output.OutputEventHandler;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AutomatEventListenerUpdate  implements AutomatEventListener  {
+public class AutomatEventListenerUpdate  implements AutomatEventListener, Serializable {
 
     private UpdateGuiEventHandler updateGuiEventHandler;
     private AutomatController automat;

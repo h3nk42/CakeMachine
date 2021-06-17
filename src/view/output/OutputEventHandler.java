@@ -1,10 +1,11 @@
 package view.output;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
 
-public class OutputEventHandler {
+public class OutputEventHandler implements Serializable {
     private List<OutputEventListener> listenerList = new LinkedList<>();
 
     public void add(OutputEventListener listener, Boolean isInitial) {

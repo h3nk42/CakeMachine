@@ -12,10 +12,11 @@ import view.output.Output;
 import view.output.OutputEvent;
 import view.output.OutputEventHandler;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
-public class AutomatEventListenerRead implements AutomatEventListener {
+public class AutomatEventListenerRead implements AutomatEventListener, Serializable {
 
     private OutputEventHandler outputEventHandler;
     private AutomatController automat;

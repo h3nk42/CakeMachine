@@ -8,4 +8,5 @@ public interface HerstellerFactory {
     HashMap<String, Hersteller> getHerstellerListe();
 
     void deleteHersteller(String herstellerName);
+
 }

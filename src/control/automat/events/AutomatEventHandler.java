@@ -1,9 +1,10 @@
 package control.automat.events;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-public class AutomatEventHandler {
+public class AutomatEventHandler implements Serializable {
     private List<AutomatEventListener> listenerList = new LinkedList<>();
 
     public void add(AutomatEventListener listener) {

@@ -113,6 +113,7 @@ public class ListenerTest {
                 " conf - Konfiguration "+ System.lineSeparator() +
                 " exit - Programm beenden"+ System.lineSeparator(), outContent.toString());
     }
+
    @Test
     void testInputListenerRead() {
         InputEvent inputEventRead = new InputEvent(this, "c", InputEventType.read);

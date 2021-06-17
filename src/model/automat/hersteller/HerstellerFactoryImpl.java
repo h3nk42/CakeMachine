@@ -1,8 +1,9 @@
 package model.automat.hersteller;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class HerstellerFactoryImpl implements HerstellerFactory {
+public class HerstellerFactoryImpl implements HerstellerFactory, Serializable {
 
     private HashMap<String, Hersteller> herstellerListe;
 
@@ -36,4 +37,10 @@ public class HerstellerFactoryImpl implements HerstellerFactory {
         this.herstellerListe.remove(herstellerName.toLowerCase());
     }
 
+    @Override
+    public String toString() {
+        return "HerstellerFactoryImpl{" +
+                "herstellerListe=" + herstellerListe +
+                '}';
+    }
 }

@@ -1,6 +1,8 @@
 package view.output;
 
-public class OutputEventListenerPrint implements OutputEventListener {
+import java.io.Serializable;
+
+public class OutputEventListenerPrint implements OutputEventListener, Serializable {
     private final Output out;
 
     public OutputEventListenerPrint(Output out) {
