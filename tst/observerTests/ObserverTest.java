@@ -1,5 +1,6 @@
 package observerTests;
 
+import control.automat.Automat;
 import control.automat.AutomatController;
 import control.automat.events.AutomatEvent;
 import control.automat.events.AutomatEventHandler;
@@ -52,7 +53,9 @@ public class ObserverTest {
             outputEventHandler.add(outputEventListener, true);
 
             /* ------- AUTOMAT SETUP ------- */
-            AutomatController automatController = new AutomatController(FACHANZAHL,automatEventHandler, outputEventHandler,updateGuiEventHandler);
+
+        Automat automat = new Automat(FACHANZAHL);
+        AutomatController automatController = new AutomatController(automat,automatEventHandler, outputEventHandler, updateGuiEventHandler);
 
             /* ------- OBSERVER SETUP ------- */
             KuchenCapacityObserver kuchenCapacityObserver = new KuchenCapacityObserver(automatController, outputEventHandler);

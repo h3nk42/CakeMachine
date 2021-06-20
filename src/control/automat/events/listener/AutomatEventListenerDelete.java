@@ -14,11 +14,13 @@ import java.io.Serializable;
 
 public class AutomatEventListenerDelete implements AutomatEventListener, Serializable {
 
-    private AutomatController automat;
+    private AutomatController automatC;
+    private Automat automat;
     private OutputEventHandler outputEventHandler;
 
     public AutomatEventListenerDelete(OutputEventHandler outputEventHandler, AutomatController automatController) {
-        this.automat = automatController;
+        this.automatC = automatController;
+        this.automat = automatController.getAutomat();
         this.outputEventHandler = outputEventHandler;
     }
 
@@ -41,8 +43,8 @@ public class AutomatEventListenerDelete implements AutomatEventListener, Seriali
         try{
             automat.deleteKuchen(fachnummer);
             Output.print(this, "erfolg", MessageType.success, outputEventHandler);
-            automat.aktualisiereKuchenCapacity();
-            automat.aktualisiereAllergene();
+            automatC.aktualisiereKuchenCapacity();
+            automatC.aktualisiereAllergene();
             return;
         } catch (Exception e) {
             OutputEvent outputEvent = new OutputEvent(this, e.getMessage(), MessageType.error);
@@ -55,7 +57,7 @@ public class AutomatEventListenerDelete implements AutomatEventListener, Seriali
         try{
             automat.deleteHersteller(herstellerName);
             Output.print(this, "erfolg", MessageType.success, outputEventHandler);
-            automat.aktualisiereHersteller();
+            automatC.aktualisiereHersteller();
             return;
         } catch (Exception e) {
             OutputEvent outputEvent = new OutputEvent(this, e.getMessage(), MessageType.error);

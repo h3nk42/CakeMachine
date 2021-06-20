@@ -1,5 +1,6 @@
 package Threads;
 
+import control.automat.Automat;
 import control.automat.AutomatController;
 import control.automat.events.AutomatEvent;
 import control.automat.events.AutomatEventHandler;
@@ -23,13 +24,15 @@ public class AutomatSimWrapper {
 
 
     public synchronized void addCake(Map<DataType, Object> cakeData) throws InterruptedException {
-        if(automatController.isFull()) wait();
+        Automat a = automatController.getAutomat();
+        if(a.isFull()) wait();
         AutomatEvent automatEvent = new AutomatEvent(this,cakeData, AutomatOperationType.cKuchen);
         aHandler.handle(automatEvent);
         notify();
     }
     public synchronized void deleteCake( Map<DataType, Object> tempMap) throws InterruptedException {
-        if(automatController.isEmpty()) wait();
+        Automat a = automatController.getAutomat();
+        if(a.isEmpty()) wait();
         AutomatEvent automatEvent = new AutomatEvent(this, tempMap, AutomatOperationType.dKuchen);
         aHandler.handle(automatEvent);
         notify();

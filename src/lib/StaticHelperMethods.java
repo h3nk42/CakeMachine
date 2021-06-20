@@ -12,8 +12,8 @@ import java.util.ArrayList;
 
 public class StaticHelperMethods {
 
-    public static void rehydrateAutomat(AutomatController automatController, AutomatEventHandler automatEventHandler, OutputEventHandler outputEventHandler, UpdateGuiEventHandler updateGuiEventHandler, ArrayList<Observer> observers) {
-        automatController.rehydrate(automatEventHandler,outputEventHandler,updateGuiEventHandler);
+    public static void rehydrateAutomat(Automat automat, AutomatController automatController, AutomatEventHandler automatEventHandler, OutputEventHandler outputEventHandler, UpdateGuiEventHandler updateGuiEventHandler, ArrayList<Observer> observers) {
+        automatController.rehydrate(automat, automatEventHandler,outputEventHandler,updateGuiEventHandler);
         for (Observer observer:
                 observers) {
             automatController.meldeAn(observer);
@@ -47,13 +47,13 @@ public class StaticHelperMethods {
         }
     }
 
-    public static AutomatController readAutomatFromFileJOS(String fileName) throws IOException, ClassNotFoundException {
+    public static Automat readAutomatFromFileJOS(String fileName) throws IOException, ClassNotFoundException {
         FileInputStream fis = null;
         ObjectInputStream in = null;
             fis = new FileInputStream(fileName);
             in = new ObjectInputStream(fis);
-            AutomatController automatController = (AutomatController) in.readObject();
+        Automat automat = (Automat) in.readObject();
             in.close();
-            return automatController;
+            return automat;
     }
 }

@@ -1,5 +1,6 @@
 package control.automat.observers;
 
+import control.automat.Automat;
 import control.automat.AutomatController;
 import control.automat.events.DataType;
 import view.gui.events.GuiEventType;
@@ -46,13 +47,15 @@ public class CreateDeleteHerstellerObserver implements Observer {
 
     private void sendUpdateEvent() {
         Map<DataType, Object> eventData = new HashMap<>();
-        eventData.put(DataType.hersteller, automatController.getKuchenCounter());
+        Automat a = automatController.getAutomat();
+        eventData.put(DataType.hersteller, a.getKuchenCounter());
         UpdateGuiEvent updateGuiEvent = new UpdateGuiEvent(this, eventData, GuiEventType.herstellerData);
         updateGuiEventHandler.handle(updateGuiEvent);
     }
 
     private int updateHerstellerAnzahl() {
-        int tempCount = automatController.getHersteller().size();
+        Automat a = automatController.getAutomat();
+        int tempCount = a.getHersteller().size();
         if(herstellerAnzahl<tempCount) {
             setCount();
             return 1;
@@ -67,7 +70,8 @@ public class CreateDeleteHerstellerObserver implements Observer {
     }
 
     private void setCount() {
-        this.herstellerAnzahl = automatController.getHersteller().size();
+        Automat a = automatController.getAutomat();
+        this.herstellerAnzahl = a.getHersteller().size();
     }
 
 

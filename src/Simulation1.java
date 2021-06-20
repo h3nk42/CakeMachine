@@ -1,6 +1,7 @@
 import Threads.AutomatSimWrapper;
 import Threads.CreateCakeThread;
 import Threads.DeleteCakeThread;
+import control.automat.Automat;
 import control.automat.AutomatController;
 import control.automat.events.AutomatEventHandler;
 import control.automat.observers.CreateDeleteCakeObserver;
@@ -24,7 +25,8 @@ public class Simulation1 {
         OutputEventListener outputEventListener = new OutputEventListenerPrint(out);
         outputEventHandler.add(outputEventListener, true);
         /* ------- AUTOMAT SETUP ------- */
-        AutomatController automatController = new AutomatController(FACHANZAHL,automatEventHandler, outputEventHandler,updateGuiEventHandler);
+        Automat automat = new Automat(FACHANZAHL);
+        AutomatController automatController = new AutomatController(automat,automatEventHandler, outputEventHandler, updateGuiEventHandler);
         AutomatSimWrapper automatSimWrapper = new AutomatSimWrapper(automatController,automatEventHandler);
 
 
@@ -35,7 +37,7 @@ public class Simulation1 {
 
         String[] herstellerArr = new String[]{"rewe","lidl","frodo"};
         for (int i = 0; i < herstellerArr.length; i++) {
-            automatController.createHersteller(herstellerArr[i]);
+            automat.createHersteller(herstellerArr[i]);
         }
 
         int sleepValue = 0;

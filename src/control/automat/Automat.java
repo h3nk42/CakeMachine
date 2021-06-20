@@ -124,7 +124,7 @@ public class Automat implements Serializable {
             return this.kuchenMap.get(kuchenArt);
     }
 
-    public synchronized VerkaufsKuchen createKuchen(KuchenArt kuchenArt, Hersteller hersteller, BigDecimal preis, int naehrwert, Allergen[] allergene, String[] extraData, Integer haltbarkeitInStunden ) throws Exception {
+    public synchronized VerkaufsKuchen createKuchen(KuchenArt kuchenArt, Hersteller hersteller, BigDecimal preis, int naehrwert, Allergen[] allergene, String[] extraData, Integer haltbarkeitInStunden) throws Exception {
         switch (kuchenArt) {
             case Kremkuchen:
                 if(extraData.length != 1) {
@@ -151,6 +151,33 @@ public class Automat implements Serializable {
         return null;
     }
 
+    public synchronized VerkaufsKuchen createKuchen(KuchenArt kuchenArt, Hersteller hersteller, BigDecimal preis, int naehrwert, Allergen[] allergene, String[] extraData, Integer haltbarkeitInStunden, Date inspektionsDatum ) throws Exception {
+        switch (kuchenArt) {
+            case Kremkuchen:
+                if(extraData.length != 1) {
+                    throw new Exception("only one String in extraData allowed");
+                }
+                VerkaufsKuchen tempKuchen = new KremkuchenImpl(hersteller,extraData[0], allergene, preis, naehrwert, this,haltbarkeitInStunden);
+                this.addKuchen(tempKuchen);
+                return tempKuchen;
+            case Obstkuchen:
+                if(extraData.length != 1) {
+                    throw new Exception("only one String in extraData allowed");
+                }
+                tempKuchen = new ObstkuchenImpl(hersteller,extraData[0], allergene, preis, naehrwert, this,haltbarkeitInStunden);
+                this.addKuchen(tempKuchen, inspektionsDatum);
+                return tempKuchen;
+            case Obsttorte:
+                if(extraData.length != 2) {
+                    throw new Exception("only one String in extraData allowed");
+                }
+                tempKuchen = new ObsttorteImpl(hersteller,extraData[0], extraData[1], allergene, preis, naehrwert, this, haltbarkeitInStunden);
+                this.addKuchen(tempKuchen, inspektionsDatum);
+                return tempKuchen;
+        }
+        return null;
+    }
+
     private  void  addKuchen(VerkaufsKuchen kuchen) throws Exception {
         if (kuchen.getHersteller() == null) {
             throw new Exception("Kuchen benoetigt Hersteller");
@@ -170,8 +197,33 @@ public class Automat implements Serializable {
             this.kuchenSetup(kuchen);
     }
 
+    private  void  addKuchen(VerkaufsKuchen kuchen, Date inspektionsDatum) throws Exception {
+        if (kuchen.getHersteller() == null) {
+            throw new Exception("Kuchen benoetigt Hersteller");
+        } else if (this.getHersteller(kuchen.getHersteller().getName()) == null) {
+            throw new Exception("Hersteller des Kuchens nicht existent");
+        } else if (this.getKuchen().size() == fachAnzahl ) {
+            throw new Exception("Alle Fächer voll");
+        }
+        for (int i = 0; i < this.faecher.size(); i++) {
+            if (this.faecher.get(i) == null) {
+                this.faecher.set(i, kuchen);
+                this.kuchenSetup(kuchen,inspektionsDatum);
+                return;
+            }
+        }
+        this.faecher.add(kuchen);
+        this.kuchenSetup(kuchen,inspektionsDatum);
+    }
+
     private void kuchenSetup( VerkaufsKuchen kuchen) {
         this.inspektionsDaten.put(kuchen, new Date());
+        incKuchenCounter(kuchen.getHersteller());
+        addToKuchenMap(kuchen);
+        kuchen.getAllergene().forEach((this::incAllergen));
+    }
+    private void kuchenSetup( VerkaufsKuchen kuchen, Date Inspektionsdatum) {
+        this.inspektionsDaten.put(kuchen, Inspektionsdatum);
         incKuchenCounter(kuchen.getHersteller());
         addToKuchenMap(kuchen);
         kuchen.getAllergene().forEach((this::incAllergen));

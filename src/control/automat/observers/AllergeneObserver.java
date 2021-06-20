@@ -36,7 +36,7 @@ public class AllergeneObserver implements Observer {
                 lastAllergene = automatController.getAllergene();
                 Output.print(this, "Allergene haben sich verändert!", MessageType.warning, outputEventHandler);
                 Map<DataType, Object> eventData = new HashMap<>();
-                Set<Allergen>[] allergene = new Set[] {automatController.getAllergene(false), automatController.getAllergene(true)};
+                Set<Allergen>[] allergene = new Set[] {automatController.getAutomat().getAllergene(false), automatController.getAutomat().getAllergene(true)};
                 eventData.put(DataType.allergene, allergene);
                 UpdateGuiEvent updateGuiEvent = new UpdateGuiEvent(this, eventData, GuiEventType.allergenData);
                 updateGuiEventHandler.handle(updateGuiEvent);

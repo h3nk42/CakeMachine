@@ -1,5 +1,6 @@
 package Threads;
 
+import control.automat.Automat;
 import control.automat.AutomatController;
 import control.automat.events.DataType;
 import model.automat.verkaufsobjekte.kuchen.VerkaufsKuchen;
@@ -28,11 +29,11 @@ public class DeleteCakeThread extends Thread{
     }
 
     private void deleteRandomCake() throws Exception {
-
-        List<VerkaufsKuchen> kuchen = automatController.getKuchen();
+        Automat a = automatController.getAutomat();
+        List<VerkaufsKuchen> kuchen = a.getKuchen();
         Map<DataType, Object> tempMap = new HashMap<>();
         if(kuchen.size() > 0) {
-            System.out.println("Threads/DeleteCakeThread.java: size: " + automatController.getKuchen().size());
+            System.out.println("Threads/DeleteCakeThread.java: size: " + a.getKuchen().size());
             Integer random = rollIndex(kuchen.size());
             System.out.println("Threads/DeleteCakeThread.java: random: " + random);
             VerkaufsKuchen vk = kuchen.get(random);

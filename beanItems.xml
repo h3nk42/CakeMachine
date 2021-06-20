@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.8.0_281" class="java.beans.XMLDecoder">
+ <array class="java.util.ArrayList" length="3">
+  <void index="0">
+   <object class="java.util.ArrayList">
+    <void method="add">
+     <object class="lib.beans.AutomatBean">
+      <void property="fachAnzahl">
+       <int>20</int>
+      </void>
+     </object>
+    </void>
+   </object>
+  </void>
+  <void index="1">
+   <object class="java.util.ArrayList">
+    <void method="add">
+     <object class="lib.beans.HerstellerBean">
+      <void property="name">
+       <string>test</string>
+      </void>
+     </object>
+    </void>
+   </object>
+  </void>
+  <void index="2">
+   <object class="java.util.ArrayList">
+    <void method="add">
+     <object class="lib.beans.KuchenBean">
+      <void property="allergene">
+       <array class="model.automat.verkaufsobjekte.Allergen" length="3">
+        <void index="0">
+         <object class="java.lang.Enum" id="Allergen0" method="valueOf">
+          <class>model.automat.verkaufsobjekte.Allergen</class>
+          <string>Haselnuss</string>
+         </object>
+        </void>
+        <void index="1">
+         <object class="java.lang.Enum" id="Allergen1" method="valueOf">
+          <class>model.automat.verkaufsobjekte.Allergen</class>
+          <string>Gluten</string>
+         </object>
+        </void>
+        <void index="2">
+         <object class="java.lang.Enum" id="Allergen2" method="valueOf">
+          <class>model.automat.verkaufsobjekte.Allergen</class>
+          <string>Sesamsamen</string>
+         </object>
+        </void>
+       </array>
+      </void>
+      <void property="extraData">
+       <array class="java.lang.String" length="2">
+        <void index="0">
+         <string>Apfel</string>
+        </void>
+        <void index="1">
+         <string>Vanille</string>
+        </void>
+       </array>
+      </void>
+      <void property="haltbarkeit">
+       <long>24</long>
+      </void>
+      <void property="hersteller">
+       <string>test</string>
+      </void>
+      <void property="inspektionsDatum">
+       <object class="java.util.Date">
+        <long>1624204472060</long>
+       </object>
+      </void>
+      <void property="kuchenArt">
+       <object class="java.lang.Enum" id="KuchenArt0" method="valueOf">
+        <class>model.automat.verkaufsobjekte.kuchen.KuchenArt</class>
+        <string>Obsttorte</string>
+       </object>
+      </void>
+      <void property="naehrwert">
+       <int>300</int>
+      </void>
+      <void property="preis">
+       <double>1.25</double>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="lib.beans.KuchenBean">
+      <void property="allergene">
+       <array class="model.automat.verkaufsobjekte.Allergen" length="3">
+        <void index="0">
+         <object idref="Allergen0"/>
+        </void>
+        <void index="1">
+         <object idref="Allergen1"/>
+        </void>
+        <void index="2">
+         <object idref="Allergen2"/>
+        </void>
+       </array>
+      </void>
+      <void property="extraData">
+       <array class="java.lang.String" length="2">
+        <void index="0">
+         <string>Apfel</string>
+        </void>
+        <void index="1">
+         <string>Vanille</string>
+        </void>
+       </array>
+      </void>
+      <void property="haltbarkeit">
+       <long>24</long>
+      </void>
+      <void property="hersteller">
+       <string>test</string>
+      </void>
+      <void property="inspektionsDatum">
+       <object class="java.util.Date">
+        <long>1624204472129</long>
+       </object>
+      </void>
+      <void property="kuchenArt">
+       <object idref="KuchenArt0"/>
+      </void>
+      <void property="naehrwert">
+       <int>300</int>
+      </void>
+      <void property="preis">
+       <double>1.25</double>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="lib.beans.KuchenBean">
+      <void property="allergene">
+       <array class="model.automat.verkaufsobjekte.Allergen" length="3">
+        <void index="0">
+         <object idref="Allergen0"/>
+        </void>
+        <void index="1">
+         <object idref="Allergen1"/>
+        </void>
+        <void index="2">
+         <object idref="Allergen2"/>
+        </void>
+       </array>
+      </void>
+      <void property="extraData">
+       <array class="java.lang.String" length="2">
+        <void index="0">
+         <string>Apfel</string>
+        </void>
+        <void index="1">
+         <string>Vanille</string>
+        </void>
+       </array>
+      </void>
+      <void property="haltbarkeit">
+       <long>24</long>
+      </void>
+      <void property="hersteller">
+       <string>test</string>
+      </void>
+      <void property="inspektionsDatum">
+       <object class="java.util.Date">
+        <long>1624204472129</long>
+       </object>
+      </void>
+      <void property="kuchenArt">
+       <object idref="KuchenArt0"/>
+      </void>
+      <void property="naehrwert">
+       <int>300</int>
+      </void>
+      <void property="preis">
+       <double>1.25</double>
+      </void>
+     </object>
+    </void>
+   </object>
+  </void>
+ </array>
+</java>

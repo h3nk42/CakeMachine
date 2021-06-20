@@ -1,3 +1,4 @@
+import control.automat.Automat;
 import control.automat.AutomatController;
 import control.automat.events.AutomatEventHandler;
 import control.automat.observers.*;
@@ -37,31 +38,33 @@ public class MainPersistJOS {
         outputEventHandler.add(outputEventListener, true);
 
         /* ------- AUTOMAT SETUP ------- */
-        AutomatController automatController = new AutomatController(FACHANZAHL,automatEventHandler, outputEventHandler, updateGuiEventHandler);
+        Automat automat = new Automat(FACHANZAHL);
+        AutomatController automatController = new AutomatController(automat,automatEventHandler, outputEventHandler, updateGuiEventHandler);
 
         /* ------- OBSERVER SETUP ------- */
         ArrayList<Observer> observers = setupObservers(automatController, outputEventHandler, updateGuiEventHandler);
 
         try {
-            automatController.createHersteller("test");
-            automatController.createKuchen(KuchenArt.Obsttorte, automatController.getHersteller("test"), BigDecimal.valueOf(1.25), 300, new Allergen[] {Allergen.Haselnuss, Allergen.Gluten, Allergen.Sesamsamen}, new String[] {"Apfel","Vanille"},24);
-            automatController.createKuchen(KuchenArt.Obsttorte, automatController.getHersteller("test"), BigDecimal.valueOf(1.25), 300, new Allergen[] {Allergen.Haselnuss, Allergen.Gluten, Allergen.Sesamsamen}, new String[] {"Apfel","Vanille"},24);
-            automatController.createKuchen(KuchenArt.Obsttorte, automatController.getHersteller("test"), BigDecimal.valueOf(1.25), 300, new Allergen[] {Allergen.Haselnuss, Allergen.Gluten, Allergen.Sesamsamen}, new String[] {"Apfel","Vanille"},24);
+            Automat a = automatController.getAutomat();
+            a.createHersteller("test");
+            a.createKuchen(KuchenArt.Obsttorte, a.getHersteller("test"), BigDecimal.valueOf(1.25), 300, new Allergen[] {Allergen.Haselnuss, Allergen.Gluten, Allergen.Sesamsamen}, new String[] {"Apfel","Vanille"},24);
+            a.createKuchen(KuchenArt.Obsttorte, a.getHersteller("test"), BigDecimal.valueOf(1.25), 300, new Allergen[] {Allergen.Haselnuss, Allergen.Gluten, Allergen.Sesamsamen}, new String[] {"Apfel","Vanille"},24);
+            a.createKuchen(KuchenArt.Obsttorte, a.getHersteller("test"), BigDecimal.valueOf(1.25), 300, new Allergen[] {Allergen.Haselnuss, Allergen.Gluten, Allergen.Sesamsamen}, new String[] {"Apfel","Vanille"},24);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
 
         writeAutomatToFileJOS("automat.ser", automatController);
-        AutomatController justReadAutomatController = null;
+        Automat justReadAutomat = null;
         try {
-            justReadAutomatController = readAutomatFromFileJOS("automat.ser");
+            justReadAutomat = readAutomatFromFileJOS("automat.ser");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        rehydrateAutomat(justReadAutomatController, automatEventHandler, outputEventHandler, updateGuiEventHandler, observers);
-        System.out.println(justReadAutomatController);
+        rehydrateAutomat(justReadAutomat, automatController, automatEventHandler, outputEventHandler, updateGuiEventHandler, observers);
+        System.out.println();
     }
 }

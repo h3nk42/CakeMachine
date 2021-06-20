@@ -1,5 +1,6 @@
 package control.automat.events.listener;
 
+import control.automat.Automat;
 import control.automat.AutomatController;
 import control.automat.events.AutomatEvent;
 import control.automat.events.AutomatEventListener;
@@ -19,12 +20,14 @@ import java.util.Map;
 public class AutomatEventListenerUpdate  implements AutomatEventListener, Serializable {
 
     private UpdateGuiEventHandler updateGuiEventHandler;
-    private AutomatController automat;
+    private Automat automat;
+    private AutomatController automatC;
     private OutputEventHandler outputEventHandler;
 
     public AutomatEventListenerUpdate(OutputEventHandler outputEventHandler, UpdateGuiEventHandler updateGuiEventHandler, AutomatController automatController) {
         this.updateGuiEventHandler = updateGuiEventHandler;
-        this.automat = automatController;
+        this.automatC = automatController;
+        this.automat = automatController.getAutomat();
         this.outputEventHandler = outputEventHandler;
     }
 

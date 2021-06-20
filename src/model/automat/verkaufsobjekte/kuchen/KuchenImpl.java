@@ -17,7 +17,7 @@ public abstract class KuchenImpl extends VerkaufsobjektImpl implements Kuchen {
     private Hersteller hersteller;
     private int naehrwert;
     private Duration haltbarkeit;
-    private Collection<Allergen> allergene;
+    private ArrayList<Allergen> allergene;
     private KuchenArt kuchenArt;
     protected String kremsorte;
     protected String obstsorte;
@@ -53,7 +53,7 @@ public abstract class KuchenImpl extends VerkaufsobjektImpl implements Kuchen {
     }
 
     @Override
-    public Collection<Allergen> getAllergene() {
+    public ArrayList<Allergen> getAllergene() {
         return allergene;
     }
 

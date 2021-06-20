@@ -1,5 +1,6 @@
 package control.automat.events.listener;
 
+import control.automat.Automat;
 import control.automat.AutomatController;
 import control.automat.events.AutomatEvent;
 import control.automat.events.AutomatEventListener;
@@ -18,13 +19,14 @@ import java.util.Map;
 
 public class AutomatEventListenerCreate implements AutomatEventListener, Serializable {
 
-    private AutomatController automat;
+    private AutomatController automatC;
+    private Automat automat;
     private OutputEventHandler outputEventHandler;
 
     public AutomatEventListenerCreate(OutputEventHandler outputEventHandler, AutomatController automatController) {
-        this.automat = automatController;
+        this.automatC = automatController;
+        this.automat = automatController.getAutomat();
         this.outputEventHandler = outputEventHandler;
-
     }
 
     @Override
@@ -46,7 +48,7 @@ public class AutomatEventListenerCreate implements AutomatEventListener, Seriali
         try {
             automat.createHersteller(name);
             Output.print(this, "erfolg", MessageType.success, outputEventHandler);
-            automat.aktualisiereHersteller();
+            automatC.aktualisiereHersteller();
         } catch (Exception e) {
             OutputEvent outputEvent = new OutputEvent(this, e.getMessage(), MessageType.error);
             outputEventHandler.handle(outputEvent);
@@ -93,8 +95,8 @@ public class AutomatEventListenerCreate implements AutomatEventListener, Seriali
             }
             automat.createKuchen(kuchenArt, hersteller,preis,naehrwert,allergene,kremObstData,haltbarkeit );
             Output.print(this, "erfolg", MessageType.success, outputEventHandler);
-            automat.aktualisiereAllergene();
-            automat.aktualisiereKuchenCapacity();
+            automatC.aktualisiereAllergene();
+            automatC.aktualisiereKuchenCapacity();
         } catch (Exception e) {
             OutputEvent outputEvent = new OutputEvent(this, e.getMessage(), MessageType.error);
             outputEventHandler.handle(outputEvent);

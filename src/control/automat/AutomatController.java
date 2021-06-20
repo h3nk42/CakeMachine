@@ -13,12 +13,13 @@ import model.automat.verkaufsobjekte.Allergen;
 import view.gui.events.UpdateGuiEventHandler;
 import view.output.OutputEventHandler;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-public class AutomatController extends Automat implements Subjekt {
+public class AutomatController implements Subjekt, Serializable {
 
     private transient AutomatEventHandler automatEventHandler;
     private transient OutputEventHandler outputEventHandler;
@@ -28,13 +29,14 @@ public class AutomatController extends Automat implements Subjekt {
     private double kuchenCapacity = 0;
     private Set<Allergen> allergene = new HashSet<>();
 
+    private Automat automat;
 
-    public AutomatController(Integer fachAnzahl, AutomatEventHandler automatEventHandler, OutputEventHandler outputEventHandler, UpdateGuiEventHandler updateGuiEventHandler) {
-        super(fachAnzahl);
-        rehydrate(automatEventHandler,outputEventHandler,updateGuiEventHandler);
+    public AutomatController(Automat automat, AutomatEventHandler automatEventHandler, OutputEventHandler outputEventHandler, UpdateGuiEventHandler updateGuiEventHandler) {
+        rehydrate(automat, automatEventHandler,outputEventHandler,updateGuiEventHandler);
     }
 
-    public void rehydrate(AutomatEventHandler automatEventHandler, OutputEventHandler outputEventHandler, UpdateGuiEventHandler updateGuiEventHandler) {
+    public void rehydrate(Automat automat, AutomatEventHandler automatEventHandler, OutputEventHandler outputEventHandler, UpdateGuiEventHandler updateGuiEventHandler) {
+        this.automat = automat;
         this.beobachterList = new LinkedList<>();
         this.automatEventHandler = automatEventHandler;
         this.outputEventHandler = outputEventHandler;
@@ -47,16 +49,18 @@ public class AutomatController extends Automat implements Subjekt {
         automatEventHandler.add(automatEventListenerRead);
         automatEventHandler.add(automatEventListenerDelete);
         automatEventHandler.add(automatEventListenerUpdate);
+        this.aktualisiereKuchenCapacity();
+        this.benachrichtige();
     }
 
 
     /* ------- OBSERVER STATUS UPDATES ------- */
     public void aktualisiereKuchenCapacity() {
-        setKuchenCapacity(calcKuchenCapacity());
+        this.setKuchenCapacity(calcKuchenCapacity());
     }
 
     public void aktualisiereAllergene() {
-        setAllergene(getAllergene(true));
+        this.setAllergene(automat.getAllergene(true));
     }
 
     public void aktualisiereHersteller() {
@@ -64,8 +68,8 @@ public class AutomatController extends Automat implements Subjekt {
     }
 
     protected double calcKuchenCapacity() {
-        double kuchenAnzahl = Double.valueOf(getKuchen().size());
-        double fachAnzahl = Double.valueOf(getFachanzahl());
+        double kuchenAnzahl = Double.valueOf(automat.getKuchen().size());
+        double fachAnzahl = Double.valueOf(automat.getFachanzahl());
         double capacity = kuchenAnzahl/fachAnzahl;
         return capacity;
     }
@@ -83,16 +87,16 @@ public class AutomatController extends Automat implements Subjekt {
 
     @Override
     public void benachrichtige() {
-        for (Observer beobachter : beobachterList) {
+        for (Observer beobachter : this.beobachterList) {
             beobachter.aktualisiere();
         }
     }
 
     public double getCapacity() {
-        return kuchenCapacity;
+        return this.kuchenCapacity;
     }
 
-    public Set<Allergen> getAllergene() {return allergene;}
+    public Set<Allergen> getAllergene() {return this.allergene;}
 
     public void setKuchenCapacity(double kuchenCapacity) {
         this.kuchenCapacity = kuchenCapacity;
@@ -123,7 +127,12 @@ public class AutomatController extends Automat implements Subjekt {
                 ", updateGuiEventHandler=" + updateGuiEventHandler +
                 ", beobachterList=" + beobachterList +
                 ", kuchenCapacity=" + kuchenCapacity +
-                ", allergene=" + allergene +
-                "} " + super.toString();
+                ", allergene=" + allergene + "\n" +
+                "automat=" + automat +
+                '}';
+    }
+
+    public Automat getAutomat() {
+        return this.automat;
     }
 }
