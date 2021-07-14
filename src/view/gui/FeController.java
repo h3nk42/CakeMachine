@@ -4,6 +4,9 @@ import control.automat.events.AutomatEvent;
 import control.automat.events.AutomatEventHandler;
 import control.automat.events.DataType;
 import control.automat.events.AutomatOperationType;
+import javafx.beans.InvalidationListener;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -14,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import lib.ConsoleLib;
 import model.automat.hersteller.Hersteller;
 import model.automat.verkaufsobjekte.Allergen;
 import model.automat.verkaufsobjekte.kuchen.KuchenComparators;
@@ -47,7 +51,7 @@ public class FeController implements UpdateGuiEventListener {
     /* HERSTELLER AREA */
     @FXML
     private TextArea herstellerInputField ;
-    private String herstellerName;
+    private SimpleStringProperty herstellerName = new SimpleStringProperty();
     private String selectedHerstellerName = "";
     @FXML
     private ListView herstellerView;
@@ -107,7 +111,7 @@ public class FeController implements UpdateGuiEventListener {
     private void createHerstellerButtonHandler(ActionEvent event) {
         event.consume();
         Map<DataType, Object> tempMap = new HashMap<>();
-        tempMap.put(DataType.hersteller, this.herstellerName);
+        tempMap.put(DataType.hersteller, this.herstellerName.getValue());
         AutomatEvent automatEvent = new AutomatEvent(this, tempMap, AutomatOperationType.cHersteller);
         automatEventHandler.handle(automatEvent);
     }
@@ -237,15 +241,28 @@ public class FeController implements UpdateGuiEventListener {
         }
     }
 
+    @FXML
+    private void saveJosButtonHandler(ActionEvent event) {
+        event.consume();
+        ConsoleLib.handleSaveJOS(automatEventHandler, this);
+    }
+
+    @FXML
+    private void loadJosButtonHandler(ActionEvent event) {
+        event.consume();
+        ConsoleLib.handleLoadJOS(automatEventHandler, this);
+    }
+
+
     public void setAutomatEventHandler(AutomatEventHandler automatEventHandler) {
         this.automatEventHandler = automatEventHandler;
     }
 
 
     public void initialize() {
-        herstellerInputField.textProperty().addListener((obs, oldText, newText) -> {
-            this.herstellerName = newText;
-        });
+
+        /* DATA BINDING */
+        herstellerName.bindBidirectional(herstellerInputField.textProperty());
 
 
         herstellerView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
@@ -275,6 +292,7 @@ public class FeController implements UpdateGuiEventListener {
             public void handle(MouseEvent event) {
                 if(kuchenList != null && kuchenList.size()>1) {
                     String kuchenString = (String) kuchenView.getSelectionModel().getSelectedItem();
+                    if(kuchenString == null) return;
                     String[] firstSplit = kuchenString.split("=");
                     String[] secondSplit = firstSplit[1].split(",");
                     dragStartFachnummer = Integer.parseInt(secondSplit[0]);
@@ -288,6 +306,7 @@ public class FeController implements UpdateGuiEventListener {
                 if(kuchenList != null && kuchenList.size()>1 ) {
                     String droppedCake = event.getPickResult().getIntersectedNode().toString();
                     String[] firstSplit = droppedCake.split("=");
+                    if(firstSplit.length < 3) {return;}
                     String[] secondSplit = firstSplit[2].split(",");
                     int droppedOnFachnummer = Integer.parseInt(secondSplit[0]);
                     if( dragStartFachnummer != droppedOnFachnummer) {
@@ -365,6 +384,7 @@ public class FeController implements UpdateGuiEventListener {
                 updateAllergeneView();
         }
     }
+
 
     private void updateHerstellerView() {
         ObservableList<String> items = FXCollections.observableArrayList();

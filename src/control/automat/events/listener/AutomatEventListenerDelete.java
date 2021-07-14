@@ -26,6 +26,7 @@ public class AutomatEventListenerDelete implements AutomatEventListener, Seriali
 
     @Override
     public void onAutomatEvent(AutomatEvent event) {
+        automat = automatC.getAutomat();
         if (null != event.getData()) {
             switch (event.getOperationType()) {
                 case dHersteller:
@@ -64,4 +65,6 @@ public class AutomatEventListenerDelete implements AutomatEventListener, Seriali
             outputEventHandler.handle(outputEvent);
         }
     }
+
+
 }

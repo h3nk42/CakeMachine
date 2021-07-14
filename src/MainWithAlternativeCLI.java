@@ -1,33 +1,28 @@
 import control.automat.Automat;
 import control.automat.AutomatController;
 import control.automat.events.AutomatEventHandler;
-import control.automat.events.AutomatEventListener;
 import control.automat.events.listener.*;
 import control.automat.observers.AllergeneObserver;
 import control.automat.observers.CreateDeleteCakeObserver;
 import control.automat.observers.CreateDeleteHerstellerObserver;
 import control.automat.observers.KuchenCapacityObserver;
-import control.console.AutomatConsole;
 import control.console.AutomatConsoleNew;
-import control.console.input.Reader;
 import control.console.input.InputEventHandler;
+import control.console.input.Reader;
 import view.gui.events.UpdateGuiEventHandler;
 import view.output.Output;
 import view.output.OutputEventHandler;
 import view.output.OutputEventListener;
-
 import view.output.OutputEventListenerPrint;
 
-import java.util.Random;
 
-
-public class MainWithCLI {
+public class MainWithAlternativeCLI {
     public static void main(String[] args) throws Exception {
 
         /* ------- AUTOMAT SETTINGS ------- */
         final int FACHANZAHL = 6;
 
-        /* ------- HANDLER SETUP ------- */
+        /* ------- EVENT_HANDLER SETUP ------- */
         OutputEventHandler outputEventHandler = new OutputEventHandler();
         AutomatEventHandler automatEventHandler = new AutomatEventHandler();
         InputEventHandler inputEventHandler = new InputEventHandler();
@@ -42,7 +37,7 @@ public class MainWithCLI {
         Automat automat = new Automat(FACHANZAHL);
         AutomatController automatController = new AutomatController(automat, automatEventHandler, outputEventHandler, updateGuiEventHandler);
 
-        /* LISTENER SETUP */
+        /* EVENT_LISTENER SETUP */
         AutomatEventListenerRead automatEventListenerRead = new AutomatEventListenerRead(outputEventHandler, automatController);
         AutomatEventListenerCreate automatEventListenerCreate = new AutomatEventListenerCreate(outputEventHandler, automatController);
         AutomatEventListenerDelete automatEventListenerDelete = new AutomatEventListenerDelete(outputEventHandler,automatController);
@@ -50,7 +45,7 @@ public class MainWithCLI {
         AutomatEventListenerPersist automatEventListenerPersist = new AutomatEventListenerPersist(outputEventHandler, automatController);
         automatEventHandler.add(automatEventListenerRead);
         automatEventHandler.add(automatEventListenerCreate);
-        automatEventHandler.add(automatEventListenerDelete);
+        //automatEventHandler.add(automatEventListenerDelete);
         automatEventHandler.add(automatEventListenerUpdate);
         automatEventHandler.add(automatEventListenerPersist);
 

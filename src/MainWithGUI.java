@@ -1,6 +1,7 @@
 import control.automat.Automat;
 import control.automat.AutomatController;
 import control.automat.events.AutomatEventHandler;
+import control.automat.events.listener.*;
 import control.automat.observers.AllergeneObserver;
 import control.automat.observers.CreateDeleteCakeObserver;
 import control.automat.observers.CreateDeleteHerstellerObserver;
@@ -43,6 +44,18 @@ public class MainWithGUI extends Application {
         /* ------- AUTOMAT SETUP ------- */
         Automat automat = new Automat(FACHANZAHL);
         AutomatController automatController = new AutomatController(automat,automatEventHandler, outputEventHandler, updateGuiEventHandler);
+
+        /* LISTENER SETUP */
+        AutomatEventListenerRead automatEventListenerRead = new AutomatEventListenerRead(outputEventHandler, automatController);
+        AutomatEventListenerCreate automatEventListenerCreate = new AutomatEventListenerCreate(outputEventHandler, automatController);
+        AutomatEventListenerDelete automatEventListenerDelete = new AutomatEventListenerDelete(outputEventHandler,automatController);
+        AutomatEventListenerUpdate automatEventListenerUpdate = new AutomatEventListenerUpdate(outputEventHandler, updateGuiEventHandler, automatController);
+        AutomatEventListenerPersist automatEventListenerPersist = new AutomatEventListenerPersist(outputEventHandler, automatController);
+        automatEventHandler.add(automatEventListenerRead);
+        automatEventHandler.add(automatEventListenerCreate);
+        automatEventHandler.add(automatEventListenerDelete);
+        automatEventHandler.add(automatEventListenerUpdate);
+        automatEventHandler.add(automatEventListenerPersist);
 
         /* ------- OBSERVER SETUP ------- */
         KuchenCapacityObserver kuchenCapacityObserver = new KuchenCapacityObserver(automatController, outputEventHandler);

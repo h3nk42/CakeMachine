@@ -178,7 +178,7 @@ public class Automat implements Serializable {
         return null;
     }
 
-    private  void  addKuchen(VerkaufsKuchen kuchen) throws Exception {
+    private synchronized void addKuchen(VerkaufsKuchen kuchen) throws Exception {
         if (kuchen.getHersteller() == null) {
             throw new Exception("Kuchen benoetigt Hersteller");
         } else if (this.getHersteller(kuchen.getHersteller().getName()) == null) {
@@ -197,7 +197,7 @@ public class Automat implements Serializable {
             this.kuchenSetup(kuchen);
     }
 
-    private  void  addKuchen(VerkaufsKuchen kuchen, Date inspektionsDatum) throws Exception {
+    private void addKuchen(VerkaufsKuchen kuchen, Date inspektionsDatum) throws Exception {
         if (kuchen.getHersteller() == null) {
             throw new Exception("Kuchen benoetigt Hersteller");
         } else if (this.getHersteller(kuchen.getHersteller().getName()) == null) {

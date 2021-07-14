@@ -112,7 +112,6 @@ public class AutomatConsole implements InputEventListener {
             case d:
                 return handleDeleteState(input);
             case p:
-
                 break;
             case ch:
                 handleCreateHersteller(input);
@@ -284,7 +283,6 @@ public class AutomatConsole implements InputEventListener {
         else if (!checkCharSize(input, 3, 10)) {
             return sendOutPutEvent("3 - 10 Zeichen erlaubt", MessageType.error);
         }
-        ;
         Map<DataType, Object> tempMap = new HashMap<>();
         tempMap.put(DataType.hersteller, splitText[0]);
         AutomatEvent automatEvent = new AutomatEvent(this, tempMap, AutomatOperationType.cHersteller);
@@ -470,3 +468,4 @@ public class AutomatConsole implements InputEventListener {
 // Kremkuchen rewe 4,50 386 36 Gluten,Erdnuss Butter
 // obstkuchen lidl 4,50 386 36 Gluten,Erdnuss Apfel
 // obsttorte rewe 4,50 386 36 Gluten,Erdnuss Kirsche Butter
+// kremkuchen rewe 4,50 386 36 Gluten,Erdnuss Butter

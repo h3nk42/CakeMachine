@@ -20,6 +20,8 @@
                   <ListView fx:id="kuchenView" layoutX="14.0" layoutY="14.0" prefHeight="313.0" prefWidth="2000.0" AnchorPane.bottomAnchor="46.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="14.0" />
                   <Button layoutX="14.0" layoutY="345.0" mnemonicParsing="false" onAction="#deleteKuchenButtonHandler" text="entfernen" AnchorPane.bottomAnchor="14.0" />
                   <Button layoutX="104.0" layoutY="345.0" mnemonicParsing="false" onAction="#inspectKuchenButtonHandler" text="inspizieren" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="104.0" />
+                  <Button layoutX="441.0" layoutY="344.0" mnemonicParsing="false" onAction="#saveJosButtonHandler" text="saveJOS" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="441.0" />
+                  <Button layoutX="522.0" layoutY="345.0" mnemonicParsing="false" onAction="#loadJosButtonHandler" text="loadJOS" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="522.0" />
                </children>
             </AnchorPane>
          </children>

@@ -85,26 +85,6 @@ public class KuchenBean implements Serializable, Bean{
         this.extraData = extraData;
     }
 
-
-    public static void main(String[] args) {
-        KuchenBean kuchenBean = new KuchenBean(KuchenArt.Obsttorte, "test", BigDecimal.valueOf(1.25).doubleValue(), 300, new Allergen[] {Allergen.Haselnuss, Allergen.Gluten, Allergen.Sesamsamen}, new String[] {"Apfel","Vanille"}, Duration.of(500, ChronoUnit.DAYS), new Date());
-        System.out.println("lib/BeanTest.java: lineNumber: 22: " + kuchenBean);
-        System.out.println("lib/BeanTest.java: lineNumber: 22: ----");
-
-        try(XMLEncoder encoder=new XMLEncoder(new BufferedOutputStream(new FileOutputStream("beanItems.xml")));){
-            encoder.writeObject(kuchenBean);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-
-        try (XMLDecoder decoder=new XMLDecoder(new BufferedInputStream(new FileInputStream("beanItems.xml")));){
-            KuchenBean loadedKuchen=(KuchenBean)decoder.readObject();
-            System.out.println("lib/BeanItem.java: lineNumber: 40: " + loadedKuchen);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public String toString() {
         return "KuchenBean{" +

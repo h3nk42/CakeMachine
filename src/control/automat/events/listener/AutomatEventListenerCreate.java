@@ -31,6 +31,7 @@ public class AutomatEventListenerCreate implements AutomatEventListener, Seriali
 
     @Override
     public void onAutomatEvent(AutomatEvent event) {
+        automat = automatC.getAutomat();
         if (null != event.getData()) {
             switch(event.getOperationType()) {
                 case cKuchen:
@@ -71,13 +72,15 @@ public class AutomatEventListenerCreate implements AutomatEventListener, Seriali
                 case Obstkuchen:
                     obstsorte = (String) eventData.get(DataType.obstsorte);
                     if( obstsorte.equals("")) {
+                        Output.print(this, "Obstsorte leer", MessageType.error, outputEventHandler);
                         throw new Exception("Obstsorte leer");
                     }
                     kremObstData = new String[]{obstsorte};
                     break;
                 case Kremkuchen:
                     kremsorte = (String) eventData.get(DataType.kremsorte);
-                    if( kremsorte.equals("")) {
+                    if(kremsorte == null || kremsorte.equals("")) {
+                        Output.print(this, "Kremsorte leer", MessageType.error, outputEventHandler);
                         throw new Exception("Kremsorte leer");
                     }
                     kremObstData = new String[]{kremsorte};
@@ -86,6 +89,7 @@ public class AutomatEventListenerCreate implements AutomatEventListener, Seriali
                     obstsorte = (String) eventData.get(DataType.obstsorte);
                     kremsorte = (String) eventData.get(DataType.kremsorte);
                     if( kremsorte.equals("") || obstsorte.equals("")) {
+                        Output.print(this, "Obstsorte | Kremsorte leer", MessageType.error, outputEventHandler);
                         throw new Exception("Obstsorte | Kremsorte leer");
                     }
                     kremObstData = new String[]{obstsorte,kremsorte};
@@ -118,4 +122,5 @@ public class AutomatEventListenerCreate implements AutomatEventListener, Seriali
     public String toString() {
         return "create";
     }
+
 }

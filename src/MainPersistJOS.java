@@ -15,7 +15,7 @@ import java.io.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-import static lib.StaticHelperMethods.*;
+import static lib.PersistLib.*;
 
 
 public class MainPersistJOS {
@@ -55,7 +55,7 @@ public class MainPersistJOS {
         }
 
 
-        writeAutomatToFileJOS("automat.ser", automatController);
+        writeAutomatToFileJOS("automat.ser", automat);
         Automat justReadAutomat = null;
         try {
             justReadAutomat = readAutomatFromFileJOS("automat.ser");
@@ -64,7 +64,7 @@ public class MainPersistJOS {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        rehydrateAutomat(justReadAutomat, automatController, automatEventHandler, outputEventHandler, updateGuiEventHandler, observers);
-        System.out.println();
+        rehydrateAutomat(justReadAutomat, automatController);
+        System.out.println(automatController);
     }
 }

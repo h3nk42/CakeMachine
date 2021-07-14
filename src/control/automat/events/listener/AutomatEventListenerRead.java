@@ -20,17 +20,17 @@ import java.util.Set;
 public class AutomatEventListenerRead implements AutomatEventListener, Serializable {
 
     private OutputEventHandler outputEventHandler;
-    private AutomatController automatC;
+    private AutomatController automatController;
     private Automat automat;
 
     public AutomatEventListenerRead(OutputEventHandler outputEventHandler, AutomatController automatController) {
-        this.automatC = automatController;
-        this.automat = automatController.getAutomat();
+        this.automatController = automatController;
         this.outputEventHandler = outputEventHandler;
     }
 
     @Override
     public void onAutomatEvent(AutomatEvent event) {
+        automat = automatController.getAutomat();
         if (null != event.getData()) {
             switch (event.getOperationType()) {
                 case rHersteller:
@@ -129,4 +129,5 @@ public class AutomatEventListenerRead implements AutomatEventListener, Serializa
         OutputEvent outputEvent = new OutputEvent(this, "Hersteller:" + sb, MessageType.success);
         outputEventHandler.handle(outputEvent);
     }
+
 }

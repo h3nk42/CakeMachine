@@ -22,8 +22,8 @@ import java.io.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-import static lib.StaticHelperMethods.rehydrateAutomat;
-import static lib.StaticHelperMethods.setupObservers;
+import static lib.PersistLib.rehydrateAutomat;
+import static lib.PersistLib.setupObservers;
 
 public class MainPersistJBP {
 
@@ -124,7 +124,7 @@ public class MainPersistJBP {
                 KuchenBean kb = (KuchenBean) h;
                 newAutomat.createKuchen(kb.getKuchenArt(), newAutomat.getHersteller(kb.getHersteller()), BigDecimal.valueOf(kb.getPreis()), kb.getNaehrwert(), kb.getAllergene(), kb.getExtraData(), kb.getHaltbarkeit().intValue(), kb.getInspektionsDatum() );
             }
-            rehydrateAutomat(newAutomat, automatController, automatEventHandler,outputEventHandler,updateGuiEventHandler,observers);
+            rehydrateAutomat(newAutomat, automatController);
             System.out.println("MainPersistJBP.java: lineNumber: 129: " + automatController);
         } catch (FileNotFoundException e) {
             e.printStackTrace();

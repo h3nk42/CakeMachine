@@ -33,6 +33,7 @@ public class AutomatEventListenerUpdate  implements AutomatEventListener, Serial
 
     @Override
     public void onAutomatEvent(AutomatEvent event) {
+        automat = automatC.getAutomat();
         if (null != event.getData()) {
             switch(event.getOperationType()) {
                 case swapKuchen:
@@ -75,4 +76,5 @@ public class AutomatEventListenerUpdate  implements AutomatEventListener, Serial
         UpdateGuiEvent updateGuiEvent = new UpdateGuiEvent(this, eventData, GuiEventType.kuchenData);
         updateGuiEventHandler.handle(updateGuiEvent);
     }
+
 }

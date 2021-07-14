@@ -10,14 +10,14 @@ import view.output.OutputEventHandler;
 import java.io.*;
 import java.util.ArrayList;
 
-public class StaticHelperMethods {
+public class PersistLib {
 
-    public static void rehydrateAutomat(Automat automat, AutomatController automatController, AutomatEventHandler automatEventHandler, OutputEventHandler outputEventHandler, UpdateGuiEventHandler updateGuiEventHandler, ArrayList<Observer> observers) {
-        automatController.rehydrate(automat, automatEventHandler,outputEventHandler,updateGuiEventHandler);
-        for (Observer observer:
+    public static void rehydrateAutomat(Automat automat, AutomatController automatController) {
+        automatController.rehydrate(automat);
+        /*for (Observer observer:
                 observers) {
             automatController.meldeAn(observer);
-        }
+        }*/
     }
 
     public static ArrayList<Observer> setupObservers(AutomatController automatController, OutputEventHandler outputEventHandler, UpdateGuiEventHandler updateGuiEventHandler) {
@@ -34,13 +34,13 @@ public class StaticHelperMethods {
         return observers;
     }
 
-    public static void writeAutomatToFileJOS(String fileName, AutomatController automatControllerToWrite) {
+    public static void writeAutomatToFileJOS(String fileName, Automat automatToWrite) {
         FileOutputStream fileOutputStream = null;
         ObjectOutputStream objectOutputStream = null;
         try {
             fileOutputStream = new FileOutputStream(fileName);
             objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            objectOutputStream.writeObject(automatControllerToWrite);
+            objectOutputStream.writeObject(automatToWrite);
             objectOutputStream.close();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -55,5 +55,18 @@ public class StaticHelperMethods {
         Automat automat = (Automat) in.readObject();
             in.close();
             return automat;
+    }
+
+    public static boolean loadAutomatAndRehydrateController(AutomatController automatController) {
+        Automat justReadAutomat = null;
+        try {
+            justReadAutomat = readAutomatFromFileJOS("automat.ser");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        rehydrateAutomat(justReadAutomat, automatController);
+        return true;
     }
 }

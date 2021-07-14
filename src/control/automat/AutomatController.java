@@ -1,12 +1,8 @@
 package control.automat;
 
-import control.automat.events.AutomatEvent;
 import control.automat.events.AutomatEventHandler;
-import control.automat.events.listener.AutomatEventListenerCreate;
-import control.automat.events.listener.AutomatEventListenerDelete;
-import control.automat.events.listener.AutomatEventListenerRead;
-import control.automat.events.listener.AutomatEventListenerUpdate;
-import control.automat.observers.AutomatSubject;
+import control.automat.events.AutomatEventListener;
+import control.automat.events.listener.*;
 import control.automat.observers.Observer;
 import control.automat.observers.Subjekt;
 import model.automat.verkaufsobjekte.Allergen;
@@ -14,10 +10,7 @@ import view.gui.events.UpdateGuiEventHandler;
 import view.output.OutputEventHandler;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class AutomatController implements Subjekt, Serializable {
 
@@ -29,15 +22,11 @@ public class AutomatController implements Subjekt, Serializable {
     private double kuchenCapacity = 0;
     private Set<Allergen> allergene = new HashSet<>();
 
+
     private Automat automat;
 
     public AutomatController(Automat automat, AutomatEventHandler automatEventHandler, OutputEventHandler outputEventHandler, UpdateGuiEventHandler updateGuiEventHandler) {
-        rehydrate(automat, automatEventHandler,outputEventHandler,updateGuiEventHandler);
-    }
-
-    public void rehydrate(Automat automat, AutomatEventHandler automatEventHandler, OutputEventHandler outputEventHandler, UpdateGuiEventHandler updateGuiEventHandler) {
         this.automat = automat;
-        this.beobachterList = new LinkedList<>();
         this.automatEventHandler = automatEventHandler;
         this.outputEventHandler = outputEventHandler;
         this.updateGuiEventHandler = updateGuiEventHandler;
@@ -45,11 +34,25 @@ public class AutomatController implements Subjekt, Serializable {
         AutomatEventListenerCreate automatEventListenerCreate = new AutomatEventListenerCreate(outputEventHandler, this);
         AutomatEventListenerDelete automatEventListenerDelete = new AutomatEventListenerDelete(outputEventHandler,this);
         AutomatEventListenerUpdate automatEventListenerUpdate = new AutomatEventListenerUpdate(outputEventHandler, updateGuiEventHandler, this);
-        automatEventHandler.add(automatEventListenerCreate);
-        automatEventHandler.add(automatEventListenerRead);
-        automatEventHandler.add(automatEventListenerDelete);
-        automatEventHandler.add(automatEventListenerUpdate);
+        AutomatEventListenerPersist automatEventListenerPersist = new AutomatEventListenerPersist(outputEventHandler, this);
+
+        this.beobachterList = new LinkedList<>();
+    }
+
+    public AutomatEventHandler getAutomatEventHandler(){
+        return this.automatEventHandler;
+    }
+    public OutputEventHandler getOutputEventHandler(){
+        return this.outputEventHandler;
+    }
+    public UpdateGuiEventHandler getUpdateGuiEventHandler(){
+        return this.updateGuiEventHandler;
+    }
+
+    public void rehydrate(Automat automat) {
+        this.automat = automat;
         this.aktualisiereKuchenCapacity();
+        this.aktualisiereAllergene();
         this.benachrichtige();
     }
 
