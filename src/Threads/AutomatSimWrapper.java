@@ -19,9 +19,7 @@ public class AutomatSimWrapper {
     public AutomatSimWrapper(AutomatController automatController,AutomatEventHandler aHandler) {
         this.automatController = automatController;
         this.aHandler = aHandler;
-
     }
-
 
     public synchronized void addCake(Map<DataType, Object> cakeData) throws InterruptedException {
         Automat a = automatController.getAutomat();

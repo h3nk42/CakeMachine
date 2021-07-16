@@ -14,47 +14,44 @@ import java.util.Map;
 import java.util.Random;
 
 
-public class DeleteCakeThread extends Thread{
+public class InspectCakeThread extends Thread{
 
     private AutomatController automatController;
     private AutomatEventHandler automatEventHandler;
     private int sleep;
     private SimulationType simulationType;
-    private Random r;
+    private Random r = new Random(Long.parseLong("0123456789"));
     private AutomatSimWrapper automatSimWrapper;
 
 
-    public DeleteCakeThread(AutomatSimWrapper automatSimWrapper, AutomatController automatController, AutomatEventHandler automatEventHandler, int sleep, boolean isTest, SimulationType simulationType){
+    public InspectCakeThread(AutomatSimWrapper automatSimWrapper, AutomatController automatController, AutomatEventHandler automatEventHandler, int sleep, SimulationType simulationType){
         this.automatSimWrapper = automatSimWrapper;
         this.automatEventHandler = automatEventHandler;
         this.automatController = automatController;
         this.sleep = sleep;
         this.simulationType = simulationType;
-        if (isTest)  this.r = new Random(Long.parseLong("0123456789"));
-        else this.r = new Random();
     }
 
     public Integer rollIndex(int maxIndex) {
         return r.nextInt(maxIndex);
     }
 
-    private void deleteRandomCake() throws Exception {
+    private void inspectRandomCake() throws Exception {
         Automat a = automatController.getAutomat();
         List<VerkaufsKuchen> kuchen = a.getKuchen();
         Map<DataType, Object> tempMap = new HashMap<>();
         if(kuchen.size() > 0) {
             Integer random = rollIndex(kuchen.size());
-            VerkaufsKuchen vk = kuchen.get(random);
-            tempMap.put(DataType.fachnummer, vk.getFachnummer());
-            deleteCakeSimSpecific(tempMap);
+            tempMap.put(DataType.fachnummer, kuchen.get(random).getFachnummer());
+            a.aktualisiereInspektionsdatum(kuchen.get(random).getFachnummer());
         }
         sleep(sleep);
     }
 
-    private void deleteCakeSimSpecific(Map<DataType, Object> tempMap) throws InterruptedException {
+   /* private void inspectCakeSimSpecific(Map<DataType, Object> tempMap) throws InterruptedException {
         switch (this.simulationType){
             case sim1:
-                AutomatEvent automatEvent = new AutomatEvent(this, tempMap, AutomatOperationType.dKuchen);
+                AutomatEvent automatEvent = new AutomatEvent(this, tempMap, AutomatOperationType.inspectKuchen);
                 automatEventHandler.handle(automatEvent);
                 break;
             case sim2:
@@ -63,12 +60,12 @@ public class DeleteCakeThread extends Thread{
             case sim3:
                 break;
         }
-    }
+    }*/
 
     public void run() {
         while(true){
             try {
-                deleteRandomCake();
+                inspectRandomCake();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (Exception e) {

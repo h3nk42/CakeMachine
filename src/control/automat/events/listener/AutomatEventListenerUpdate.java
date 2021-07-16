@@ -50,7 +50,7 @@ public class AutomatEventListenerUpdate  implements AutomatEventListener, Serial
             int[] faecher = (int[]) event.getData().get(DataType.fachnummer);
             try {
                 automat.swapFachnummer(faecher[0], faecher[1]);
-                Output.print(this, "erfolg", MessageType.success, outputEventHandler);
+                //Output.print(this, "erfolg", MessageType.success, outputEventHandler);
                 updateGui();
             } catch (Exception e) {
                 OutputEvent outputEvent = new OutputEvent(this, e.getMessage(), MessageType.error);
@@ -62,7 +62,7 @@ public class AutomatEventListenerUpdate  implements AutomatEventListener, Serial
         int fachNummer = (int) event.getData().get(DataType.fachnummer);
         try {
             automat.aktualisiereInspektionsdatum(fachNummer);
-            Output.print(this, "erfolg", MessageType.success, outputEventHandler);
+            //Output.print(this, "erfolg", MessageType.success, outputEventHandler);
             updateGui();
         } catch (Exception e) {
             OutputEvent outputEvent = new OutputEvent(this, e.getMessage(), MessageType.error);

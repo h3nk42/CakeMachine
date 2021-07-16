@@ -349,7 +349,7 @@ public class AutomatTests {
         VerkaufsKuchen obsttorteRewe = automat.createKuchen(KuchenArt.Obsttorte, automat.getHersteller("Rewe"), BigDecimal.valueOf(1.25), 300, new Allergen[] {Allergen.Haselnuss, Allergen.Gluten, Allergen.Sesamsamen}, new String[] {"Apfel","Vanille"},24);
         Date oldDate = obsttorteRewe.getInspektionsdatum();
         Date newDate = new Date();
-        automat.setInspektionsdatum(0, newDate);
+        automat.aktualisiereInspektionsdatum(0);
         Assertions.assertEquals(false, oldDate == obsttorteRewe.getInspektionsdatum());
         Assertions.assertEquals(true, newDate == obsttorteRewe.getInspektionsdatum());
     }

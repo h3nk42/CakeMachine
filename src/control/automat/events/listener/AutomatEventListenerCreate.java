@@ -48,7 +48,7 @@ public class AutomatEventListenerCreate implements AutomatEventListener, Seriali
         String name = (String) event.getData().get(DataType.hersteller);
         try {
             automat.createHersteller(name);
-            Output.print(this, "erfolg", MessageType.success, outputEventHandler);
+            //Output.print(this, "erfolg", MessageType.success, outputEventHandler);
             automatC.aktualisiereHersteller();
         } catch (Exception e) {
             OutputEvent outputEvent = new OutputEvent(this, e.getMessage(), MessageType.error);
@@ -98,7 +98,7 @@ public class AutomatEventListenerCreate implements AutomatEventListener, Seriali
                     throw new Exception("Kuchenart nicht erkannt");
             }
             automat.createKuchen(kuchenArt, hersteller,preis,naehrwert,allergene,kremObstData,haltbarkeit );
-            Output.print(this, "erfolg", MessageType.success, outputEventHandler);
+            //Output.print(this, "erfolg", MessageType.success, outputEventHandler);
             automatC.aktualisiereAllergene();
             automatC.aktualisiereKuchenCapacity();
         } catch (Exception e) {

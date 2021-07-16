@@ -42,16 +42,17 @@ public class Automat implements Serializable {
         return herstellerFactory.getHerstellerListe().get(herstellerName.toLowerCase());
     }
     public Collection<Hersteller> getHersteller() {
-        return herstellerFactory.getHerstellerListe().values();
+        Collection<Hersteller> returnCopy = new ArrayList<>(herstellerFactory.getHerstellerListe().values());
+        return returnCopy;
     }
 
-    public Hersteller createHersteller(String herstellerName ) throws Exception {
+    public synchronized Hersteller createHersteller(String herstellerName ) throws Exception {
         Hersteller newHersteller =  herstellerFactory.produceHersteller(herstellerName);
         this.kuchenCounter.put(newHersteller, getKuchenCounter(newHersteller));
         return newHersteller;
     }
 
-    public void deleteHersteller(String herstellerName ) throws Exception {
+    public synchronized void deleteHersteller(String herstellerName ) throws Exception {
         Hersteller tempHersteller = getHersteller(herstellerName);
         if(tempHersteller== null) {
             throw new Exception("Hersteller nicht gefunden");
@@ -73,7 +74,8 @@ public class Automat implements Serializable {
     }
 
     public List<VerkaufsKuchen> getFaecher() {
-        return faecher;
+        List<VerkaufsKuchen> returnCopy = new ArrayList<>(this.faecher);
+        return returnCopy;
     }
 
     public Integer getKuchenCounter(Hersteller hersteller) throws Exception {
@@ -88,11 +90,8 @@ public class Automat implements Serializable {
     }
 
     public Map<Hersteller, Integer>  getKuchenCounter() {
-        return kuchenCounter;
-    }
-
-    private Map<KuchenArt, ArrayList<VerkaufsKuchen>> getKuchenMap() {
-        return kuchenMap;
+        Map<Hersteller, Integer> returnCopy = new HashMap<>(kuchenCounter);
+        return returnCopy;
     }
 
     public Set<Allergen> getAllergene(boolean showVorhandeneAllergene) {
@@ -121,7 +120,8 @@ public class Automat implements Serializable {
     }
 
     public List<VerkaufsKuchen> getKuchen(KuchenArt kuchenArt) {
-            return this.kuchenMap.get(kuchenArt);
+        List<VerkaufsKuchen> returnCopy = new ArrayList<>(this.kuchenMap.get(kuchenArt));
+        return returnCopy;
     }
 
     public synchronized VerkaufsKuchen createKuchen(KuchenArt kuchenArt, Hersteller hersteller, BigDecimal preis, int naehrwert, Allergen[] allergene, String[] extraData, Integer haltbarkeitInStunden) throws Exception {
@@ -306,8 +306,10 @@ public class Automat implements Serializable {
         }
     }
 
-    public Date getInspektionsdatum(Verkaufsobjekt verkaufsobjekt) {
-        return inspektionsDaten.get((VerkaufsKuchen)verkaufsobjekt);
+    public synchronized Date getInspektionsdatum(Verkaufsobjekt verkaufsobjekt) {
+        Date returnCopy = new Date();
+        returnCopy.setTime(inspektionsDaten.get((VerkaufsKuchen)verkaufsobjekt).getTime());
+        return returnCopy;
     }
 
     public Integer getFachnummer(Verkaufsobjekt verkaufsobjekt) {
@@ -326,7 +328,7 @@ public class Automat implements Serializable {
         this.setInspektionsdatum(fachnummer, new Date());
     }
 
-    public void setInspektionsdatum(Integer fachnummer, Date inspektionsdatumNeu) throws Exception {
+    private synchronized void setInspektionsdatum(Integer fachnummer, Date inspektionsdatumNeu) throws Exception {
         if(this.faecher.get(fachnummer) == null ) {
             throw new Exception("Index zeigt auf leeres Fach");
         }

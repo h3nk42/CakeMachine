@@ -43,7 +43,7 @@ public class AutomatEventListenerDelete implements AutomatEventListener, Seriali
         int fachnummer = (int) event.getData().get(DataType.fachnummer);
         try{
             automat.deleteKuchen(fachnummer);
-            Output.print(this, "erfolg", MessageType.success, outputEventHandler);
+            //Output.print(this, "erfolg", MessageType.success, outputEventHandler);
             automatC.aktualisiereKuchenCapacity();
             automatC.aktualisiereAllergene();
             return;
@@ -57,7 +57,7 @@ public class AutomatEventListenerDelete implements AutomatEventListener, Seriali
         String herstellerName = (String) event.getData().get(DataType.hersteller);
         try{
             automat.deleteHersteller(herstellerName);
-            Output.print(this, "erfolg", MessageType.success, outputEventHandler);
+            //Output.print(this, "erfolg", MessageType.success, outputEventHandler);
             automatC.aktualisiereHersteller();
             return;
         } catch (Exception e) {
