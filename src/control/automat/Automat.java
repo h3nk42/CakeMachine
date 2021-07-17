@@ -340,10 +340,10 @@ public class Automat implements Serializable {
         return fachAnzahl;
     }
 
-    public boolean isFull() {
+    public synchronized boolean isFull() {
         return (this.getKuchen().size() == fachAnzahl);
     }
-    public boolean isEmpty(){
+    public synchronized boolean isEmpty(){
         return (this.getKuchen().size()== 0);
     }
 

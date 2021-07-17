@@ -58,9 +58,8 @@ public class DeleteCakeThread extends Thread{
                 automatEventHandler.handle(automatEvent);
                 break;
             case sim2:
-                automatSimWrapper.deleteCake(tempMap);
-                break;
             case sim3:
+                automatSimWrapper.deleteCake(r, simulationType);
                 break;
         }
     }

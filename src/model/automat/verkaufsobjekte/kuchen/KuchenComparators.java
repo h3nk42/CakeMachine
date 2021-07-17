@@ -25,7 +25,6 @@ public class KuchenComparators {
     }
 
     public static class InspektionsDatumComparator implements Comparator {
-
         @Override
         public int compare(Object o1, Object o2) {
             VerkaufsKuchen k1 = (VerkaufsKuchen) o1;

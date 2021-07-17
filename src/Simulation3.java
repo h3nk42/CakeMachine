@@ -13,7 +13,7 @@ import view.output.OutputEventHandler;
 import view.output.OutputEventListener;
 import view.output.OutputEventListenerPrint;
 
-public class Simulation2 {
+public class Simulation3 {
 
     public static void main(String[] args) throws Exception {
 
@@ -59,11 +59,15 @@ public class Simulation2 {
             automat.createHersteller(herstellerArr[i]);
         }
 
-        int sleepValue = 0;
+        int sleepValue = 1000;
         CreateCakeThread cct = new CreateCakeThread(automatSimWrapper, sleepValue, automatController, automatEventHandler, false, SimulationType.sim2);
         cct.start();
-        DeleteCakeThread dct = new DeleteCakeThread(automatSimWrapper, automatController, automatEventHandler, sleepValue, false, SimulationType.sim2);
+        CreateCakeThread cct2 = new CreateCakeThread(automatSimWrapper, sleepValue, automatController, automatEventHandler, false, SimulationType.sim2);
+        cct2.start();
+        DeleteCakeThread dct = new DeleteCakeThread(automatSimWrapper, automatController, automatEventHandler, sleepValue, false, SimulationType.sim3);
         dct.start();
+        DeleteCakeThread dct2 = new DeleteCakeThread(automatSimWrapper, automatController, automatEventHandler, sleepValue, false, SimulationType.sim3);
+        dct2.start();
         InspectCakeThread ict = new InspectCakeThread(automatSimWrapper, automatController, automatEventHandler, sleepValue, SimulationType.sim2, false);
         ict.start();
     }

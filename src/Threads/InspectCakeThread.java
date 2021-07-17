@@ -20,31 +20,23 @@ public class InspectCakeThread extends Thread{
     private AutomatEventHandler automatEventHandler;
     private int sleep;
     private SimulationType simulationType;
-    private Random r = new Random(Long.parseLong("0123456789"));
+    private Random r;
     private AutomatSimWrapper automatSimWrapper;
 
 
-    public InspectCakeThread(AutomatSimWrapper automatSimWrapper, AutomatController automatController, AutomatEventHandler automatEventHandler, int sleep, SimulationType simulationType){
+    public InspectCakeThread(AutomatSimWrapper automatSimWrapper, AutomatController automatController, AutomatEventHandler automatEventHandler, int sleep, SimulationType simulationType, boolean isTest){
         this.automatSimWrapper = automatSimWrapper;
         this.automatEventHandler = automatEventHandler;
         this.automatController = automatController;
         this.sleep = sleep;
         this.simulationType = simulationType;
+        if (isTest)  this.r = new Random(Long.parseLong("0123456789"));
+        else this.r = new Random();
     }
 
-    public Integer rollIndex(int maxIndex) {
-        return r.nextInt(maxIndex);
-    }
 
     private void inspectRandomCake() throws Exception {
-        Automat a = automatController.getAutomat();
-        List<VerkaufsKuchen> kuchen = a.getKuchen();
-        Map<DataType, Object> tempMap = new HashMap<>();
-        if(kuchen.size() > 0) {
-            Integer random = rollIndex(kuchen.size());
-            tempMap.put(DataType.fachnummer, kuchen.get(random).getFachnummer());
-            a.aktualisiereInspektionsdatum(kuchen.get(random).getFachnummer());
-        }
+        automatSimWrapper.inspectRandomCake(r);
         sleep(sleep);
     }
 
