@@ -7,15 +7,19 @@ import java.util.List;
 public class ThreadMain {
     public static void main(String[] args) {
 
-        List<Integer> sharedList = Arrays.asList(new Integer[3]);
-        Wrapper wrapper = new Wrapper(sharedList);
-
-        int sleep = 2000;
+        Wrapper wrapper = new Wrapper(1);
+        int sleep = 0;
         CreateThread createThread = new CreateThread(wrapper, sleep, 1);
         CreateThread createThread2 = new CreateThread(wrapper, sleep, 2);
-        DeleteThread deleteThread = new DeleteThread(wrapper, sleep, "create - 1");
+        CreateThread createThread3 = new CreateThread(wrapper, sleep, 3);
+        DeleteThread deleteThread = new DeleteThread(wrapper, sleep, "delete - 1");
+        DeleteThread deleteThread2 = new DeleteThread(wrapper, sleep, "delete - 2");
+        DeleteThread deleteThread3 = new DeleteThread(wrapper, sleep, "delete - 3");
         createThread.start();
         createThread2.start();
+        //createThread3.start();
         deleteThread.start();
+        deleteThread2.start();
+        //deleteThread3.start();
     }
 }
