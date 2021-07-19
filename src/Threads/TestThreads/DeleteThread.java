@@ -16,8 +16,7 @@ class DeleteThread extends Thread {
     public void run() {
         while(true){
             try {
-                wrapper.delete();
-                System.out.println("ThreadName: " + threadName);
+                wrapper.delete(threadName);
                 sleep(sleep);
             } catch (Exception e) {
                 e.printStackTrace();

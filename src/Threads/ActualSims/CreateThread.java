@@ -1,23 +1,22 @@
-package Threads.TestThreads;
+package Threads.ActualSims;
+
+import Threads.TestThreads.Wrapper;
 
 class CreateThread extends Thread {
 
-    private Wrapper wrapper;
+    private LockWrapper wrapper;
     private int sleep;
     private int threadName;
 
-    public CreateThread(Wrapper wrapper, int sleep, int threadName) {
+    public CreateThread(LockWrapper wrapper) {
         this.wrapper = wrapper;
-        this.sleep = sleep;
-        this.threadName = threadName;
     }
 
 
     public void run() {
         while(true){
             try {
-                wrapper.create(threadName);
-                sleep(sleep);
+                wrapper.create();
             } catch (Exception e) {
                 e.printStackTrace();
             }

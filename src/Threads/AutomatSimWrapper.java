@@ -10,6 +10,7 @@ import model.automat.verkaufsobjekte.kuchen.KuchenComparators;
 import model.automat.verkaufsobjekte.kuchen.VerkaufsKuchen;
 
 import java.util.*;
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -21,10 +22,28 @@ public class AutomatSimWrapper {
     AutomatController automatController;
     private AutomatEventHandler aHandler;
     Lock lock = new ReentrantLock();
+    Condition deleteCondition = lock.newCondition();
+    Condition createCondition = lock.newCondition();
+    Automat a;
 
     public AutomatSimWrapper(AutomatController automatController,AutomatEventHandler aHandler) {
         this.automatController = automatController;
         this.aHandler = aHandler;
+        this.a = automatController.getAutomat();
+    }
+
+    public void create(int threadName){
+        lock.lock();
+        try{
+            while(a.isFull())
+                createCondition.await();
+            //create.create(threadName);
+        } catch( Exception e) {
+
+        } finally {
+            lock.unlock();
+        }
+
     }
 
     public synchronized void addCake(Map<DataType, Object> cakeData) throws InterruptedException {
