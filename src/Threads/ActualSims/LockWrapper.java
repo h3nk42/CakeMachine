@@ -1,36 +1,69 @@
 package Threads.ActualSims;
 
-import Threads.TestThreads.Create;
-import Threads.TestThreads.Delete;
+import Threads.SimulationType;
+import control.automat.AutomatController;
+import control.automat.events.AutomatEvent;
+import control.automat.events.AutomatOperationType;
+import control.automat.events.DataType;
+import lib.SimulationLib;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class LockWrapper {
     Lock lock = new ReentrantLock();
-    Delete delete;
-    Create create;
     Condition deleteCondition = lock.newCondition();
     Condition createCondition = lock.newCondition();
-    volatile List<Integer> sharedList;
-    volatile boolean isEmpty = true;
-    volatile boolean isFull = false;
+    private AutomatController automatController;
+    Random r;
 
-    public LockWrapper( int listLength){
-        this.sharedList = Arrays.asList(new Integer[listLength]);;
-        this.create = new Create(sharedList, deleteCondition);
-        this.delete = new Delete(sharedList, createCondition);
+    public LockWrapper(AutomatController automatController){
+        this.automatController = automatController;
+        this.r = new Random(Long.parseLong("0123456789"));
+    }
+    public LockWrapper(AutomatController automatController, Random r){
+        this.automatController = automatController;
+        this.r = r;
     }
 
-    public void create(){
+    public void createCakeUnsynchronized(){
+        Map<DataType, Object> cakeData = SimulationLib.rollCake(r);
+        AutomatEvent automatEvent;
+        automatEvent = new AutomatEvent(this,cakeData, AutomatOperationType.cKuchen);
+        automatController.getAutomatEventHandler().handle(automatEvent);
+        deleteCondition.signal();
+    }
+    public void deleteCakeUnsynchronized(SimulationType simulationType){
+        Map<DataType, Object> cakeData;
+        switch (simulationType){
+            case sim2:
+            case sim3:
+                cakeData = SimulationLib.getOldestCake(r, automatController.getAutomat().getKuchen());
+                break;
+            default:
+                cakeData = SimulationLib.rollFachnummer(r, automatController.getAutomat().getKuchen());
+                break;
+        }
+        AutomatEvent automatEvent;
+        automatEvent = new AutomatEvent(this,cakeData, AutomatOperationType.dKuchen);
+        if(cakeData==null) {
+            System.out.println("Threads/ActualSims/LockWrapper.java: lineNumber: 45: " + "Keine Kuchen zum loeschen vorhanden!");
+        } else {
+            automatController.getAutomatEventHandler().handle(automatEvent);
+            createCondition.signal();
+        }
+    }
+
+
+    public void createCakeSynchronized(){
         lock.lock();
         try{
-            while(sharedList.get(sharedList.size()-1) != null)
+            while(automatController.getAutomat().isFull()) {
                 createCondition.await();
-            create.create();
+            }
+            this.createCakeUnsynchronized();
         } catch( Exception e) {
 
         } finally {
@@ -39,16 +72,36 @@ public class LockWrapper {
 
     }
 
-    public void delete(String threadName){
+    public void deleteCakeSynchronized(SimulationType simulationType){
         lock.lock();
         try{
-            while(sharedList.get(0) == null)
+            while(automatController.getAutomat().isEmpty())
                 deleteCondition.await();
-            delete.delete();
+            if(simulationType == SimulationType.sim3){
+                Integer randomInt = SimulationLib.rollIndex(r,automatController.getAutomat().getKuchen().size()+1);
+                for (int i = 1; i <= randomInt; i++)  {
+                    this.deleteCakeUnsynchronized(simulationType);
+                }
+                System.out.println("Threads/ActualSims/LockWrapper.java: lineNumber: 90: " + randomInt + " älteste Kuchen aufeinmal geloescht");
+            } else {
+                this.deleteCakeUnsynchronized(simulationType);
+            }
         } catch( Exception e) {
 
         } finally {
             lock.unlock();
+        }
+    }
+
+    public void inspectUnsynchronized(){
+        Map<DataType, Object> cakeData = SimulationLib.rollFachnummer(r, automatController.getAutomat().getKuchen());
+        AutomatEvent automatEvent;
+        automatEvent = new AutomatEvent(this,cakeData, AutomatOperationType.inspectKuchen);
+        if(cakeData==null) {
+            System.out.println("Threads/ActualSims/LockWrapper.java: lineNumber: 45: " + "Keine Kuchen zum inspizieren vorhanden!");
+        } else {
+            automatController.getAutomatEventHandler().handle(automatEvent);
+            System.out.println("Threads/AutomatSimWrapper.java: lineNumber: 51: " + "Kuchen inspiziert");
         }
     }
 

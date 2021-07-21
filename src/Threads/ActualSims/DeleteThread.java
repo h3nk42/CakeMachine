@@ -1,14 +1,13 @@
 package Threads.ActualSims;
 
 import Threads.SimulationType;
-import Threads.TestThreads.Wrapper;
 
-class CreateThread extends Thread {
+class DeleteThread extends Thread {
 
     private LockWrapper wrapper;
     private SimulationType simulationType;
 
-    public CreateThread(LockWrapper wrapper, SimulationType simulationType) {
+    public DeleteThread(LockWrapper wrapper, SimulationType simulationType) {
         this.wrapper = wrapper;
         this.simulationType = simulationType;
     }
@@ -19,14 +18,13 @@ class CreateThread extends Thread {
             try {
                 switch (simulationType){
                     case sim1:
-                        wrapper.createCakeUnsynchronized();
+                        wrapper.deleteCakeUnsynchronized(simulationType);
                         break;
                     case sim2:
                     case sim3:
-                        wrapper.createCakeSynchronized();
+                        wrapper.deleteCakeSynchronized(simulationType);
                         break;
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
             }

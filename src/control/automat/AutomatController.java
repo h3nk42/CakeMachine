@@ -122,6 +122,8 @@ public class AutomatController implements Subjekt, Serializable {
         this.updateGuiEventHandler = updateGuiEventHandler;
     }
 
+
+
     @Override
     public String toString() {
         return "AutomatController{" +

@@ -9,7 +9,8 @@ public class VerkaufsobjektImpl implements Verkaufsobjekt, Serializable {
 
     private BigDecimal preis;
     private Automat automat;
-    
+    private Date einfuegeDatum;
+
     public VerkaufsobjektImpl (BigDecimal preis, Automat automat) {
         this.preis = preis;
         this.automat = automat;
@@ -23,6 +24,7 @@ public class VerkaufsobjektImpl implements Verkaufsobjekt, Serializable {
     public Date getInspektionsdatum() {
         return automat.getInspektionsdatum(this);
     }
+
 
     @Override
     public int getFachnummer() {

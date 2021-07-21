@@ -1,5 +1,7 @@
 package Threads.ActualSims;
-import Threads.*;
+
+import Threads.AutomatSimWrapper;
+import Threads.SimulationType;
 import control.automat.Automat;
 import control.automat.AutomatController;
 import control.automat.events.AutomatEventHandler;
@@ -16,12 +18,12 @@ import view.output.OutputEventListenerPrint;
 
 import java.util.Random;
 
-public class Simulation1 {
+public class Simulation2 {
 
     public static void main(String[] args) throws Exception {
 
         /* ------- AUTOMAT SETTINGS ------- */
-        final int FACHANZAHL = 6;
+        final int FACHANZAHL = 100;
 
         /* ------- HANDLER SETUP ------- */
         OutputEventHandler outputEventHandler = new OutputEventHandler();
@@ -37,7 +39,6 @@ public class Simulation1 {
         /* ------- AUTOMAT SETUP ------- */
         Automat automat = new Automat(FACHANZAHL);
         AutomatController automatController = new AutomatController(automat, automatEventHandler, outputEventHandler, updateGuiEventHandler);
-        AutomatSimWrapper automatSimWrapper = new AutomatSimWrapper(automatController,automatEventHandler);
 
         /* LISTENER SETUP */
         AutomatEventListenerRead automatEventListenerRead = new AutomatEventListenerRead(outputEventHandler, automatController);
@@ -65,10 +66,12 @@ public class Simulation1 {
         Random r = new Random();
         LockWrapper lockWrapper = new LockWrapper(automatController,r);
 
-        CreateThread ckt = new CreateThread(lockWrapper, SimulationType.sim1);
+        CreateThread ckt = new CreateThread(lockWrapper, SimulationType.sim2);
         ckt.start();
-        DeleteThread dkt = new DeleteThread(lockWrapper, SimulationType.sim1);
+        DeleteThread dkt = new DeleteThread(lockWrapper, SimulationType.sim2);
         dkt.start();
+        InspectThread inspectThread = new InspectThread(lockWrapper, SimulationType.sim2);
+        inspectThread.start();
     }
 }
 

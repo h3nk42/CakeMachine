@@ -1,5 +1,6 @@
 package Threads.ActualSims;
-import Threads.*;
+
+import Threads.SimulationType;
 import control.automat.Automat;
 import control.automat.AutomatController;
 import control.automat.events.AutomatEventHandler;
@@ -16,12 +17,12 @@ import view.output.OutputEventListenerPrint;
 
 import java.util.Random;
 
-public class Simulation1 {
+public class Simulation3 {
 
     public static void main(String[] args) throws Exception {
 
         /* ------- AUTOMAT SETTINGS ------- */
-        final int FACHANZAHL = 6;
+        final int FACHANZAHL = 100;
 
         /* ------- HANDLER SETUP ------- */
         OutputEventHandler outputEventHandler = new OutputEventHandler();
@@ -37,7 +38,6 @@ public class Simulation1 {
         /* ------- AUTOMAT SETUP ------- */
         Automat automat = new Automat(FACHANZAHL);
         AutomatController automatController = new AutomatController(automat, automatEventHandler, outputEventHandler, updateGuiEventHandler);
-        AutomatSimWrapper automatSimWrapper = new AutomatSimWrapper(automatController,automatEventHandler);
 
         /* LISTENER SETUP */
         AutomatEventListenerRead automatEventListenerRead = new AutomatEventListenerRead(outputEventHandler, automatController);
@@ -65,10 +65,16 @@ public class Simulation1 {
         Random r = new Random();
         LockWrapper lockWrapper = new LockWrapper(automatController,r);
 
-        CreateThread ckt = new CreateThread(lockWrapper, SimulationType.sim1);
+        CreateThread ckt = new CreateThread(lockWrapper, SimulationType.sim3);
+        CreateThread ckt2 = new CreateThread(lockWrapper, SimulationType.sim3);
         ckt.start();
-        DeleteThread dkt = new DeleteThread(lockWrapper, SimulationType.sim1);
+        ckt2.start();
+        DeleteThread dkt = new DeleteThread(lockWrapper, SimulationType.sim3);
+        DeleteThread dkt2 = new DeleteThread(lockWrapper, SimulationType.sim3);
         dkt.start();
+        dkt2.start();
+        InspectThread inspectThread = new InspectThread(lockWrapper, SimulationType.sim3);
+        //inspectThread.start();
     }
 }
 

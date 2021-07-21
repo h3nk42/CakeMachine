@@ -11,6 +11,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 public abstract class KuchenImpl extends VerkaufsobjektImpl implements Kuchen {
 
@@ -19,6 +20,7 @@ public abstract class KuchenImpl extends VerkaufsobjektImpl implements Kuchen {
     private Duration haltbarkeit;
     private ArrayList<Allergen> allergene;
     private KuchenArt kuchenArt;
+    private Date insertionDate;
     protected String kremsorte;
     protected String obstsorte;
 
@@ -31,6 +33,7 @@ public abstract class KuchenImpl extends VerkaufsobjektImpl implements Kuchen {
         Instant now = Instant.now();
         Instant then = Instant.now().plusSeconds(haltbarkeitInStunden*60*60);
         this.haltbarkeit = Duration.between(now,then);
+        this.insertionDate = new Date();
     }
 
     public String getKremsorte() {
@@ -69,6 +72,10 @@ public abstract class KuchenImpl extends VerkaufsobjektImpl implements Kuchen {
 
     public KuchenArt getKuchenArt() {
         return kuchenArt;
+    }
+
+    public Date getInsertionDate(){
+        return this.insertionDate;
     }
 
 
