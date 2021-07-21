@@ -4,7 +4,7 @@
   <void index="0">
    <object class="java.util.ArrayList">
     <void method="add">
-     <object class="lib.beans.AutomatBean">
+     <object class="control.lib.beans.AutomatBean">
       <void property="fachAnzahl">
        <int>20</int>
       </void>
@@ -15,7 +15,7 @@
   <void index="1">
    <object class="java.util.ArrayList">
     <void method="add">
-     <object class="lib.beans.HerstellerBean">
+     <object class="control.lib.beans.HerstellerBean">
       <void property="name">
        <string>test</string>
       </void>
@@ -26,24 +26,24 @@
   <void index="2">
    <object class="java.util.ArrayList">
     <void method="add">
-     <object class="lib.beans.KuchenBean">
+     <object class="control.lib.beans.KuchenBean">
       <void property="allergene">
-       <array class="model.automat.verkaufsobjekte.Allergen" length="3">
+       <array class="model.verkaufsobjekte.Allergen" length="3">
         <void index="0">
          <object class="java.lang.Enum" id="Allergen0" method="valueOf">
-          <class>model.automat.verkaufsobjekte.Allergen</class>
+          <class>model.verkaufsobjekte.Allergen</class>
           <string>Haselnuss</string>
          </object>
         </void>
         <void index="1">
          <object class="java.lang.Enum" id="Allergen1" method="valueOf">
-          <class>model.automat.verkaufsobjekte.Allergen</class>
+          <class>model.verkaufsobjekte.Allergen</class>
           <string>Gluten</string>
          </object>
         </void>
         <void index="2">
          <object class="java.lang.Enum" id="Allergen2" method="valueOf">
-          <class>model.automat.verkaufsobjekte.Allergen</class>
+          <class>model.verkaufsobjekte.Allergen</class>
           <string>Sesamsamen</string>
          </object>
         </void>
@@ -72,7 +72,7 @@
       </void>
       <void property="kuchenArt">
        <object class="java.lang.Enum" id="KuchenArt0" method="valueOf">
-        <class>model.automat.verkaufsobjekte.kuchen.KuchenArt</class>
+        <class>model.verkaufsobjekte.kuchen.KuchenArt</class>
         <string>Obsttorte</string>
        </object>
       </void>
@@ -85,9 +85,9 @@
      </object>
     </void>
     <void method="add">
-     <object class="lib.beans.KuchenBean">
+     <object class="control.lib.beans.KuchenBean">
       <void property="allergene">
-       <array class="model.automat.verkaufsobjekte.Allergen" length="3">
+       <array class="model.verkaufsobjekte.Allergen" length="3">
         <void index="0">
          <object idref="Allergen0"/>
         </void>
@@ -132,9 +132,9 @@
      </object>
     </void>
     <void method="add">
-     <object class="lib.beans.KuchenBean">
+     <object class="control.lib.beans.KuchenBean">
       <void property="allergene">
-       <array class="model.automat.verkaufsobjekte.Allergen" length="3">
+       <array class="model.verkaufsobjekte.Allergen" length="3">
         <void index="0">
          <object idref="Allergen0"/>
         </void>

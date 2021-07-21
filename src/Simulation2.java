@@ -1,24 +1,29 @@
-import Threads.*;
-import control.automat.Automat;
+import Simulations.CreateThread;
+import Simulations.DeleteThread;
+import Simulations.InspectThread;
+import Simulations.LockWrapper;
+import Simulations.SimulationType;
+import control.automat.events.*;
+import model.Automat;
 import control.automat.AutomatController;
-import control.automat.events.AutomatEventHandler;
-import control.automat.events.listener.*;
 import control.automat.observers.CreateDeleteCakeObserver;
 import control.automat.observers.CreateDeleteHerstellerObserver;
 import control.automat.observers.KuchenCapacityObserver;
 import control.console.input.InputEventHandler;
-import view.gui.events.UpdateGuiEventHandler;
-import view.output.Output;
-import view.output.OutputEventHandler;
-import view.output.OutputEventListener;
-import view.output.OutputEventListenerPrint;
+import control.gui.event.UpdateGuiEventHandler;
+import view.console.Printer;
+import control.console.output.OutputEventHandler;
+import control.console.output.OutputEventListener;
+import control.console.output.OutputEventListenerPrint;
+
+import java.util.Random;
 
 public class Simulation2 {
 
     public static void main(String[] args) throws Exception {
 
         /* ------- AUTOMAT SETTINGS ------- */
-        final int FACHANZAHL = 1;
+        final int FACHANZAHL = 100;
 
         /* ------- HANDLER SETUP ------- */
         OutputEventHandler outputEventHandler = new OutputEventHandler();
@@ -27,14 +32,13 @@ public class Simulation2 {
         UpdateGuiEventHandler updateGuiEventHandler = new UpdateGuiEventHandler();
 
         /* ------- OUTPUT SETUP ------- */
-        Output out = new Output();
+        Printer out = new Printer();
         OutputEventListener outputEventListener = new OutputEventListenerPrint(out);
         outputEventHandler.add(outputEventListener, true);
 
         /* ------- AUTOMAT SETUP ------- */
         Automat automat = new Automat(FACHANZAHL);
-        AutomatController automatController = new AutomatController(automat, automatEventHandler, outputEventHandler, updateGuiEventHandler);
-        AutomatSimWrapper automatSimWrapper = new AutomatSimWrapper(automatController,automatEventHandler);
+        AutomatController automatController = new AutomatController(automat);
 
         /* LISTENER SETUP */
         AutomatEventListenerRead automatEventListenerRead = new AutomatEventListenerRead(outputEventHandler, automatController);
@@ -59,12 +63,15 @@ public class Simulation2 {
             automat.createHersteller(herstellerArr[i]);
         }
 
-        int sleepValue = 0;
-        CreateCakeThread cct = new CreateCakeThread(automatSimWrapper, sleepValue, automatController, automatEventHandler, false, SimulationType.sim2);
-        cct.start();
-        DeleteCakeThread dct = new DeleteCakeThread(automatSimWrapper, automatController, automatEventHandler, sleepValue, false, SimulationType.sim2);
-        dct.start();
-        InspectCakeThread ict = new InspectCakeThread(automatSimWrapper, automatController, automatEventHandler, sleepValue, SimulationType.sim2, false);
-        ict.start();
+        Random r = new Random();
+        LockWrapper lockWrapper = new LockWrapper(automatController,automatEventHandler,r);
+
+        CreateThread ckt = new CreateThread(lockWrapper, SimulationType.sim2);
+        ckt.start();
+        DeleteThread dkt = new DeleteThread(lockWrapper, SimulationType.sim2);
+        dkt.start();
+        InspectThread inspectThread = new InspectThread(lockWrapper, SimulationType.sim2);
+        inspectThread.start();
     }
 }
+

@@ -1,14 +1,14 @@
 package control.automat.observers;
 
-import control.automat.Automat;
+import model.Automat;
 import control.automat.AutomatController;
-import control.automat.events.DataType;
-import view.gui.events.GuiEventType;
-import view.gui.events.UpdateGuiEvent;
-import view.gui.events.UpdateGuiEventHandler;
-import view.output.MessageType;
-import view.output.Output;
-import view.output.OutputEventHandler;
+import control.automat.events.CakeDataType;
+import control.gui.event.GuiEventType;
+import control.gui.event.UpdateGuiEvent;
+import control.gui.event.UpdateGuiEventHandler;
+import control.console.output.MessageType;
+import view.console.Printer;
+import control.console.output.OutputEventHandler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,23 +32,23 @@ public class CreateDeleteHerstellerObserver implements Observer {
     public void aktualisiere() {
         switch(updateHerstellerAnzahl()) {
             case -1:
-                Output.print(this, "Hersteller entfernt", MessageType.warning, outputEventHandler);
+                Printer.print(this, "Hersteller entfernt", MessageType.warning, outputEventHandler);
                 sendUpdateEvent();
                 break;
             case 0:
                 //Output.print(this, "Kuchen gleich", MessageType.warning, outputEventHandler);
                 break;
             case 1:
-                Output.print(this, "Hersteller hinzugefügt", MessageType.warning, outputEventHandler);
+                Printer.print(this, "Hersteller hinzugefügt", MessageType.warning, outputEventHandler);
                 sendUpdateEvent();
                 break;
         }
     }
 
     private void sendUpdateEvent() {
-        Map<DataType, Object> eventData = new HashMap<>();
+        Map<CakeDataType, Object> eventData = new HashMap<>();
         Automat a = automatController.getAutomat();
-        eventData.put(DataType.hersteller, a.getKuchenCounter());
+        eventData.put(CakeDataType.hersteller, a.getKuchenCounter());
         UpdateGuiEvent updateGuiEvent = new UpdateGuiEvent(this, eventData, GuiEventType.herstellerData);
         updateGuiEventHandler.handle(updateGuiEvent);
     }

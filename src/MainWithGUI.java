@@ -1,23 +1,21 @@
-import control.automat.Automat;
+import control.automat.events.*;
+import model.Automat;
 import control.automat.AutomatController;
-import control.automat.events.AutomatEventHandler;
-import control.automat.events.listener.*;
 import control.automat.observers.AllergeneObserver;
 import control.automat.observers.CreateDeleteCakeObserver;
 import control.automat.observers.CreateDeleteHerstellerObserver;
 import control.automat.observers.KuchenCapacityObserver;
-import control.console.input.InputEventHandler;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import view.gui.FeController;
-import view.gui.events.UpdateGuiEventHandler;
-import view.output.Output;
-import view.output.OutputEventHandler;
-import view.output.OutputEventListener;
-import view.output.OutputEventListenerPrint;
+import control.gui.FeController;
+import control.gui.event.UpdateGuiEventHandler;
+import view.console.Printer;
+import control.console.output.OutputEventHandler;
+import control.console.output.OutputEventListener;
+import control.console.output.OutputEventListenerPrint;
 
 import java.util.Objects;
 
@@ -37,13 +35,13 @@ public class MainWithGUI extends Application {
         updateGuiEventHandler = new UpdateGuiEventHandler();
 
         /* ------- OUTPUT SETUP ------- */
-        Output out = new Output();
+        Printer out = new Printer();
         OutputEventListener outputEventListener = new OutputEventListenerPrint(out);
         outputEventHandler.add(outputEventListener, true);
 
         /* ------- AUTOMAT SETUP ------- */
         Automat automat = new Automat(FACHANZAHL);
-        AutomatController automatController = new AutomatController(automat,automatEventHandler, outputEventHandler, updateGuiEventHandler);
+        AutomatController automatController = new AutomatController(automat);
 
         /* LISTENER SETUP */
         AutomatEventListenerRead automatEventListenerRead = new AutomatEventListenerRead(outputEventHandler, automatController);

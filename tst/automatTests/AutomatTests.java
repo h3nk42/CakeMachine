@@ -1,12 +1,12 @@
 
 package automatTests;
 
-import control.automat.Automat;
-import model.automat.hersteller.Hersteller;
-import model.automat.hersteller.HerstellerFactory;
-import model.automat.hersteller.HerstellerFactoryImpl;
-import model.automat.verkaufsobjekte.Allergen;
-import model.automat.verkaufsobjekte.kuchen.*;
+import model.Automat;
+import model.hersteller.Hersteller;
+import model.hersteller.HerstellerFactory;
+import model.hersteller.HerstellerFactoryImpl;
+import model.verkaufsobjekte.Allergen;
+import model.verkaufsobjekte.kuchen.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

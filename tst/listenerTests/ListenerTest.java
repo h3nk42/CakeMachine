@@ -1,22 +1,26 @@
 package listenerTests;
 
-import control.automat.Automat;
+import control.console.AutomatConsole;
+import control.console.output.MessageType;
+import control.console.output.OutputEventHandler;
+import control.console.output.OutputEventListener;
+import control.console.output.OutputEventListenerPrint;
+import model.Automat;
 import control.automat.AutomatController;
 import control.automat.events.AutomatEvent;
 import control.automat.events.AutomatEventHandler;
-import control.automat.events.DataType;
+import control.automat.events.CakeDataType;
 import control.automat.events.AutomatOperationType;
 import control.automat.observers.AllergeneObserver;
 import control.automat.observers.KuchenCapacityObserver;
-import control.console.AutomatConsole;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import control.console.input.InputEvent;
 import control.console.input.InputEventHandler;
 import control.console.input.InputEventType;
-import view.gui.events.UpdateGuiEventHandler;
-import view.output.*;
+import control.gui.event.UpdateGuiEventHandler;
+import view.console.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -47,13 +51,13 @@ public class ListenerTest {
             updateGuiEventHandler = new UpdateGuiEventHandler();
 
             /* ------- OUTPUT SETUP ------- */
-            Output out = new Output();
+            Printer out = new Printer();
             OutputEventListener outputEventListener = new OutputEventListenerPrint(out);
             outputEventHandler.add(outputEventListener, true);
 
             /* ------- AUTOMAT SETUP ------- */
         Automat automat = new Automat(FACHANZAHL);
-        AutomatController automatController = new AutomatController(automat,automatEventHandler, outputEventHandler, updateGuiEventHandler);
+        AutomatController automatController = new AutomatController(automat);
 
             /* ------- OBSERVER SETUP ------- */
             KuchenCapacityObserver kuchenCapacityObserver = new KuchenCapacityObserver(automatController, outputEventHandler);
@@ -72,7 +76,7 @@ public class ListenerTest {
         /* OUTPUT LISTENER ---------------------------------------------------------------------------------------------------------  */
     @Test
     void testErrorMessage() {
-        Output.print(this,"error message", MessageType.error, outputEventHandler);
+        Printer.print(this,"error message", MessageType.error, outputEventHandler);
         Assertions.assertEquals("\u001B[31m "+ System.lineSeparator() +
                 " --- error message --- "+ System.lineSeparator() +
                 " \u001B[0m"+ System.lineSeparator(), outContent.toString());
@@ -80,13 +84,13 @@ public class ListenerTest {
 
     @Test
     void testNormalMessage() {
-        Output.print(this,"normal message", MessageType.normal, outputEventHandler);
+        Printer.print(this,"normal message", MessageType.normal, outputEventHandler);
         Assertions.assertEquals("normal message"+ System.lineSeparator(), outContent.toString());
     }
 
     @Test
     void testSuccessMessage() {
-        Output.print(this,"success message", MessageType.success, outputEventHandler);
+        Printer.print(this,"success message", MessageType.success, outputEventHandler);
         Assertions.assertEquals("\u001B[36m "+ System.lineSeparator() +
                 " --- success message --- "+ System.lineSeparator() +
                 " \u001B[0m"+ System.lineSeparator(), outContent.toString());
@@ -94,7 +98,7 @@ public class ListenerTest {
 
     @Test
     void testWarningMessage() {
-        Output.print(this,"warning message", MessageType.warning, outputEventHandler);
+        Printer.print(this,"warning message", MessageType.warning, outputEventHandler);
         Assertions.assertEquals("\u001B[33m "+ System.lineSeparator() +
                 " --- warning message --- "+ System.lineSeparator() +
                 " \u001B[0m"+ System.lineSeparator(), outContent.toString());
@@ -133,12 +137,12 @@ public class ListenerTest {
 
     @Test
     void testCreateReadEvent() {
-        HashMap tempMap = new HashMap<DataType, Object>();
-        tempMap.put(DataType.hersteller, "rewe");
+        HashMap tempMap = new HashMap<CakeDataType, Object>();
+        tempMap.put(CakeDataType.hersteller, "rewe");
         AutomatEvent automatEventCreate = new AutomatEvent(this, tempMap, AutomatOperationType.cHersteller);
         automatEventHandler.handle(automatEventCreate);
         outContent.toString();
-        AutomatEvent automatEventRead = new AutomatEvent(this, new HashMap<DataType, Object>(), AutomatOperationType.rHersteller);
+        AutomatEvent automatEventRead = new AutomatEvent(this, new HashMap<CakeDataType, Object>(), AutomatOperationType.rHersteller);
         automatEventHandler.handle(automatEventRead);
         Assertions.assertEquals("\u001B[36m "+ System.lineSeparator() +
                 " --- erfolg --- "+ System.lineSeparator() +
@@ -152,14 +156,14 @@ public class ListenerTest {
 
     @Test
     void testReadDeleteEvent() {
-        HashMap tempMap = new HashMap<DataType, Object>();
-        tempMap.put(DataType.hersteller, "rewe");
+        HashMap tempMap = new HashMap<CakeDataType, Object>();
+        tempMap.put(CakeDataType.hersteller, "rewe");
         AutomatEvent automatEventCreate = new AutomatEvent(this, tempMap, AutomatOperationType.cHersteller);
         automatEventHandler.handle(automatEventCreate);
         outContent.reset();
         AutomatEvent automatEventDelete = new AutomatEvent(this, tempMap, AutomatOperationType.dHersteller);
         automatEventHandler.handle(automatEventDelete);
-        AutomatEvent automatEventRead = new AutomatEvent(this, new HashMap<DataType, Object>(), AutomatOperationType.rHersteller);
+        AutomatEvent automatEventRead = new AutomatEvent(this, new HashMap<CakeDataType, Object>(), AutomatOperationType.rHersteller);
         automatEventHandler.handle(automatEventRead);
         Assertions.assertEquals("\u001B[36m " +System.lineSeparator() +
                 " --- erfolg --- " +System.lineSeparator() +

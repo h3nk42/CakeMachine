@@ -1,19 +1,18 @@
-import control.automat.Automat;
+import control.automat.events.*;
+import model.Automat;
 import control.automat.AutomatController;
-import control.automat.events.AutomatEventHandler;
-import control.automat.events.listener.*;
 import control.automat.observers.AllergeneObserver;
 import control.automat.observers.CreateDeleteCakeObserver;
 import control.automat.observers.CreateDeleteHerstellerObserver;
 import control.automat.observers.KuchenCapacityObserver;
-import control.console.AutomatConsoleNew;
+import control.console.AutomatConsole;
 import control.console.input.InputEventHandler;
-import control.console.input.Reader;
-import view.gui.events.UpdateGuiEventHandler;
-import view.output.Output;
-import view.output.OutputEventHandler;
-import view.output.OutputEventListener;
-import view.output.OutputEventListenerPrint;
+import view.console.Reader;
+import control.gui.event.UpdateGuiEventHandler;
+import view.console.Printer;
+import control.console.output.OutputEventHandler;
+import control.console.output.OutputEventListener;
+import control.console.output.OutputEventListenerPrint;
 
 
 public class MainWithAlternativeCLI {
@@ -29,13 +28,13 @@ public class MainWithAlternativeCLI {
         UpdateGuiEventHandler updateGuiEventHandler = new UpdateGuiEventHandler();
 
         /* ------- OUTPUT SETUP ------- */
-        Output out = new Output();
+        Printer out = new Printer();
         OutputEventListener outputEventListener = new OutputEventListenerPrint(out);
         outputEventHandler.add(outputEventListener, true);
 
         /* ------- AUTOMAT SETUP ------- */
         Automat automat = new Automat(FACHANZAHL);
-        AutomatController automatController = new AutomatController(automat, automatEventHandler, outputEventHandler, updateGuiEventHandler);
+        AutomatController automatController = new AutomatController(automat);
 
         /* EVENT_LISTENER SETUP */
         AutomatEventListenerRead automatEventListenerRead = new AutomatEventListenerRead(outputEventHandler, automatController);
@@ -56,7 +55,7 @@ public class MainWithAlternativeCLI {
         CreateDeleteHerstellerObserver createDeleteHerstellerObserver = new CreateDeleteHerstellerObserver(automatController,outputEventHandler,updateGuiEventHandler);
 
         /* ------- CONSOLE SETUP ------- */
-        AutomatConsoleNew console = new AutomatConsoleNew(outputEventHandler, automatEventHandler);
+        AutomatConsole console = new AutomatConsole(outputEventHandler, automatEventHandler);
         inputEventHandler.add(console);
 
         /*  ------- READER SETUP & CLI START ------- */

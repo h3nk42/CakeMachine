@@ -1,14 +1,14 @@
 package control.automat.observers;
 
 import control.automat.AutomatController;
-import control.automat.events.DataType;
-import model.automat.verkaufsobjekte.Allergen;
-import view.gui.events.GuiEventType;
-import view.gui.events.UpdateGuiEvent;
-import view.gui.events.UpdateGuiEventHandler;
-import view.output.MessageType;
-import view.output.Output;
-import view.output.OutputEventHandler;
+import control.automat.events.CakeDataType;
+import control.console.output.OutputEvent;
+import model.verkaufsobjekte.Allergen;
+import control.gui.event.GuiEventType;
+import control.gui.event.UpdateGuiEvent;
+import control.gui.event.UpdateGuiEventHandler;
+import control.console.output.MessageType;
+import control.console.output.OutputEventHandler;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -34,10 +34,11 @@ public class AllergeneObserver implements Observer {
     public void aktualisiere() {
             if (!checkIfAllergeneMatch()) {
                 lastAllergene = automatController.getAllergene();
-                Output.print(this, "Allergene haben sich verändert!", MessageType.warning, outputEventHandler);
-                Map<DataType, Object> eventData = new HashMap<>();
+                OutputEvent outputEvent = new OutputEvent(this, "Allergene haben sich verändert!", MessageType.warning);
+                outputEventHandler.handle(outputEvent);
+                Map<CakeDataType, Object> eventData = new HashMap<>();
                 Set<Allergen>[] allergene = new Set[] {automatController.getAutomat().getAllergene(false), automatController.getAutomat().getAllergene(true)};
-                eventData.put(DataType.allergene, allergene);
+                eventData.put(CakeDataType.allergene, allergene);
                 UpdateGuiEvent updateGuiEvent = new UpdateGuiEvent(this, eventData, GuiEventType.allergenData);
                 updateGuiEventHandler.handle(updateGuiEvent);
             }

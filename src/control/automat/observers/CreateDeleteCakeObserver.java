@@ -1,14 +1,14 @@
 package control.automat.observers;
 
-import control.automat.Automat;
+import model.Automat;
 import control.automat.AutomatController;
-import control.automat.events.DataType;
-import view.gui.events.GuiEventType;
-import view.gui.events.UpdateGuiEvent;
-import view.gui.events.UpdateGuiEventHandler;
-import view.output.MessageType;
-import view.output.Output;
-import view.output.OutputEventHandler;
+import control.automat.events.CakeDataType;
+import control.gui.event.GuiEventType;
+import control.gui.event.UpdateGuiEvent;
+import control.gui.event.UpdateGuiEventHandler;
+import control.console.output.MessageType;
+import view.console.Printer;
+import control.console.output.OutputEventHandler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +32,7 @@ public class CreateDeleteCakeObserver implements Observer {
     public void aktualisiere() {
         switch(updateKuchenAnzahl()) {
             case -1:
-                Output.print(this, "Kuchen entfernt", MessageType.warning, outputEventHandler);
+                Printer.print(this, "Kuchen entfernt", MessageType.warning, outputEventHandler);
                 sendUpdateEvent();
                 break;
             case 0:
@@ -40,7 +40,7 @@ public class CreateDeleteCakeObserver implements Observer {
                 break;
             case 1:
                 sendUpdateEvent();
-                Output.print(this, "Kuchen hinzugefügt", MessageType.warning, outputEventHandler);
+                Printer.print(this, "Kuchen hinzugefügt", MessageType.warning, outputEventHandler);
                 break;
         }
     }
@@ -63,11 +63,11 @@ public class CreateDeleteCakeObserver implements Observer {
 
     private void sendUpdateEvent() {
         Automat a = automatController.getAutomat();
-        Map<DataType, Object> eventData = new HashMap<>();
-        eventData.put(DataType.kuchenListe, a.getKuchen());
+        Map<CakeDataType, Object> eventData = new HashMap<>();
+        eventData.put(CakeDataType.kuchenListe, a.getKuchen());
         UpdateGuiEvent updateGuiEvent = new UpdateGuiEvent(this, eventData, GuiEventType.kuchenData);
         updateGuiEventHandler.handle(updateGuiEvent);
-        eventData.put(DataType.hersteller, a.getKuchenCounter());
+        eventData.put(CakeDataType.hersteller, a.getKuchenCounter());
         UpdateGuiEvent updateGuiEventHersteller = new UpdateGuiEvent(this, eventData, GuiEventType.herstellerData);
         updateGuiEventHandler.handle(updateGuiEventHersteller);
     }
