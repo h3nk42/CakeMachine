@@ -1,4 +1,6 @@
-package control.automat.observers;
+package control.automat;
+
+import control.automat.Observer;
 
 public interface Subjekt {
     void meldeAn(Observer beobachter);

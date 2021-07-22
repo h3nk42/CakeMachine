@@ -156,7 +156,6 @@ public class FeController implements UpdateGuiEventListener {
                     break;
             }
         } catch (Exception e) {
-            System.out.println("view/gui/FeController.java: lineNumber: 98: " + e.getMessage());
         }
     }
 
@@ -164,7 +163,6 @@ public class FeController implements UpdateGuiEventListener {
     private void deleteKuchenButtonHandler(ActionEvent event) {
         event.consume();
         if (selectedKuchenFachnummer != null) {
-            System.out.println("view/gui/FeController.java: lineNumber: 155: " + "delete" + selectedKuchenFachnummer);
             Map<CakeDataType, Object> tempMap = new HashMap<>();
             tempMap.put(CakeDataType.fachnummer, selectedKuchenFachnummer);
             AutomatEvent dKuchenEvent = new AutomatEvent(this, tempMap, AutomatOperationType.dKuchen);

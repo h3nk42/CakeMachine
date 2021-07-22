@@ -1,5 +1,7 @@
 package control.automat.observers;
 
+import control.automat.Observer;
+import control.console.output.OutputEvent;
 import model.Automat;
 import control.automat.AutomatController;
 import control.automat.events.CakeDataType;
@@ -7,7 +9,6 @@ import control.gui.event.GuiEventType;
 import control.gui.event.UpdateGuiEvent;
 import control.gui.event.UpdateGuiEventHandler;
 import control.console.output.MessageType;
-import view.console.Printer;
 import control.console.output.OutputEventHandler;
 
 import java.util.HashMap;
@@ -30,16 +31,19 @@ public class CreateDeleteHerstellerObserver implements Observer {
 
     @Override
     public void aktualisiere() {
+        OutputEvent outputEvent;
         switch(updateHerstellerAnzahl()) {
             case -1:
-                Printer.print(this, "Hersteller entfernt", MessageType.warning, outputEventHandler);
+                outputEvent = new OutputEvent(this, "Hersteller entfernt", MessageType.warning);
+                outputEventHandler.handle(outputEvent);
                 sendUpdateEvent();
                 break;
             case 0:
                 //Output.print(this, "Kuchen gleich", MessageType.warning, outputEventHandler);
                 break;
             case 1:
-                Printer.print(this, "Hersteller hinzugefügt", MessageType.warning, outputEventHandler);
+                outputEvent = new OutputEvent(this, "Hersteller hinzugefügt", MessageType.warning);
+                outputEventHandler.handle(outputEvent);
                 sendUpdateEvent();
                 break;
         }

@@ -1,4 +1,4 @@
-package control.automat.observers;
+package control.automat;
 
 public interface Observer {
     void aktualisiere();

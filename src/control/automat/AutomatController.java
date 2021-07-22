@@ -1,7 +1,5 @@
 package control.automat;
 
-import control.automat.observers.Observer;
-import control.automat.observers.Subjekt;
 import model.Automat;
 import model.verkaufsobjekte.Allergen;
 

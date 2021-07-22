@@ -1,8 +1,9 @@
 package control.automat.observers;
 
 import control.automat.AutomatController;
+import control.automat.Observer;
 import control.console.output.MessageType;
-import view.console.Printer;
+import control.console.output.OutputEvent;
 import control.console.output.OutputEventHandler;
 
 public class KuchenCapacityObserver implements Observer {
@@ -31,7 +32,8 @@ public class KuchenCapacityObserver implements Observer {
     private void checkCapacity() {
         if(automatController.getCapacity() > 0.9) {
             if(!over90) {
-                Printer.print(this, "Kapazität über 90%!", MessageType.warning, outputEventHandler);
+                OutputEvent outputEvent = new OutputEvent(this, "Kapazität über 90%!", MessageType.warning);
+                outputEventHandler.handle(outputEvent);
                 this.over90 = true;
             }
         } else if (automatController.getCapacity() <= 0.5) {

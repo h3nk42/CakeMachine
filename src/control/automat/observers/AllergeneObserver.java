@@ -1,6 +1,7 @@
 package control.automat.observers;
 
 import control.automat.AutomatController;
+import control.automat.Observer;
 import control.automat.events.CakeDataType;
 import control.console.output.OutputEvent;
 import model.verkaufsobjekte.Allergen;

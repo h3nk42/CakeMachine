@@ -1,5 +1,7 @@
 package control.automat.observers;
 
+import control.automat.Observer;
+import control.console.output.OutputEvent;
 import model.Automat;
 import control.automat.AutomatController;
 import control.automat.events.CakeDataType;
@@ -7,7 +9,6 @@ import control.gui.event.GuiEventType;
 import control.gui.event.UpdateGuiEvent;
 import control.gui.event.UpdateGuiEventHandler;
 import control.console.output.MessageType;
-import view.console.Printer;
 import control.console.output.OutputEventHandler;
 
 import java.util.HashMap;
@@ -30,9 +31,11 @@ public class CreateDeleteCakeObserver implements Observer {
 
     @Override
     public void aktualisiere() {
+        OutputEvent outputEvent;
         switch(updateKuchenAnzahl()) {
             case -1:
-                Printer.print(this, "Kuchen entfernt", MessageType.warning, outputEventHandler);
+                outputEvent = new OutputEvent(this, "Kuchen entfernt", MessageType.warning);
+                outputEventHandler.handle(outputEvent);
                 sendUpdateEvent();
                 break;
             case 0:
@@ -40,7 +43,8 @@ public class CreateDeleteCakeObserver implements Observer {
                 break;
             case 1:
                 sendUpdateEvent();
-                Printer.print(this, "Kuchen hinzugefügt", MessageType.warning, outputEventHandler);
+                outputEvent = new OutputEvent(this, "Kuchen hinzugefügt", MessageType.warning);
+                outputEventHandler.handle(outputEvent);
                 break;
         }
     }

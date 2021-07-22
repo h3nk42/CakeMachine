@@ -1,5 +1,6 @@
 package control.lib;
 
+import control.automat.Observer;
 import model.Automat;
 import control.automat.AutomatController;
 import control.automat.observers.*;
