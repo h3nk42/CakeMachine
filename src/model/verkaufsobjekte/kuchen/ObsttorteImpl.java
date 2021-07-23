@@ -17,7 +17,7 @@ public class ObsttorteImpl extends KuchenImpl implements Obsttorte, VerkaufsKuch
     public String toString() {
         return
                 super.toString() +
-                "Obstsorte=" + obstsorte +
+                ", Obstsorte=" + obstsorte +
                 ", kremsorte=" + kremsorte;
 
     }

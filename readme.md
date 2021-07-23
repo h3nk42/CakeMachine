@@ -19,13 +19,17 @@
 * keine Duplikate - 1✅
     * 11 Punkte✅
   ### Tests
-* Testqualität  7 ❌
-* Testabdeckung GL 5 ❌ 
+* Testqualität  7 ✅
+* Testabdeckung GL 5 ✅ 
 * Testabdeckung Rest 5 ❌
-* Mockito richtig verwendet 5 ❌ 
-* Spytests (Verhalten) 3 ❌
-* keine unbeabsichtigt fehlschlagenden Test 1 ❌
-  * 26 Punkte ❌
+* Mockito richtig verwendet 5 ✅ 
+  * (tst.model.verkaufsobjekte.verkaufsObjektImplTest)
+* Spytests (Verhalten) 3  ✅
+  * (tst.model.AutomatTests.AutomatTestKuchen zeile 100)
+  * (tst.model.AutomatTests.AutomatTestBase)
+  * (test/view/console/readerTest.java)
+* keine unbeabsichtigt fehlschlagenden Test 1 ✅
+  * 26 Punkte ✅
 ### Fehlerfreiheit
 * Kapselung ✅ 5
 * keine Ablauffehler  ✅ 5

@@ -5,8 +5,8 @@ public interface HerstellerFactory {
 
     Hersteller produceHersteller(String name) throws Exception;
 
-    HashMap<String, Hersteller> getHerstellerListe();
+    HashMap<String, Hersteller> getHerstellerList();
 
-    void deleteHersteller(String herstellerName);
+    void deleteHersteller(String herstellerName) throws Exception;
 
 }

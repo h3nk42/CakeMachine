@@ -39,20 +39,20 @@ public class Automat implements Serializable {
     }
 
     public Hersteller getHersteller(String herstellerName) {
-        return herstellerFactory.getHerstellerListe().get(herstellerName.toLowerCase());
+        return herstellerFactory.getHerstellerList().get(herstellerName.toLowerCase());
     }
     public Collection<Hersteller> getHersteller() {
-        Collection<Hersteller> returnCopy = new ArrayList<>(herstellerFactory.getHerstellerListe().values());
+        Collection<Hersteller> returnCopy = new ArrayList<>(herstellerFactory.getHerstellerList().values());
         return returnCopy;
     }
 
-    public synchronized Hersteller createHersteller(String herstellerName ) throws Exception {
+    public synchronized Hersteller createHersteller(String herstellerName) throws Exception {
         Hersteller newHersteller =  herstellerFactory.produceHersteller(herstellerName);
         this.kuchenCounter.put(newHersteller, getKuchenCounter(newHersteller));
         return newHersteller;
     }
 
-    public synchronized void deleteHersteller(String herstellerName ) throws Exception {
+    public synchronized boolean deleteHersteller(String herstellerName ) throws Exception {
         Hersteller tempHersteller = getHersteller(herstellerName);
         if(tempHersteller== null) {
             throw new Exception("Hersteller nicht gefunden");
@@ -71,16 +71,15 @@ public class Automat implements Serializable {
         );
         this.kuchenCounter.remove(tempHersteller);
         herstellerFactory.deleteHersteller(herstellerName);
-    }
-
-    public List<VerkaufsKuchen> getFaecher() {
-        List<VerkaufsKuchen> returnCopy = new ArrayList<>(this.faecher);
-        return returnCopy;
+        return true;
     }
 
     public Integer getKuchenCounter(Hersteller hersteller) throws Exception {
-        if(!(getHersteller().contains(hersteller))) {
-            throw new Exception("Hersteller unbekannt");
+        if(hersteller == null) {
+            throw new Exception("Hersteller ist null");
+        }
+        if(this.getHersteller(hersteller.getName()) == null) {
+            throw new Exception("Hersteller des Kuchens nicht im Automaten vorhanden");
         }
         if (kuchenCounter.get(hersteller) != null) {
             return kuchenCounter.get(hersteller);
@@ -130,7 +129,7 @@ public class Automat implements Serializable {
                 if(extraData.length != 1) {
                     throw new Exception("only one String in extraData allowed");
                 }
-                VerkaufsKuchen tempKuchen = new KremkuchenImpl(hersteller,extraData[0], allergene, preis, naehrwert, this,haltbarkeitInStunden);
+                VerkaufsKuchen tempKuchen = new KremkuchenImpl(hersteller ,extraData[0], allergene, preis, naehrwert, this,haltbarkeitInStunden);
                 this.addKuchen(tempKuchen);
                 return tempKuchen;
             case Obstkuchen:
@@ -142,37 +141,10 @@ public class Automat implements Serializable {
                 return tempKuchen;
             case Obsttorte:
                 if(extraData.length != 2) {
-                    throw new Exception("only one String in extraData allowed");
+                    throw new Exception("need two strings in extraData");
                 }
                 tempKuchen = new ObsttorteImpl(hersteller,extraData[0], extraData[1], allergene, preis, naehrwert, this, haltbarkeitInStunden);
                 this.addKuchen(tempKuchen);
-                return tempKuchen;
-        }
-        return null;
-    }
-
-    public synchronized VerkaufsKuchen createKuchen(KuchenArt kuchenArt, Hersteller hersteller, BigDecimal preis, int naehrwert, Allergen[] allergene, String[] extraData, Integer haltbarkeitInStunden, Date inspektionsDatum ) throws Exception {
-        switch (kuchenArt) {
-            case Kremkuchen:
-                if(extraData.length != 1) {
-                    throw new Exception("only one String in extraData allowed");
-                }
-                VerkaufsKuchen tempKuchen = new KremkuchenImpl(hersteller,extraData[0], allergene, preis, naehrwert, this,haltbarkeitInStunden);
-                this.addKuchen(tempKuchen);
-                return tempKuchen;
-            case Obstkuchen:
-                if(extraData.length != 1) {
-                    throw new Exception("only one String in extraData allowed");
-                }
-                tempKuchen = new ObstkuchenImpl(hersteller,extraData[0], allergene, preis, naehrwert, this,haltbarkeitInStunden);
-                this.addKuchen(tempKuchen, inspektionsDatum);
-                return tempKuchen;
-            case Obsttorte:
-                if(extraData.length != 2) {
-                    throw new Exception("only one String in extraData allowed");
-                }
-                tempKuchen = new ObsttorteImpl(hersteller,extraData[0], extraData[1], allergene, preis, naehrwert, this, haltbarkeitInStunden);
-                this.addKuchen(tempKuchen, inspektionsDatum);
                 return tempKuchen;
         }
         return null;
@@ -180,9 +152,9 @@ public class Automat implements Serializable {
 
     private synchronized void addKuchen(VerkaufsKuchen kuchen) throws Exception {
         if (kuchen.getHersteller() == null) {
-            throw new Exception("Kuchen benoetigt Hersteller");
+            throw new Exception("Hersteller des Kuchens null");
         } else if (this.getHersteller(kuchen.getHersteller().getName()) == null) {
-            throw new Exception("Hersteller des Kuchens nicht existent");
+            throw new Exception("Hersteller des Kuchens nicht im Automaten vorhanden");
         } else if (this.getKuchen().size() == fachAnzahl ) {
             throw new Exception("Alle Fächer voll");
         }
@@ -197,33 +169,9 @@ public class Automat implements Serializable {
             this.kuchenSetup(kuchen);
     }
 
-    private void addKuchen(VerkaufsKuchen kuchen, Date inspektionsDatum) throws Exception {
-        if (kuchen.getHersteller() == null) {
-            throw new Exception("Kuchen benoetigt Hersteller");
-        } else if (this.getHersteller(kuchen.getHersteller().getName()) == null) {
-            throw new Exception("Hersteller des Kuchens nicht existent");
-        } else if (this.getKuchen().size() == fachAnzahl ) {
-            throw new Exception("Alle Fächer voll");
-        }
-        for (int i = 0; i < this.faecher.size(); i++) {
-            if (this.faecher.get(i) == null) {
-                this.faecher.set(i, kuchen);
-                this.kuchenSetup(kuchen,inspektionsDatum);
-                return;
-            }
-        }
-        this.faecher.add(kuchen);
-        this.kuchenSetup(kuchen,inspektionsDatum);
-    }
 
     private void kuchenSetup( VerkaufsKuchen kuchen) {
         this.inspektionsDaten.put(kuchen, new Date());
-        incKuchenCounter(kuchen.getHersteller());
-        addToKuchenMap(kuchen);
-        kuchen.getAllergene().forEach((this::incAllergen));
-    }
-    private void kuchenSetup( VerkaufsKuchen kuchen, Date Inspektionsdatum) {
-        this.inspektionsDaten.put(kuchen, Inspektionsdatum);
         incKuchenCounter(kuchen.getHersteller());
         addToKuchenMap(kuchen);
         kuchen.getAllergene().forEach((this::incAllergen));
@@ -235,7 +183,6 @@ public class Automat implements Serializable {
 
     private void decKuchenCounter(Hersteller hersteller) throws Exception {
         if (this.kuchenCounter.get(hersteller) == 0) {
-            throw new Exception("Hersteller besitzt keinen Kuchen im Automaten!");
         } else {
             this.kuchenCounter.put(hersteller, this.kuchenCounter.get(hersteller)-1);
         }
@@ -245,9 +192,8 @@ public class Automat implements Serializable {
         this.allergeneVorhanden.merge(allergen, 1, Integer::sum);
     }
 
-    private void decAllergen(Allergen allergen) throws Exception {
+    private void decAllergen(Allergen allergen) {
         if (this.allergeneVorhanden.get(allergen) == null) {
-            throw new Exception("Allergen nicht vorhanden");
         } else {
             if (this.allergeneVorhanden.get(allergen) == 1 ) {
                 this.allergeneVorhanden.remove(allergen);
@@ -317,6 +263,14 @@ public class Automat implements Serializable {
     }
 
     public boolean swapFachnummer(int fach1, int fach2) throws Exception {
+        if(fach1 == fach2)
+        {
+            throw new Exception("need different indices");
+        }
+        if(fach1 >= fachAnzahl || fach2 >= fachAnzahl)
+        {
+            throw new Exception("Index out of bounds");
+        }
         if(this.faecher.get(fach1) == null | this.faecher.get(fach2) == null ){
             throw new Exception("Index zeigt auf leeres Fach");
         }
@@ -330,10 +284,10 @@ public class Automat implements Serializable {
 
     private synchronized void setInspektionsdatum(Integer fachnummer, Date inspektionsdatumNeu) throws Exception {
         if(this.faecher.get(fachnummer) == null ) {
-            throw new Exception("Index zeigt auf leeres Fach");
+        } else {
+            VerkaufsKuchen tempKuchen = this.faecher.get(fachnummer);
+            this.inspektionsDaten.put(tempKuchen, inspektionsdatumNeu);
         }
-        VerkaufsKuchen tempKuchen = this.faecher.get(fachnummer);
-        this.inspektionsDaten.put(tempKuchen,inspektionsdatumNeu);
     }
 
     public int getFachanzahl() {

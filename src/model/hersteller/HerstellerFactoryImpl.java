@@ -5,10 +5,10 @@ import java.util.HashMap;
 
 public class HerstellerFactoryImpl implements HerstellerFactory, Serializable {
 
-    private HashMap<String, Hersteller> herstellerListe;
+    private HashMap<String, Hersteller> herstellerList;
 
     public HerstellerFactoryImpl() {
-        this.herstellerListe = new HashMap<String, Hersteller>();
+        this.herstellerList = new HashMap<String, Hersteller>();
     }
 
     @Override
@@ -19,28 +19,31 @@ public class HerstellerFactoryImpl implements HerstellerFactory, Serializable {
         if(_name.equals("")) {
             throw new Exception("Keine leeren Herstellernamen");
         }
-        if (this.herstellerListe.containsKey(_name.toLowerCase())) {
+        if (this.herstellerList.containsKey(_name.toLowerCase())) {
             throw new Exception("Identischer Hersteller schon vorhanden!");
         } else {
             Hersteller tempHersteller = new HerstellerImpl(_name);
-            this.herstellerListe.put(_name.toLowerCase(), tempHersteller);
+            this.herstellerList.put(_name.toLowerCase(), tempHersteller);
             return tempHersteller;
         }
     }
     @Override
-    public HashMap<String, Hersteller> getHerstellerListe() {
-        return herstellerListe;
+    public HashMap<String, Hersteller> getHerstellerList() {
+        return herstellerList;
     }
 
     @Override
-    public void deleteHersteller(String herstellerName) {
-        this.herstellerListe.remove(herstellerName.toLowerCase());
+    public void deleteHersteller(String herstellerName) throws Exception {
+        if(herstellerList.get(herstellerName) == null) {
+            throw new Exception("Hersteller nicht vorhanden");
+        }
+        this.herstellerList.remove(herstellerName.toLowerCase());
     }
 
     @Override
     public String toString() {
         return "HerstellerFactoryImpl{" +
-                "herstellerListe=" + herstellerListe +
+                "herstellerList=" + herstellerList +
                 '}';
     }
 }

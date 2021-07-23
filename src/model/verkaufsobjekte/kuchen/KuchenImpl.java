@@ -30,18 +30,11 @@ public abstract class KuchenImpl extends VerkaufsobjektImpl implements Kuchen {
         this.hersteller = hersteller;
         this.kuchenArt = kuchenArt;
         Instant now = Instant.now();
-        Instant then = Instant.now().plusSeconds(haltbarkeitInStunden*60*60);
-        this.haltbarkeit = Duration.between(now,then);
+        Instant soon = Instant.now().plusSeconds(haltbarkeitInStunden*60*60);
+        this.haltbarkeit = Duration.between(now,soon);
         this.insertionDate = new Date();
     }
 
-    public String getKremsorte() {
-        return kremsorte;
-    }
-
-    public String getObstsorte() {
-        return obstsorte;
-    }
 
     protected void allergeneSetup(Allergen[] _allergene) {
         for (int i = 0; i < _allergene.length; i++) {
@@ -77,6 +70,13 @@ public abstract class KuchenImpl extends VerkaufsobjektImpl implements Kuchen {
         return this.insertionDate;
     }
 
+    public String getKremsorte() {
+        return kremsorte;
+    }
+
+    public String getObstsorte() {
+        return obstsorte;
+    }
 
     @Override
     public String toString() {

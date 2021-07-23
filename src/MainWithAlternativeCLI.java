@@ -59,7 +59,7 @@ public class MainWithAlternativeCLI {
         inputEventHandler.add(console);
 
         /*  ------- READER SETUP & CLI START ------- */
-        Reader reader = new Reader(inputEventHandler);
+        Reader reader = new Reader(inputEventHandler, true);
         reader.start();
     }
 
