@@ -31,14 +31,14 @@ public class LockWrapper {
         this.r = r;
     }
 
-    public void createCakeUnsynchronized(){
+    public void createCakeUnsynchronized() throws Exception {
         Map<CakeDataType, Object> cakeData = SimulationLib.rollCake(r);
         AutomatEvent automatEvent;
         automatEvent = new AutomatEvent(this,cakeData, AutomatOperationType.cKuchen);
         this.automatEventHandler.handle(automatEvent);
         deleteCondition.signal();
     }
-    public void deleteCakeUnsynchronized(SimulationType simulationType){
+    public void deleteCakeUnsynchronized(SimulationType simulationType) throws Exception {
         Map<CakeDataType, Object> cakeData;
         switch (simulationType){
             case sim2:
@@ -96,7 +96,7 @@ public class LockWrapper {
         }
     }
 
-    public void inspectUnsynchronized(){
+    public void inspectUnsynchronized() throws Exception {
         Map<CakeDataType, Object> cakeData = SimulationLib.rollFachnummer(r, automatController.getAutomat().getKuchen());
         AutomatEvent automatEvent;
         automatEvent = new AutomatEvent(this,cakeData, AutomatOperationType.inspectKuchen);

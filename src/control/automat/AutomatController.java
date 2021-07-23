@@ -59,6 +59,10 @@ public class AutomatController implements Subjekt, Serializable {
         this.beobachterList.remove(beobachter);
     }
 
+    public List<Observer> getBeobachter(){
+        return this.beobachterList;
+    }
+
     @Override
     public void benachrichtige() {
         for (Observer beobachter : this.beobachterList) {
@@ -72,11 +76,12 @@ public class AutomatController implements Subjekt, Serializable {
 
     public Set<Allergen> getAllergene() {return this.allergene;}
 
-    public void setKuchenCapacity(double kuchenCapacity) {
+    private void setKuchenCapacity(double kuchenCapacity) {
         this.kuchenCapacity = kuchenCapacity;
         this.benachrichtige();
     }
-    public void setAllergene(Set<Allergen> allergene) {
+
+    private void setAllergene(Set<Allergen> allergene) {
         this.allergene = allergene;
         this.benachrichtige();
     }

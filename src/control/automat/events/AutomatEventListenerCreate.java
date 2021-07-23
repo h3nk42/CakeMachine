@@ -44,7 +44,6 @@ public class AutomatEventListenerCreate implements AutomatEventListener, Seriali
         String name = (String) event.getData().get(CakeDataType.hersteller);
         try {
             automat.createHersteller(name);
-            //Output.print(this, "erfolg", MessageType.success, outputEventHandler);
             automatC.aktualisiereHersteller();
         } catch (Exception e) {
             OutputEvent outputEvent = new OutputEvent(this, e.getMessage(), MessageType.error);
@@ -67,9 +66,8 @@ public class AutomatEventListenerCreate implements AutomatEventListener, Seriali
             switch(kuchenArt) {
                 case Obstkuchen:
                     obstsorte = (String) eventData.get(CakeDataType.obstsorte);
-                    if( obstsorte.equals("")) {
-                        OutputEvent outputEvent = new OutputEvent(this, "Obstsorte leer", MessageType.error);
-                        outputEventHandler.handle(outputEvent);
+                    if( obstsorte == null || obstsorte.equals("")) {
+
                         throw new Exception("Obstsorte leer");
                     }
                     kremObstData = new String[]{obstsorte};
@@ -77,8 +75,6 @@ public class AutomatEventListenerCreate implements AutomatEventListener, Seriali
                 case Kremkuchen:
                     kremsorte = (String) eventData.get(CakeDataType.kremsorte);
                     if(kremsorte == null || kremsorte.equals("")) {
-                        OutputEvent outputEvent = new OutputEvent(this, "Kremsorte leer", MessageType.error);
-                        outputEventHandler.handle(outputEvent);
                         throw new Exception("Kremsorte leer");
                     }
                     kremObstData = new String[]{kremsorte};
@@ -86,9 +82,8 @@ public class AutomatEventListenerCreate implements AutomatEventListener, Seriali
                 case Obsttorte:
                     obstsorte = (String) eventData.get(CakeDataType.obstsorte);
                     kremsorte = (String) eventData.get(CakeDataType.kremsorte);
-                    if( kremsorte.equals("") || obstsorte.equals("")) {
-                        OutputEvent outputEvent = new OutputEvent(this, "Obstsorte | Kremsorte leer", MessageType.error);
-                        outputEventHandler.handle(outputEvent);
+                    if( kremsorte == null || obstsorte == null ||kremsorte.equals("") || obstsorte.equals("")) {
+
                         throw new Exception("Obstsorte | Kremsorte leer");
                     }
                     kremObstData = new String[]{obstsorte,kremsorte};

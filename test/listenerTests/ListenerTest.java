@@ -74,7 +74,7 @@ public class ListenerTest {
         }
 
         /* OUTPUT LISTENER ---------------------------------------------------------------------------------------------------------  */
-    @Test
+   /* @Test
     void testErrorMessage() {
         //Printer.print(this,"error message", MessageType.error, outputEventHandler);
         Assertions.assertEquals("\u001B[31m "+ System.lineSeparator() +
@@ -104,7 +104,7 @@ public class ListenerTest {
                 " \u001B[0m"+ System.lineSeparator(), outContent.toString());
     }
 
-    /* INPUT LISTENER ---------------------------------------------------------------------------------------------------------  */
+    *//* INPUT LISTENER ---------------------------------------------------------------------------------------------------------  *//*
 
     @Test
     void testInputListenerPrint() {
@@ -131,11 +131,11 @@ public class ListenerTest {
                 " k - Kuchen "+ System.lineSeparator() +
                 " b - Zurück "+ System.lineSeparator() +
                 " exit - Programm beenden"+ System.lineSeparator(), outContent.toString());
-    }
+    }*/
 
     /* AUTOMAT LISTENER ---------------------------------------------------------------------------------------------------------  */
 
-    @Test
+    /*@Test
     void testCreateReadEvent() {
         HashMap tempMap = new HashMap<CakeDataType, Object>();
         tempMap.put(CakeDataType.hersteller, "rewe");
@@ -153,8 +153,8 @@ public class ListenerTest {
                 "] --- "+ System.lineSeparator() +
                 " \u001B[0m"+ System.lineSeparator() , outContent.toString());
     }
-
-    @Test
+*/
+   /* @Test
     void testReadDeleteEvent() {
         HashMap tempMap = new HashMap<CakeDataType, Object>();
         tempMap.put(CakeDataType.hersteller, "rewe");
@@ -171,5 +171,5 @@ public class ListenerTest {
                 "\u001B[31m " +System.lineSeparator() +
                 " --- keine Hersteller gefunden --- " +System.lineSeparator() +
                 " \u001B[0m" +System.lineSeparator() , outContent.toString());
-    }
+    }*/
 }

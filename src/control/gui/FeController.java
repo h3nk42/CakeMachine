@@ -107,7 +107,7 @@ public class FeController implements UpdateGuiEventListener {
     private int dragStartFachnummer;
 
     @FXML
-    private void createHerstellerButtonHandler(ActionEvent event) {
+    private void createHerstellerButtonHandler(ActionEvent event) throws Exception {
         event.consume();
         Map<CakeDataType, Object> tempMap = new HashMap<>();
         tempMap.put(CakeDataType.hersteller, this.herstellerName.getValue());
@@ -116,7 +116,7 @@ public class FeController implements UpdateGuiEventListener {
     }
 
     @FXML
-    private void deleteHerstellerButtonHandler(ActionEvent event) {
+    private void deleteHerstellerButtonHandler(ActionEvent event) throws Exception {
         event.consume();
         Map<CakeDataType, Object> tempMap = new HashMap<>();
         tempMap.put(CakeDataType.hersteller, this.selectedHerstellerName);
@@ -160,7 +160,7 @@ public class FeController implements UpdateGuiEventListener {
     }
 
     @FXML
-    private void deleteKuchenButtonHandler(ActionEvent event) {
+    private void deleteKuchenButtonHandler(ActionEvent event) throws Exception {
         event.consume();
         if (selectedKuchenFachnummer != null) {
             Map<CakeDataType, Object> tempMap = new HashMap<>();
@@ -228,7 +228,7 @@ public class FeController implements UpdateGuiEventListener {
     }
 
     @FXML
-    private void inspectKuchenButtonHandler(ActionEvent event) {
+    private void inspectKuchenButtonHandler(ActionEvent event) throws Exception {
         event.consume();
         if (selectedKuchenFachnummer != null) {
             Map<CakeDataType, Object> tempMap = new HashMap<>();
@@ -239,13 +239,13 @@ public class FeController implements UpdateGuiEventListener {
     }
 
     @FXML
-    private void saveJosButtonHandler(ActionEvent event) {
+    private void saveJosButtonHandler(ActionEvent event) throws Exception {
         event.consume();
         ConsoleLib.handleSaveJOS(automatEventHandler, this);
     }
 
     @FXML
-    private void loadJosButtonHandler(ActionEvent event) {
+    private void loadJosButtonHandler(ActionEvent event) throws Exception {
         event.consume();
         ConsoleLib.handleLoadJOS(automatEventHandler, this);
     }
@@ -310,7 +310,11 @@ public class FeController implements UpdateGuiEventListener {
                         Map<CakeDataType, Object> tempMap = new HashMap<>();
                         tempMap.put(CakeDataType.fachnummer, new int[]{dragStartFachnummer, droppedOnFachnummer});
                         AutomatEvent automatEvent = new AutomatEvent(this, tempMap, AutomatOperationType.swapKuchen);
-                        automatEventHandler.handle(automatEvent);
+                        try {
+                            automatEventHandler.handle(automatEvent);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }

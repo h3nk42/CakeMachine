@@ -301,6 +301,9 @@ public class Automat implements Serializable {
         return (this.getKuchen().size()== 0);
     }
 
+    public void wasPersisted(){
+    }
+
     @Override
     public String toString() {
         return "Automat{" +

@@ -6,6 +6,7 @@ import java.util.Objects;
 public class InputEvent extends EventObject {
     private String text;
     private InputEventType inputEventType;
+
     public InputEvent(Object source, String text, InputEventType inputEventType) {
         super(source);
         this.inputEventType = inputEventType;

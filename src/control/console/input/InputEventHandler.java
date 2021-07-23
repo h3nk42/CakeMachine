@@ -12,4 +12,5 @@ public class InputEventHandler {
         this.listenerList.remove(listener);
     }
     public void handle(InputEvent event){for (InputEventListener listener : listenerList) listener.onInputEvent(event);}
+
 }

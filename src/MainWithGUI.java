@@ -27,7 +27,7 @@ public class MainWithGUI extends Application {
     public static void main(String[] args) throws Exception {
 
         /* ------- AUTOMAT SETTINGS ------- */
-        final int FACHANZAHL = 50;
+        final int FACHANZAHL = 10;
 
         /* ------- HANDLER SETUP ------- */
         OutputEventHandler outputEventHandler = new OutputEventHandler();

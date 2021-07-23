@@ -354,7 +354,6 @@ import java.util.*;
         }
         @Nested
         @DisplayName("createKuchen - happy - SPYTEST")
-
         class createKuchenHappy {
 
             Hersteller hersteller;
@@ -769,9 +768,11 @@ import java.util.*;
             @DisplayName("HAPPY - aktualisiereInspektionsdatum success ")
             void aktualisiereInspektionsdatumSuccess() throws Exception {
                 long oldTime = spyAutomat.getInspektionsdatum(verkaufsKuchen).getTime();
+                Date oldDate = spyAutomat.getInspektionsdatum(verkaufsKuchen);
                 spyAutomat.aktualisiereInspektionsdatum(verkaufsKuchen.getFachnummer());
                 long newTime = spyAutomat.getInspektionsdatum(verkaufsKuchen).getTime();
-                boolean actual = oldTime < newTime;
+                Date newDate= spyAutomat.getInspektionsdatum(verkaufsKuchen);
+                boolean actual = oldTime <= newTime && oldDate != newDate;
                 /* ZUSICHERUNG */
                 boolean expected = true;
                 Assertions.assertEquals(expected, actual);

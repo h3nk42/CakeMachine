@@ -24,24 +24,30 @@ public class AutomatEventListenerPersist implements AutomatEventListener, Serial
     @Override
     public void onAutomatEvent(AutomatEvent event) {
         automat = automatC.getAutomat();
-        if (null != event.getData()) {
+        if (null != event.getOperationType() && null != event.getData() ) {
             switch(event.getOperationType()) {
                 case pJOS:
-                    handleSaveJos(event);
+                    boolean isTest = false;
+                    if(event.getData().get(CakeDataType.bool)!=null){
+                        if ((boolean) event.getData().get(CakeDataType.bool) == true)
+                            isTest = true;
+                    }
+                    handleSaveJos(isTest);
                     break;
                 case lJOS:
-                    handleLoadJos(event);
+                    handleLoadJos();
                     break;
             }
         }
     }
 
-    private void handleSaveJos(AutomatEvent event) {
-        writeAutomatToFileJOS("automat.ser", automat);
+    private void handleSaveJos(boolean isTest) {
+        writeAutomatToFileJOS("automat.ser", automat, isTest);
     }
 
-    private void handleLoadJos(AutomatEvent event) {
-        PersistLib.loadAutomatAndRehydrateController(automatC);
+    private boolean handleLoadJos() {
+        if(!PersistLib.loadAutomatAndRehydrateController(automatC)) return false;
+        return true;
     }
 
 }

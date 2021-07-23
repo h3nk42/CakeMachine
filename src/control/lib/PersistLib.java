@@ -20,21 +20,11 @@ public class PersistLib {
         }*/
     }
 
-    public static ArrayList<Observer> setupObservers(AutomatController automatController, OutputEventHandler outputEventHandler, UpdateGuiEventHandler updateGuiEventHandler) {
-        KuchenCapacityObserver kuchenCapacityObserver = new KuchenCapacityObserver(automatController, outputEventHandler);
-        AllergeneObserver allergeneObserver = new AllergeneObserver(automatController, outputEventHandler,updateGuiEventHandler);
-        CreateDeleteCakeObserver createDeleteCakeObserver = new CreateDeleteCakeObserver(automatController,outputEventHandler,updateGuiEventHandler);
-        CreateDeleteHerstellerObserver createDeleteHerstellerObserver = new CreateDeleteHerstellerObserver(automatController,outputEventHandler,updateGuiEventHandler);
-
-        ArrayList<Observer> observers = new ArrayList<>();
-        observers.add(kuchenCapacityObserver);
-        observers.add(allergeneObserver);
-        observers.add(createDeleteCakeObserver);
-        observers.add(createDeleteHerstellerObserver);
-        return observers;
-    }
-
-    public static void writeAutomatToFileJOS(String fileName, Automat automatToWrite) {
+    public static void writeAutomatToFileJOS(String fileName, Automat automatToWrite, boolean isTest) {
+        if(isTest) {
+            automatToWrite.wasPersisted();
+            return;
+        }
         FileOutputStream fileOutputStream = null;
         ObjectOutputStream objectOutputStream = null;
         try {
@@ -52,15 +42,21 @@ public class PersistLib {
         ObjectInputStream in = null;
             fis = new FileInputStream(fileName);
             in = new ObjectInputStream(fis);
-        Automat automat = (Automat) in.readObject();
-            in.close();
-            return automat;
+            try {
+                Automat automat = (Automat) in.readObject();
+                in.close();
+                return automat;
+            } catch(InvalidClassException e) {
+
+            }
+            return null;
     }
 
     public static boolean loadAutomatAndRehydrateController(AutomatController automatController) {
         Automat justReadAutomat = null;
         try {
             justReadAutomat = readAutomatFromFileJOS("automat.ser");
+            if(justReadAutomat == null) return false;
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {

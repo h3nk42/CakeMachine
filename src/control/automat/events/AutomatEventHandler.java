@@ -21,8 +21,4 @@ public class AutomatEventHandler implements Serializable {
             tempListener.onAutomatEvent(event);
         }
     }
-
-    public List<AutomatEventListener> getList() {
-        return this.listenerList;
-    }
 }
