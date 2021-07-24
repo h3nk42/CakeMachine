@@ -93,6 +93,18 @@ import java.util.*;
             Assertions.assertEquals(expected, actual);
         }
 
+        @Test
+        @DisplayName("equals test")
+        void equalsTest() {
+            Automat automat1 = new Automat(10);
+            Automat automat2 = new Automat(10);
+            boolean actual = automat1.equals(automat2) ;
+            /* ZUSICHERUNG */
+            boolean expected = true;
+            Assertions.assertEquals(expected, actual);
+        }
+
+
 
     }
 
@@ -776,6 +788,30 @@ import java.util.*;
                 /* ZUSICHERUNG */
                 boolean expected = true;
                 Assertions.assertEquals(expected, actual);
+            }
+
+            @Test
+            @DisplayName("UNHAPPY - aktualisiereInspektionsdatum outOfBounds ")
+            void aktualisiereInspektionsdatumOOB() throws Exception {
+                Exception e = Assertions.assertThrows(Exception.class, () -> {
+                    spyAutomat.aktualisiereInspektionsdatum(100);
+                });
+                String actual = e.getMessage();
+                /* ZUSICHERUNG */
+                String expected = "fachnummer out of bounds";
+                Assertions.assertTrue(actual.contains(expected));
+            }
+
+            @Test
+            @DisplayName("UNHAPPY - aktualisiereInspektionsdatum leeres Fach ")
+            void aktualisiereInspektionsdatumEmpty() throws Exception {
+                Exception e = Assertions.assertThrows(Exception.class, () -> {
+                    spyAutomat.aktualisiereInspektionsdatum(1);
+                });
+                String actual = e.getMessage();
+                /* ZUSICHERUNG */
+                String expected = "kein Kuchen in diesem Fach";
+                Assertions.assertTrue(actual.contains(expected));
             }
         }
     }

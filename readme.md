@@ -68,7 +68,7 @@
   ### Funktionalitaet
 * vollständige, threadsichere GL ✅ 3
 * vollständiges CLI inkl. alternatives CLI  ✅ 3
-    * ueber eventHandler deaktivieren veraendert
+    * eventListener Delete fehlt, loeschen deaktiviert
 * vollständiges GUI  ✅ 2
 * events (mindestens 3)  ✅ 2
   * control/automat/events/AutomatEvent.java

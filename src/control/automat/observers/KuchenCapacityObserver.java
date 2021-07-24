@@ -36,7 +36,7 @@ public class KuchenCapacityObserver implements Observer {
                 outputEventHandler.handle(outputEvent);
                 this.over90 = true;
             }
-        } else if (automatController.getCapacity() <= 0.5) {
+        } else if (automatController.getCapacity() <= 0.9) {
             this.over90 = false;
         }
     }

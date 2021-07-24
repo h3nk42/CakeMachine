@@ -279,6 +279,12 @@ public class Automat implements Serializable {
     }
 
     public void aktualisiereInspektionsdatum(Integer fachnummer) throws Exception {
+        if(fachnummer >= fachAnzahl) {
+            throw new Exception("fachnummer out of bounds");
+        }
+        if(faecher.get(fachnummer) == null) {
+            throw new Exception("kein Kuchen in diesem Fach");
+        }
         this.setInspektionsdatum(fachnummer, new Date());
     }
 

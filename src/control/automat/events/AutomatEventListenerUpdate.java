@@ -1,6 +1,7 @@
 package control.automat.events;
 
 import control.automat.AutomatController;
+import control.lib.KuchenComparators;
 import model.Automat;
 import control.gui.event.GuiEventType;
 import control.gui.event.UpdateGuiEvent;
@@ -8,9 +9,12 @@ import control.gui.event.UpdateGuiEventHandler;
 import control.console.output.MessageType;
 import control.console.output.OutputEvent;
 import control.console.output.OutputEventHandler;
+import model.verkaufsobjekte.kuchen.VerkaufsKuchen;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AutomatEventListenerUpdate  implements AutomatEventListener, Serializable {
@@ -58,7 +62,8 @@ public class AutomatEventListenerUpdate  implements AutomatEventListener, Serial
         int fachNummer = (int) event.getData().get(CakeDataType.fachnummer);
         try {
             automat.aktualisiereInspektionsdatum(fachNummer);
-            //Output.print(this, "erfolg", MessageType.success, outputEventHandler);
+            OutputEvent outputEvent = new OutputEvent(this, "Kuchen inspiziert!", MessageType.success);
+            outputEventHandler.handle(outputEvent);
             updateGui();
         } catch (Exception e) {
             OutputEvent outputEvent = new OutputEvent(this, e.getMessage(), MessageType.error);

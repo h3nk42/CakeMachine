@@ -39,7 +39,6 @@ public class AutomatEventListenerDelete implements AutomatEventListener, Seriali
         int fachnummer = (int) event.getData().get(CakeDataType.fachnummer);
         try{
             automat.deleteKuchen(fachnummer);
-            //Output.print(this, "erfolg", MessageType.success, outputEventHandler);
             automatC.aktualisiereKuchenCapacity();
             automatC.aktualisiereAllergene();
             return;

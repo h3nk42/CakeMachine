@@ -83,7 +83,6 @@ public class AutomatEventListenerCreate implements AutomatEventListener, Seriali
                     obstsorte = (String) eventData.get(CakeDataType.obstsorte);
                     kremsorte = (String) eventData.get(CakeDataType.kremsorte);
                     if( kremsorte == null || obstsorte == null ||kremsorte.equals("") || obstsorte.equals("")) {
-
                         throw new Exception("Obstsorte | Kremsorte leer");
                     }
                     kremObstData = new String[]{obstsorte,kremsorte};
