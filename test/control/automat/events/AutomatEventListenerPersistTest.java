@@ -82,7 +82,7 @@ public class AutomatEventListenerPersistTest {
 
         @Test
         @DisplayName("HAPPY - handleEvent pJOS - call automat")
-        void handleEventDKuchen3() throws Exception {
+        void handleEventload() throws Exception {
             automatEventListener.onAutomatEvent(automatEventMock);
             /*ZUSICHERUNG*/
             Mockito.verify(spyAutomatController, times(1)).rehydrate(ArgumentMatchers.any(Automat.class));
