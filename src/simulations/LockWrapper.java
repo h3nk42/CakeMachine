@@ -1,4 +1,4 @@
-package Simulations;
+package simulations;
 
 import control.automat.AutomatController;
 import control.automat.events.AutomatEvent;
@@ -31,14 +31,14 @@ public class LockWrapper {
         this.r = r;
     }
 
-    public void createCakeUnsynchronized() throws Exception {
+    public void createCakeUnsynchronized(SimulationType simulationType, boolean isTest) throws Exception {
         Map<CakeDataType, Object> cakeData = SimulationLib.rollCake(r);
         AutomatEvent automatEvent;
         automatEvent = new AutomatEvent(this,cakeData, AutomatOperationType.cKuchen);
         this.automatEventHandler.handle(automatEvent);
-        deleteCondition.signal();
+        if(!isTest && simulationType != SimulationType.sim1) deleteCondition.signal();
     }
-    public void deleteCakeUnsynchronized(SimulationType simulationType) throws Exception {
+    public void deleteCakeUnsynchronized(SimulationType simulationType, boolean isTest) throws Exception {
         Map<CakeDataType, Object> cakeData;
         switch (simulationType){
             case sim2:
@@ -52,21 +52,21 @@ public class LockWrapper {
         AutomatEvent automatEvent;
         automatEvent = new AutomatEvent(this,cakeData, AutomatOperationType.dKuchen);
         if(cakeData==null) {
-            System.out.println("Simulations/Threads/ActualSims/LockWrapper.java: lineNumber: 45: " + "Keine Kuchen zum loeschen vorhanden!");
+            System.out.println("simulations/Threads/ActualSims/LockWrapper.java: lineNumber: 45: " + "Keine Kuchen zum loeschen vorhanden!");
         } else {
             this.automatEventHandler.handle(automatEvent);
-            createCondition.signal();
+            if(!isTest && simulationType != SimulationType.sim1) createCondition.signal();
         }
     }
 
 
-    public void createCakeSynchronized(){
+    public void createCakeSynchronized(SimulationType simulationType){
         lock.lock();
         try{
             while(automatController.getAutomat().isFull()) {
                 createCondition.await();
             }
-            this.createCakeUnsynchronized();
+            this.createCakeUnsynchronized(simulationType,false);
         } catch( Exception e) {
 
         } finally {
@@ -75,7 +75,7 @@ public class LockWrapper {
 
     }
 
-    public void deleteCakeSynchronized(SimulationType simulationType){
+    public void deleteCakeSynchronized(SimulationType simulationType, boolean isTest){
         lock.lock();
         try{
             while(automatController.getAutomat().isEmpty())
@@ -83,11 +83,11 @@ public class LockWrapper {
             if(simulationType == SimulationType.sim3){
                 Integer randomInt = SimulationLib.rollIndex(r,automatController.getAutomat().getKuchen().size()+1);
                 for (int i = 1; i <= randomInt; i++)  {
-                    this.deleteCakeUnsynchronized(simulationType);
+                    this.deleteCakeUnsynchronized(simulationType, isTest);
                 }
-                System.out.println("Simulations/Threads/ActualSims/LockWrapper.java: lineNumber: 90: " + randomInt + " älteste Kuchen aufeinmal geloescht");
+                System.out.println("simulations/Threads/ActualSims/LockWrapper.java: lineNumber: 90: " + randomInt + " älteste Kuchen aufeinmal geloescht");
             } else {
-                this.deleteCakeUnsynchronized(simulationType);
+                this.deleteCakeUnsynchronized(simulationType, isTest);
             }
         } catch( Exception e) {
 
@@ -101,10 +101,10 @@ public class LockWrapper {
         AutomatEvent automatEvent;
         automatEvent = new AutomatEvent(this,cakeData, AutomatOperationType.inspectKuchen);
         if(cakeData==null) {
-            System.out.println("Simulations/Threads/ActualSims/LockWrapper.java: lineNumber: 45: " + "Keine Kuchen zum inspizieren vorhanden!");
+            System.out.println("simulations/Threads/ActualSims/LockWrapper.java: lineNumber: 45: " + "Keine Kuchen zum inspizieren vorhanden!");
         } else {
             this.automatEventHandler.handle(automatEvent);
-            System.out.println("Simulations/Threads/AutomatSimWrapper.java: lineNumber: 51: " + "Kuchen inspiziert");
+            System.out.println("simulations/Threads/AutomatSimWrapper.java: lineNumber: 51: " + "Kuchen inspiziert");
         }
     }
 

@@ -1,11 +1,11 @@
-package Simulations;
+package simulations;
 
-public class CreateThread extends Thread {
+public class DeleteThread extends Thread {
 
     private LockWrapper wrapper;
     private SimulationType simulationType;
 
-    public CreateThread(LockWrapper wrapper, SimulationType simulationType) {
+    public DeleteThread(LockWrapper wrapper, SimulationType simulationType) {
         this.wrapper = wrapper;
         this.simulationType = simulationType;
     }
@@ -16,14 +16,13 @@ public class CreateThread extends Thread {
             try {
                 switch (simulationType){
                     case sim1:
-                        wrapper.createCakeUnsynchronized();
+                        wrapper.deleteCakeUnsynchronized(simulationType, false);
                         break;
                     case sim2:
                     case sim3:
-                        wrapper.createCakeSynchronized();
+                        wrapper.deleteCakeSynchronized(simulationType, false);
                         break;
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -1,11 +1,11 @@
-package Simulations;
+package simulations;
 
-public class InspectThread extends Thread {
+public class CreateThread extends Thread {
 
     private LockWrapper wrapper;
     private SimulationType simulationType;
 
-    public InspectThread(LockWrapper wrapper, SimulationType simulationType) {
+    public CreateThread(LockWrapper wrapper, SimulationType simulationType) {
         this.wrapper = wrapper;
         this.simulationType = simulationType;
     }
@@ -16,14 +16,14 @@ public class InspectThread extends Thread {
             try {
                 switch (simulationType){
                     case sim1:
+                        wrapper.createCakeUnsynchronized(simulationType,false);
                         break;
                     case sim2:
-                        wrapper.inspectUnsynchronized();
-                        break;
                     case sim3:
-                        wrapper.inspectUnsynchronized();
+                        wrapper.createCakeSynchronized(SimulationType.sim1);
                         break;
                 }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

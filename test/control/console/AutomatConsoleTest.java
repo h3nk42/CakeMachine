@@ -2,7 +2,6 @@ package control.console;
 
 import control.automat.events.AutomatEvent;
 import control.automat.events.AutomatEventHandler;
-import control.automat.events.AutomatOperationType;
 import control.console.input.InputEvent;
 import control.console.input.InputEventType;
 import control.console.output.MessageType;
@@ -10,15 +9,11 @@ import control.console.output.OutputEvent;
 import control.console.output.OutputEventHandler;
 
 import control.lib.ConsoleLib;
-import model.Automat;
 import org.junit.jupiter.api.*;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
-import sun.plugin2.message.Message;
 
-import java.util.HashMap;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;

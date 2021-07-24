@@ -32,16 +32,13 @@ public class SimulationLib {
         switch (kuchenArt) {
             case Kremkuchen:
                 cakeData.put(CakeDataType.kremsorte,kremsorterArr[rollIndex(r,kremsorterArr.length)]);
-                //createCakeSimSpecific(cakeData);
                 break;
             case Obstkuchen:
                 cakeData.put(CakeDataType.obstsorte,obstsorteArr[rollIndex(r,obstsorteArr.length)]);
-                //createCakeSimSpecific(cakeData);
                 break;
             case Obsttorte:
                 cakeData.put(CakeDataType.obstsorte,obstsorteArr[rollIndex(r,obstsorteArr.length)]);
                 cakeData.put(CakeDataType.kremsorte,kremsorterArr[rollIndex(r,kremsorterArr.length)]);
-                //createCakeSimSpecific(cakeData);
                 break;
         }
         return cakeData;

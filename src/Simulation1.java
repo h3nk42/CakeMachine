@@ -1,7 +1,7 @@
-import Simulations.SimulationType;
-import Simulations.CreateThread;
-import Simulations.DeleteThread;
-import Simulations.LockWrapper;
+import simulations.SimulationType;
+import simulations.CreateThread;
+import simulations.DeleteThread;
+import simulations.LockWrapper;
 import control.automat.events.*;
 import model.Automat;
 import control.automat.AutomatController;
