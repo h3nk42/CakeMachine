@@ -14,14 +14,11 @@ public class PersistLib {
 
     public static void rehydrateAutomat(Automat automat, AutomatController automatController) {
         automatController.rehydrate(automat);
-        /*for (Observer observer:
-                observers) {
-            automatController.meldeAn(observer);
-        }*/
+
     }
 
-    public static void writeAutomatToFileJOS(String fileName, Automat automatToWrite, boolean isTest) {
-        if(isTest) {
+    public static void writeAutomatToFileJOS(String fileName, Automat automatToWrite, boolean isTestWithMock) {
+        if(isTestWithMock) {
             automatToWrite.wasPersisted();
             return;
         }

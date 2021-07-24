@@ -25,11 +25,11 @@ public class Automat implements Serializable {
     public Automat(Integer fachAnzahl) {
         this.fachAnzahl = fachAnzahl;
         this.faecher = new ArrayList<>(fachAnzahl);
-        this.kuchenCounter = new HashMap<>();
-        this.kuchenMap = new HashMap<>();
-        this.allergeneVorhanden = new HashMap<>();
+        this.kuchenCounter = new LinkedHashMap<>();
+        this.kuchenMap = new LinkedHashMap<>();
+        this.allergeneVorhanden = new LinkedHashMap<>();
         this.herstellerFactory = new HerstellerFactoryImpl();
-        this.inspektionsDaten = new HashMap<>();
+        this.inspektionsDaten = new LinkedHashMap<>();
         for (KuchenArt kuchenArt : KuchenArt.values()) {
            this.kuchenMap.put(kuchenArt, new ArrayList<VerkaufsKuchen>() );
         }
@@ -89,7 +89,7 @@ public class Automat implements Serializable {
     }
 
     public Map<Hersteller, Integer>  getKuchenCounter() {
-        Map<Hersteller, Integer> returnCopy = new HashMap<>(kuchenCounter);
+        Map<Hersteller, Integer> returnCopy = new LinkedHashMap<>(kuchenCounter);
         return returnCopy;
     }
 
@@ -316,4 +316,13 @@ public class Automat implements Serializable {
                 ", fachAnzahl=" + fachAnzahl +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Automat automat = (Automat) o;
+        return  automat.toString().equals(toString());
+    }
+
 }
